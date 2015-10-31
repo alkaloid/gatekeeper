@@ -39,4 +39,5 @@ config :gatekeeper, Gatekeeper.Repo,
   password: "postgres",
   database: "gatekeeper_dev",
   hostname: "localhost",
+  template: "template0",
   pool_size: 10
