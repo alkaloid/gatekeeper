@@ -10,8 +10,8 @@ defmodule Gatekeeper.Company do
     timestamps
   end
 
-  @required_fields ~w(name join_date departure_date)
-  @optional_fields ~w(members)
+  @required_fields ~w(name join_date)
+  @optional_fields ~w(departure_date members)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
