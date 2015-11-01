@@ -56,6 +56,10 @@ config :logger, level: :info
 #     config :gatekeeper, Gatekeeper.Endpoint, server: true
 #
 
+config :gatekeeper, :doorlock,
+  gpio_port: '2',
+  type: Gpio
+
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
 import_config "prod.secret.exs"
