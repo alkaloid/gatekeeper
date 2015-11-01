@@ -1,0 +1,11 @@
+language: erlang
+otp_release:
+   - 18
+before_install:
+   - git clone --branch v1.1.0 https://github.com/elixir-lang/elixir
+   - make -C elixir
+before_script:
+  - "export PATH=`pwd`/elixir/bin:$PATH"
+  - mix local.hex --force
+  - mix deps.get
+script: mix test

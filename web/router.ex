@@ -17,6 +17,11 @@ defmodule Gatekeeper.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    resources "/companies", CompanyController do
+      resources "/members", MemberController do
+        resources "/rfid_tokens", RfidTokenController
+      end
+    end
   end
 
   # Other scopes may use custom stacks.

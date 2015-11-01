@@ -1,0 +1,28 @@
+<h2><%= @company.name %></h2>
+
+<ul>
+
+  <li>
+    <strong>Join date:</strong>
+    <%= @company.join_date %>
+  </li>
+
+  <li>
+    <strong>Departure date:</strong>
+    <%= @company.departure_date %>
+  </li>
+
+  <li>
+    <strong>Members:</strong>
+    <ul class="member-list">
+      <%= for member <- @company.members do %>
+        <li><%= link member.name, to: company_member_path(@conn, :show, @company, member) %></li>
+      <% end %>
+      <li><%= link "Add new...", to: company_member_path(@conn, :new, @company) %></li>
+    </ul>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: company_path(@conn, :edit, @company) %>
+<%= link "Back", to: company_path(@conn, :index) %>
