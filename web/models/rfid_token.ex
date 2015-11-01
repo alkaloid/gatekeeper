@@ -1,11 +1,15 @@
 defmodule Gatekeeper.RfidToken do
   use Gatekeeper.Web, :model
 
+  alias Gatekeeper.Company
+  alias Gatekeeper.Member
+  alias Gatekeeper.Repo
+
   schema "rfid_tokens" do
     field :identifier, :string
     field :name, :string
     field :active, :boolean, default: true
-    belongs_to :member, Gatekeeper.Member
+    belongs_to :member, Member
 
     timestamps
   end

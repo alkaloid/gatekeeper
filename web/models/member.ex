@@ -1,13 +1,17 @@
 defmodule Gatekeeper.Member do
   use Gatekeeper.Web, :model
 
+  alias Gatekeeper.Company
+  alias Gatekeeper.Repo
+  alias Gatekeeper.RfidToken
+
   schema "members" do
     field :name, :string
     field :email, :string
     field :phone, :string
     field :active, :boolean, default: true
-    belongs_to :company, Gatekeeper.Company
-    has_many :rfid_tokens, Gatekeeper.RfidToken
+    belongs_to :company, Company
+    has_many :rfid_tokens, RfidToken
 
     timestamps
   end
@@ -27,7 +31,7 @@ defmodule Gatekeeper.Member do
   end
 
   def active?(member) do
-    member = Gatekeeper.Repo.preload member, :company
-    Gatekeeper.Company.active?(member.company) && member.active
+    member = Repo.preload member, :company
+    Company.active?(member.company) && member.active
   end
 end

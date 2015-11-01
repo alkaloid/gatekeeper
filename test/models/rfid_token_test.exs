@@ -2,6 +2,8 @@ defmodule Gatekeeper.RfidTokenTest do
   use Gatekeeper.ModelCase
 
   alias Gatekeeper.RfidToken
+  alias Gatekeeper.Member
+  alias Gatekeeper.Company
 
   @valid_attrs %{identifier: "some content", active: false, member_id: 1}
   @invalid_attrs %{}
