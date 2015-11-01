@@ -18,6 +18,6 @@ defmodule Gatekeeper.RFIDListenerTest do
     send(listener, {:elixir_serial, self(), "\r\n"})
     send(listener, {:elixir_serial, self(), <<3>>})
 
-    assert_receive "7A0092D11F26"
+    assert_receive {:card_read, "7A0092D11F26"}
   end
 end
