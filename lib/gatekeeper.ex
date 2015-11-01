@@ -12,8 +12,9 @@ defmodule Gatekeeper do
       # Start the Ecto repository
       worker(Gatekeeper.Repo, []),
       # Here you could define other workers and supervisors as children
-      # worker(Gatekeeper.Worker, [arg1, arg2, arg3]),
-      worker(Gatekeeper.RFIDListener, [])
+      worker(Gatekeeper.RFIDListener, [
+        Application.get_env(:gatekeeper, :rfidreader)[:device]
+      ]),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

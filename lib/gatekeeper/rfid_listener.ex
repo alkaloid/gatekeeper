@@ -3,18 +3,18 @@ defmodule Gatekeeper.RFIDListener do
 
   use GenServer
 
-  def start_link(opts \\ []) do
-    GenServer.start_link(__MODULE__, self(), opts)
+  def start_link(device, opts \\ []) do
+    GenServer.start_link(__MODULE__, [device, self()], opts)
   end
 
-  def init(handler) do
+  def init([device, handler]) do
     {:ok, serial} = Serial.start_link
 
-    Serial.open(serial, "/dev/ttyUSB0")
+    Serial.open(serial, device)
     Serial.set_speed(serial, 9600)
     Serial.connect(serial)
 
-    Logger.info "RFID listener process started"
+    Logger.info "RFID listener process started for reader #{device}"
 
     {:ok, buffer} = StringIO.open("in")
 

@@ -2,7 +2,7 @@ defmodule Gatekeeper.RFIDListenerTest do
   use ExUnit.Case, async: true
 
   test "reading an RFID card" do
-    {:ok, listener} = Gatekeeper.RFIDListener.start_link
+    {:ok, listener} = Gatekeeper.RFIDListener.start_link "/dev/ttyUSB0"
 
     send(listener, {:elixir_serial, self(), <<2>>})
     send(listener, {:elixir_serial, self(), "7"})
