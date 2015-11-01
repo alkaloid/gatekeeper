@@ -45,10 +45,29 @@ defmodule Gatekeeper.RfidTokenTest do
     assert RfidToken.access_permitted?("abcd1234")
   end
 
-  test "checking that the door should not be allowed to open" do
+  test "checking that the door should not be allowed to open if the token is inactive" do
     {:ok, company} = Gatekeeper.Repo.insert %Company{departure_date: nil}
     {:ok, member} = Gatekeeper.Repo.insert %Member{active: true, company_id: company.id}
     Gatekeeper.Repo.insert %RfidToken{identifier: "abcd1234", active: false, member_id: member.id}
+    refute RfidToken.access_permitted?("abcd1234")
+  end
+
+  test "the door should not be allowed to open if the member is inactive" do
+    {:ok, company} = Gatekeeper.Repo.insert %Company{departure_date: nil}
+    {:ok, member} = Gatekeeper.Repo.insert %Member{active: false, company_id: company.id}
+    Gatekeeper.Repo.insert %RfidToken{identifier: "abcd1234", active: true, member_id: member.id}
+    refute RfidToken.access_permitted?("abcd1234")
+  end
+
+  test "the door should not be allowed to open if the company departed" do
+    {:ok, departure} = Ecto.DateTime.cast("2015-04-30 00:00:00")
+    {:ok, company} = Gatekeeper.Repo.insert %Company{departure_date: departure}
+    {:ok, member} = Gatekeeper.Repo.insert %Member{active: true, company_id: company.id}
+    Gatekeeper.Repo.insert %RfidToken{identifier: "abcd1234", active: true, member_id: member.id}
+    refute RfidToken.access_permitted?("abcd1234")
+  end
+
+  test "the door should not be allowed to open if the token is not enrolled" do
     refute RfidToken.access_permitted?("abcd1234")
   end
 end

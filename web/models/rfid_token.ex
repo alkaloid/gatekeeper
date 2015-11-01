@@ -36,6 +36,6 @@ defmodule Gatekeeper.RfidToken do
   def access_permitted?(identifier) do
     rfid_token = Repo.get_by(Gatekeeper.RfidToken, identifier: identifier)
     # TODO: Take a door as another argument and perform authz
-    active?(rfid_token)
+    rfid_token && active?(rfid_token)
   end
 end
