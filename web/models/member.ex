@@ -12,8 +12,8 @@ defmodule Gatekeeper.Member do
     timestamps
   end
 
-  @required_fields ~w(name email phone active company_id)
-  @optional_fields ~w()
+  @required_fields ~w(name email active company_id)
+  @optional_fields ~w(phone)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
