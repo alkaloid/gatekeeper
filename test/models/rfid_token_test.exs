@@ -39,12 +39,16 @@ defmodule Gatekeeper.RfidTokenTest do
   end
 
   test "checking that the door should be allowed to open" do
-    m = %RfidToken{active: true, member: %Member{active: true, company: %Company{departure_date: nil}}}
-    assert RfidToken.access_permitted?(m)
+    {:ok, company} = Gatekeeper.Repo.insert %Company{departure_date: nil}
+    {:ok, member} = Gatekeeper.Repo.insert %Member{active: true, company_id: company.id}
+    Gatekeeper.Repo.insert %RfidToken{identifier: "abcd1234", active: true, member_id: member.id}
+    assert RfidToken.access_permitted?("abcd1234")
   end
 
   test "checking that the door should not be allowed to open" do
-    m = %RfidToken{active: false, member: %Member{active: true, company: %Company{departure_date: nil}}}
-    refute RfidToken.access_permitted?(m)
+      {:ok, company} = Gatekeeper.Repo.insert %Company{departure_date: nil}
+    {:ok, member} = Gatekeeper.Repo.insert %Member{active: true, company_id: company.id}
+    Gatekeeper.Repo.insert %RfidToken{identifier: "abcd1234", active: false, member_id: member.id}
+    refute RfidToken.access_permitted?("abcd1234")
   end
 end
