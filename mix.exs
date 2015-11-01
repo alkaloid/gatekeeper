@@ -38,6 +38,7 @@ defmodule Gatekeeper.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:cowboy, "~> 1.0"},
       {:mix_test_watch, "~> 0.2", only: :dev},
+      {:serial, "0.1.1"},
     ]
   end
 
