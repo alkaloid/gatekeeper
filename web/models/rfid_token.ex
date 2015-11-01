@@ -27,4 +27,15 @@ defmodule Gatekeeper.RfidToken do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  def active?(rfid_token) do
+    rfid_token = Repo.preload(rfid_token, :member)
+
+    rfid_token.active && Member.active?(rfid_token.member)
+  end
+
+  def access_permitted?(rfid_token) do
+    # TODO: Take a door as another argument and perform authz
+    Token.active?(rfid_token)
+  end
 end

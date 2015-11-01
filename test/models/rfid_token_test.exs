@@ -17,4 +17,24 @@ defmodule Gatekeeper.RfidTokenTest do
     changeset = RfidToken.changeset(%RfidToken{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+  test "checks whether an RFID token permits access when it should" do
+    m = %RfidToken{active: true, member: %Member{active: true, company: %Company{departure_date: nil}}}
+    assert RfidToken.active?(m)
+  end
+
+  test "checking for an inactive RFID token" do
+    m = %RfidToken{active: false, member: %Member{active: true, company: %Company{departure_date: nil}}}
+    refute RfidToken.active?(m)
+  end
+
+  test "checking for an inactive member" do
+    m = %RfidToken{active: true, member: %Member{active: false, company: %Company{departure_date: nil}}}
+    refute RfidToken.active?(m)
+  end
+
+  test "checking for an inactive company" do
+    m = %RfidToken{active: true, member: %Member{active: true, company: %Company{departure_date: "2015-04-30 00:00:00"}}}
+    refute RfidToken.active?(m)
+  end
 end
