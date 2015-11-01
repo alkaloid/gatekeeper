@@ -1,0 +1,6 @@
+<h2>New RFID Token</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: company_member_rfid_token_path(@conn, :create, @member.company, @member) %>
+
+<%= link "Back", to: company_member_path(@conn, :show, @member.company, @member) %>
