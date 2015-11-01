@@ -20,9 +20,9 @@
       <td>
         <ul>
           <%= for member <- company.members do %>
-            <li>X<%= link member.name, to: company_member_path(Gatekeeper.Endpoint, :show, company, member) %></li>
+            <li><%= link member.name, to: company_member_path(@conn, :show, company, member) %></li>
           <% end %>
-          <li><%= link "Add new...", to: company_member_path(Gatekeeper.Endpoint, :new, company) %></li>
+          <li><%= link "Add new...", to: company_member_path(@conn, :new, company) %></li>
         </ul>
       </td>
 
