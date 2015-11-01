@@ -2,7 +2,7 @@
 
 To start your Phoenix app:
 
-  1. Install dependencies with `mix deps.get`
+  1. Install dependencies with `mix deps.get && mix deps.compile && mix deps.compile` (repeat compilation is necessary first time around to get the Serial library working)
   2. Create and migrate your database with `mix ecto.create && mix ecto.migrate`
   3. Start Phoenix endpoint with `mix phoenix.server`
 
