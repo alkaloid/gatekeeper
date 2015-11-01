@@ -18,7 +18,9 @@ defmodule Gatekeeper.Router do
 
     get "/", PageController, :index
     resources "/companies", CompanyController do
-      resources "/members", MemberController
+      resources "/members", MemberController do
+        resources "/rfid_tokens", RfidTokenController
+      end
     end
   end
 

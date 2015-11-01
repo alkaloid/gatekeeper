@@ -7,6 +7,7 @@ defmodule Gatekeeper.Member do
     field :phone, :string
     field :active, :boolean, default: false
     belongs_to :company, Gatekeeper.Company
+    has_many :rfid_tokens, Gatekeeper.RfidTokens
 
     timestamps
   end
