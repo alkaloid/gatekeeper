@@ -6,12 +6,12 @@ defmodule Gatekeeper.CompanyController do
   plug :scrub_params, "company" when action in [:create, :update]
 
   def index(conn, _params) do
-    companies = Repo.all(Company)
+    companies = Repo.all(Company) |> Repo.preload(:members)
     render(conn, "index.html", companies: companies)
   end
 
   def new(conn, _params) do
-    changeset = Company.changeset(%Company{})
+    changeset = Company.changeset %Company{ members: [ %Gatekeeper.Member{} ] }
     render(conn, "new.html", changeset: changeset)
   end
 
@@ -29,12 +29,12 @@ defmodule Gatekeeper.CompanyController do
   end
 
   def show(conn, %{"id" => id}) do
-    company = Repo.get!(Company, id)
+    company = Repo.get!(Company, id) |> Repo.preload(:members)
     render(conn, "show.html", company: company)
   end
 
   def edit(conn, %{"id" => id}) do
-    company = Repo.get!(Company, id)
+    company = Repo.get!(Company, id) |> Repo.preload(:members)
     changeset = Company.changeset(company)
     render(conn, "edit.html", company: company, changeset: changeset)
   end
@@ -54,10 +54,11 @@ defmodule Gatekeeper.CompanyController do
   end
 
   def delete(conn, %{"id" => id}) do
-    company = Repo.get!(Company, id)
+    company = Repo.get!(Company, id) |> Repo.preload(:members)
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
+    Repo.delete!(company.members)
     Repo.delete!(company)
 
     conn

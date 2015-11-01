@@ -25,6 +25,31 @@
     <%= datetime_select f, :departure_date, class: "form-control" %>
   </div>
 
+  <%= inputs_for f, :members, fn member -> %>
+    <div class="form-group">
+      <%= label member, :name, "Member ##{member.index + 1} Name", class: "control-label" %>
+      <%= text_input member, :name, class: "form-control" %>
+      <%= if message = member.errors[:name] do %>
+        <span class="help-block"><%= message %></span>
+      <% end %>
+    </div>
+    <div class="form-group">
+      <%= label member, :email, "Email", class: "control-label" %>
+      <%= text_input member, :email, class: "form-control" %>
+      <%= if message = member.errors[:email] do %>
+        <span class="help-block"><%= message %></span>
+      <% end %>
+    <div class="form-group">
+    </div>
+      <%= label member, :phone, "Phone", class: "control-label" %>
+      <%= text_input member, :phone, class: "form-control" %>
+      <%= if message = member.errors[:phone] do %>
+        <span class="help-block"><%= message %></span>
+      <% end %>
+    </div>
+    </div>
+  <% end %>
+
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>

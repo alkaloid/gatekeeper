@@ -1,17 +1,18 @@
-defmodule Gatekeeper.Company do
+defmodule Gatekeeper.Member do
   use Gatekeeper.Web, :model
 
-  schema "companies" do
+  schema "members" do
     field :name, :string
-    field :join_date, Ecto.DateTime
-    field :departure_date, Ecto.DateTime
-    has_many :members, Gatekeeper.Member
+    field :email, :string
+    field :phone, :string
+    field :active, :boolean, default: false
+    belongs_to :company, Gatekeeper.Company
 
     timestamps
   end
 
-  @required_fields ~w(name join_date departure_date)
-  @optional_fields ~w(members)
+  @required_fields ~w(name email phone active company_id)
+  @optional_fields ~w()
 
   @doc """
   Creates a changeset based on the `model` and `params`.
