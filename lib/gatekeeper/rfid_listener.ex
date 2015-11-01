@@ -23,16 +23,13 @@ defmodule Gatekeeper.RFIDListener do
 
   def handle_info({:elixir_serial, _serial, data}, {buffer, handler} = state) do
     Logger.debug "Received data from RFID reader: #{inspect data}"
+    leading = byte_size(data) - 1
     case data do
       <<2, rest :: binary>> ->
         Logger.info "Began receiving an RFID"
         IO.write(buffer, rest)
-      <<rest :: binary-size(1), 3>> ->
+      <<rest :: binary-size(leading), 3>> ->
         IO.write(buffer, rest)
-        id = buffer |> StringIO.flush |> String.rstrip
-        Logger.info "RFID card presented with ID #{id}"
-        send(handler, {:card_read, id})
-      <<3>> ->
         id = buffer |> StringIO.flush |> String.rstrip
         Logger.info "RFID card presented with ID #{id}"
         send(handler, {:card_read, id})
