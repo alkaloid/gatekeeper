@@ -1,0 +1,26 @@
+<h2>Show member</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @member.name %>
+  </li>
+
+  <li>
+    <strong>Email:</strong>
+    <%= @member.email %>
+  </li>
+
+  <li>
+    <strong>Phone:</strong>
+    <%= @member.phone %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: company_member_path(@conn, :edit, @company, @member) %>
+|
+<%= link "Back", to: company_member_path(@conn, :index, @company) %>
+|
+<%= link "Delete", to: company_member_path(@conn, :delete, @company, @member), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>

@@ -1,0 +1,26 @@
+<h2>Listing members for <%= @company.name %></h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for member <- @company.members do %>
+    <tr>
+      <td><%= member.name %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: company_member_path(@conn, :show, @company, member), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: company_member_path(@conn, :edit, @company, member), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: company_member_path(@conn, :delete, @company, member), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New member", to: company_member_path(@conn, :new, @company) %>

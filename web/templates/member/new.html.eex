@@ -1,0 +1,6 @@
+<h2>New member</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: company_member_path(@conn, :create, @company) %>
+
+<%= link "Back", to: company_member_path(@conn, :index, @company) %>
