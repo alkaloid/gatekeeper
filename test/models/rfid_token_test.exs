@@ -37,4 +37,14 @@ defmodule Gatekeeper.RfidTokenTest do
     m = %RfidToken{active: true, member: %Member{active: true, company: %Company{departure_date: "2015-04-30 00:00:00"}}}
     refute RfidToken.active?(m)
   end
+
+  test "checking that the door should be allowed to open" do
+    m = %RfidToken{active: true, member: %Member{active: true, company: %Company{departure_date: nil}}}
+    assert RfidToken.access_permitted?(m)
+  end
+
+  test "checking that the door should not be allowed to open" do
+    m = %RfidToken{active: false, member: %Member{active: true, company: %Company{departure_date: nil}}}
+    refute RfidToken.access_permitted?(m)
+  end
 end

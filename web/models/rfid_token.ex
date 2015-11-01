@@ -1,7 +1,6 @@
 defmodule Gatekeeper.RfidToken do
   use Gatekeeper.Web, :model
 
-  alias Gatekeeper.Company
   alias Gatekeeper.Member
   alias Gatekeeper.Repo
 
@@ -36,6 +35,6 @@ defmodule Gatekeeper.RfidToken do
 
   def access_permitted?(rfid_token) do
     # TODO: Take a door as another argument and perform authz
-    Token.active?(rfid_token)
+    active?(rfid_token)
   end
 end
