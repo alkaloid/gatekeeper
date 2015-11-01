@@ -26,6 +26,11 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :active, "Active?", class: "control-label" %>
+    <%= checkbox f, :active, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>

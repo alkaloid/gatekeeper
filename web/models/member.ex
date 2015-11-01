@@ -5,7 +5,7 @@ defmodule Gatekeeper.Member do
     field :name, :string
     field :email, :string
     field :phone, :string
-    field :active, :boolean, default: false
+    field :active, :boolean, default: true
     belongs_to :company, Gatekeeper.Company
     has_many :rfid_tokens, Gatekeeper.RfidTokens
 
@@ -24,5 +24,10 @@ defmodule Gatekeeper.Member do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+  end
+
+  def active?(member) do
+    member = Gatekeeper.Repo.preload member, :company
+    Gatekeeper.Company.active?(member.company) && member.active
   end
 end

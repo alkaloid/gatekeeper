@@ -23,4 +23,8 @@ defmodule Gatekeeper.Company do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  def active?(company) do
+    is_nil company.departure_date
+  end
 end

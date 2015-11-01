@@ -17,6 +17,11 @@
     <%= @member.phone %>
   </li>
 
+  <li>
+    <strong>Active:</strong>
+    <%= @member.active %>
+  </li>
+
 </ul>
 
 <%= link "Edit", to: company_member_path(@conn, :edit, @company, @member) %>
