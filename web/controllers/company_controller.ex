@@ -58,7 +58,6 @@ defmodule Gatekeeper.CompanyController do
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Repo.delete!(company.members)
     Repo.delete!(company)
 
     conn

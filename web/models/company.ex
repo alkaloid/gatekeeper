@@ -5,7 +5,7 @@ defmodule Gatekeeper.Company do
     field :name, :string
     field :join_date, Ecto.DateTime
     field :departure_date, Ecto.DateTime
-    has_many :members, Gatekeeper.Member
+    has_many :members, Gatekeeper.Member, on_delete: :fetch_and_delete
 
     timestamps
   end
