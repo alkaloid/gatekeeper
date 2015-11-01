@@ -46,7 +46,7 @@ defmodule Gatekeeper.RfidTokenTest do
   end
 
   test "checking that the door should not be allowed to open" do
-      {:ok, company} = Gatekeeper.Repo.insert %Company{departure_date: nil}
+    {:ok, company} = Gatekeeper.Repo.insert %Company{departure_date: nil}
     {:ok, member} = Gatekeeper.Repo.insert %Member{active: true, company_id: company.id}
     Gatekeeper.Repo.insert %RfidToken{identifier: "abcd1234", active: false, member_id: member.id}
     refute RfidToken.access_permitted?("abcd1234")
