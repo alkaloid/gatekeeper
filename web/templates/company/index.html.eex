@@ -14,20 +14,18 @@
   <tbody>
 <%= for company <- @companies do %>
     <tr>
-      <td><%= company.name %></td>
+      <td><%= link company.name, to: company_path(@conn, :show, company) %></td>
       <td><%= company.join_date %></td>
       <td><%= company.departure_date %></td>
       <td>
-        <ul>
+        <ul class="member-list">
           <%= for member <- company.members do %>
             <li><%= link member.name, to: company_member_path(@conn, :show, company, member) %></li>
           <% end %>
-          <li><%= link "Add new...", to: company_member_path(@conn, :new, company) %></li>
         </ul>
       </td>
 
       <td class="text-right">
-        <%= link "Show", to: company_path(@conn, :show, company), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: company_path(@conn, :edit, company), class: "btn btn-default btn-xs" %>
         <%= link "Delete", to: company_path(@conn, :delete, company), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>

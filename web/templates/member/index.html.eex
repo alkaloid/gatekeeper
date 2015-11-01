@@ -1,9 +1,11 @@
-<h2>Listing members for <%= @company.name %></h2>
+<h2>Listing members for <%= link @company.name, to: company_path(@conn, :show, @company) %></h2>
 
 <table class="table">
   <thead>
     <tr>
       <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
 
       <th></th>
     </tr>
@@ -11,10 +13,11 @@
   <tbody>
 <%= for member <- @company.members do %>
     <tr>
-      <td><%= member.name %></td>
+      <td><%= link member.name, to: company_member_path(@conn, :show, @company, member) %></td>
+      <td><%= member.email %></td>
+      <td><%= member.phone %></td>
 
       <td class="text-right">
-        <%= link "Show", to: company_member_path(@conn, :show, @company, member), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: company_member_path(@conn, :edit, @company, member), class: "btn btn-default btn-xs" %>
         <%= link "Delete", to: company_member_path(@conn, :delete, @company, member), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
@@ -24,3 +27,5 @@
 </table>
 
 <%= link "New member", to: company_member_path(@conn, :new, @company) %>
+|
+<%= link "Back", to: company_path(@conn, :show, @company) %>
