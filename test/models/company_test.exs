@@ -15,4 +15,14 @@ defmodule Gatekeeper.CompanyTest do
     changeset = Company.changeset(%Company{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+  test "checking an active company" do
+    c = %Company{departure_date: nil}
+    assert Company.active?(c)
+  end
+
+  test "checking an inactive company" do
+    c = %Company{departure_date: "2015-04-30 00:00:00"}
+    refute Company.active?(c)
+  end
 end
