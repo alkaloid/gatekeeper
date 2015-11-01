@@ -40,7 +40,7 @@ defmodule Gatekeeper.CompanyController do
   end
 
   def update(conn, %{"id" => id, "company" => company_params}) do
-    company = Repo.get!(Company, id)
+    company = Repo.get!(Company, id) |> Repo.preload :members
     changeset = Company.changeset(company, company_params)
 
     case Repo.update(changeset) do

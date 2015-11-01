@@ -4,7 +4,7 @@ defmodule Gatekeeper.MemberTest do
   alias Gatekeeper.Member
   alias Gatekeeper.Company
 
-  @valid_attrs %{active: true, email: "some content", name: "some content", phone: "some content"}
+  @valid_attrs %{active: true, email: "some content", name: "some content", company_id: 1}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
