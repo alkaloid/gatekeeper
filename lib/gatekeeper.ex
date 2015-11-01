@@ -6,18 +6,13 @@ defmodule Gatekeeper do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
-    doorlock_config = Application.get_env(:gatekeeper, :doorlock)
-
     children = [
       # Start the endpoint when the application starts
       supervisor(Gatekeeper.Endpoint, []),
       # Start the Ecto repository
       worker(Gatekeeper.Repo, []),
       # Here you could define other workers and supervisors as children
-      worker(Gatekeeper.RFIDListener, [
-        Application.get_env(:gatekeeper, :rfidreader)[:device]
-      ]),
-      worker(Gatekeeper.DoorLock, [doorlock_config[:gpio_port], doorlock_config[:type]])
+      worker(Gatekeeper.Door, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
