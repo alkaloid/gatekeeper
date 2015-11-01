@@ -3,6 +3,7 @@ defmodule Gatekeeper.RfidToken do
 
   schema "rfid_tokens" do
     field :identifier, :string
+    field :active, :boolean, default: true
     belongs_to :member, Gatekeeper.Member
 
     timestamps
