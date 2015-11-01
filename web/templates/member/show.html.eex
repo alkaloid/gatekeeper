@@ -1,11 +1,7 @@
-<h2>Show member</h2>
+<h2><%= @member.name %></h2>
+<h3>Member with <%= link @company.name, to: company_path(@conn, :show, @company) %></h3>
 
 <ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @member.name %>
-  </li>
 
   <li>
     <strong>Email:</strong>
