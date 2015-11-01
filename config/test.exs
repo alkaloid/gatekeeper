@@ -16,4 +16,5 @@ config :gatekeeper, Gatekeeper.Repo,
   password: "postgres",
   database: "gatekeeper_test",
   hostname: "localhost",
+  template: "template0",
   pool: Ecto.Adapters.SQL.Sandbox
