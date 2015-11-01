@@ -21,11 +21,6 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :departure_date, "Departure date", class: "control-label" %>
-    <%= datetime_select f, :departure_date, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>
