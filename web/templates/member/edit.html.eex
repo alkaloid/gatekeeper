@@ -1,6 +1,6 @@
 <h2>Edit member</h2>
 
 <%= render "form.html", changeset: @changeset,
-                        action: company_member_path(Gatekeeper.Endpoint, :update, @company, @member) %>
+                        action: company_member_path(@conn, :update, @company, @member) %>
 
 <%= link "Back", to: company_path(@conn, :index) %>
