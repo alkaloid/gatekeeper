@@ -1,0 +1,25 @@
+---
+- hosts: all
+  tasks:
+  - name: Download Erlang Solutions Elixir package
+    get_url: url=http://packages.erlang-solutions.com/site/esl/elixir/FLAVOUR_2_download/elixir_1.0.4-1~raspbian~wheezy_armhf.deb dest=/tmp/elixir_1.0.4-1~raspbian~wheezy_armhf.deb
+  - name: Install Erlang Solutions Elixir package
+    apt: deb=/tmp/elixir_1.0.4-1~raspbian~wheezy_armhf.deb
+  - name: Install Development Erlang Headers
+    apt: name=erlang-dev state=latest
+  - name: Install cmake
+    apt: name=cmake state=latest
+  - name: Install NodeJS
+    apt: name=nodejs state=latest
+  - name: Install NodeJS Legacy (needed for brunch)
+    apt: name=nodejs-legacy state=latest
+  - name: Install NPM
+    apt: name=npm state=latest
+  - name: Install PostgreSQL
+    apt: name=postgresql state=latest
+  - name: Install python-psycopg2 (required for Ansible)
+    apt: name=python-psycopg2 state=latest
+  - name: Stage database provisioning playbook
+    copy: src=database.yml dest=/etc/ansible/database.yml mode=644
+  - name: Provision database as postgres user
+    command: "sudo -u postgres ansible-playbook -c local -e postgresql_password='{{ postgresql_password }}' /etc/ansible/database.yml"
