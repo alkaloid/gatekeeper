@@ -1,26 +1,27 @@
 # Gatekeeper
 
+## Prereqs
+* Elixir 1.0
+* cmake
+* Erlang development headers
+* NodeJS 0.10 (or later) and npm
+* PostgreSQL
+* One free GPIO pin
+
+This app is written with a Raspberry Pi in mind. See the Provisioning section below for more information.
+
+## Starting the app
+
 To start your Phoenix app:
 
-  1. Install dependencies with `mix deps.get && mix deps.compile && mix deps.compile` (repeat compilation is necessary first time around to get the Serial library working)
-  2. Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  3. Start Phoenix endpoint with `mix phoenix.server`
+1. Set up the app with `./app_setup.sh prod` (use `dev` for local development - note that GPIO will be disabled)
+2. Start Phoenix endpoint with `MIX_ENV=prod PORT=4000 mix phoenix.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
+Now you can visit [`raspberrypi.local:4000`](http://raspberrypi.local:4000) from your browser.
 
 ## Tests
 
 To run the tests, use either `mix test` or `mix test.watch`.
-
-## Learn more
-
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: http://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
 
 ## Provisioning a Raspberry Pi
 
@@ -31,3 +32,5 @@ The provided Ansible playbook can be used to configure a Raspberry Pi to run Gat
 3. Run the provisioning script:
     `sudo ansible-playbook -c local -e postgresql_password=SuperSecret provisioning/gatekeeper.yml`
 Make sure to change the PostgreSQL password to something of your choosing
+
+You are now ready to run the `app_setup.sh` and boot the app.
