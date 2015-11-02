@@ -7,6 +7,8 @@
     apt: deb=/tmp/elixir_1.0.4-1~raspbian~wheezy_armhf.deb
   - name: Install Development Erlang Headers
     apt: name=erlang-dev state=latest
+  - name: Install cmake
+    apt: name=cmake state=latest
   - name: Install NodeJS
     apt: name=nodejs state=latest
   - name: Install NodeJS Legacy (needed for brunch)
