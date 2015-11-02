@@ -3,5 +3,13 @@
   tasks:
   - name: Install NodeJS
     apt: name=nodejs state=latest
+  - name: Install NPM
+    apt: name=npm state=latest
   - name: Install PostgreSQL
     apt: name=postgresql state=latest
+  - name: Install python-psycopg2 (required for Ansible)
+    apt: name=python-psycopg2 state=latest
+  - name: Stage database provisioning playbook
+    copy: src=database.yml dest=/etc/ansible/database.yml mode=644
+  - name: Provision database as postgres user
+    command: "sudo -u postgres ansible-playbook -c local -e postgresql_password='{{ postgresql_password }}' /etc/ansible/database.yml"

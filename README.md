@@ -21,3 +21,11 @@ To run the tests, use either `mix test` or `mix test.watch`.
   * Docs: http://hexdocs.pm/phoenix
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix
+
+## Provisioning a Raspberry Pi
+
+The provided Ansible playbook can be used to configure a Raspberry Pi to run Gatekeeper
+
+You will need to provide a password for the PostgreSQL database. For example:
+
+* `sudo ansible-playbook -c local -e postgresql_password=SuperSecret provisioning/gatekeeper.yml`
