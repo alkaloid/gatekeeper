@@ -14,8 +14,10 @@ This app is written with a Raspberry Pi in mind. See the Provisioning section be
 
 To start your Phoenix app:
 
-1. Set up the app with `./app_setup.sh prod` (use `dev` for local development - note that GPIO will be disabled)
-2. Start Phoenix endpoint with `MIX_ENV=prod PORT=4000 mix phoenix.server`
+1. Set up the app with `sudo ./app_setup.sh prod` (for local development: `./app_setup.sh dev`, without sudo - note that GPIO will be disabled)
+2. Start Phoenix endpoint with `sudo MIX_ENV=prod PORT=4000 mix phoenix.server`
+
+Note that sudo and root access is required due to the GPIO interface.
 
 Now you can visit [`raspberrypi.local:4000`](http://raspberrypi.local:4000) from your browser.
 
