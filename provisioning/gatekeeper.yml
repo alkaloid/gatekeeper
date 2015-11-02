@@ -3,6 +3,8 @@
   tasks:
   - name: Install NodeJS
     apt: name=nodejs state=latest
+  - name: Install NodeJS Legacy (needed for brunch)
+    apt: name=nodejs-legacy state=latest
   - name: Install NPM
     apt: name=npm state=latest
   - name: Install PostgreSQL
