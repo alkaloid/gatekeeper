@@ -79,4 +79,13 @@ defmodule Gatekeeper.RfidTokenTest do
     door = create_door door_group: door_group
     refute RfidToken.access_permitted?("does_not_exist", door.id)
   end
+
+  test "that the RFID Token identifier enforces uniqueness" do
+    {:ok, departure} = Ecto.DateTime.cast("2015-04-30 00:00:00")
+    {:ok, company} = Gatekeeper.Repo.insert %Company{departure_date: departure}
+    {:ok, member} = Gatekeeper.Repo.insert %Member{active: true, company_id: company.id}
+    {:ok, token1} = Gatekeeper.Repo.insert %RfidToken{identifier: "abcd1234", active: true, member_id: member.id}
+    {:error, message} = Gatekeeper.Repo.insert %RfidToken{identifier: "abcd1234", active: true, member_id: member.id}
+
+  end
 end
