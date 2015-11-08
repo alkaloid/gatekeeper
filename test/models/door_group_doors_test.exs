@@ -1,18 +1,18 @@
-defmodule Gatekeeper.DoorGroupDoorsTest do
+defmodule Gatekeeper.DoorGroupDoorTest do
   use Gatekeeper.ModelCase
 
-  alias Gatekeeper.DoorGroupDoors
+  alias Gatekeeper.DoorGroupDoor
 
   @valid_attrs %{door_group_id: 42, door_id: 42}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
-    changeset = DoorGroupDoors.changeset(%DoorGroupDoors{}, @valid_attrs)
+    changeset = DoorGroupDoor.changeset(%DoorGroupDoor{}, @valid_attrs)
     assert changeset.valid?
   end
 
   test "changeset with invalid attributes" do
-    changeset = DoorGroupDoors.changeset(%DoorGroupDoors{}, @invalid_attrs)
+    changeset = DoorGroupDoor.changeset(%DoorGroupDoor{}, @invalid_attrs)
     refute changeset.valid?
   end
 end
