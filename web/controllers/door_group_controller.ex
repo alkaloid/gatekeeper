@@ -16,7 +16,6 @@ defmodule Gatekeeper.DoorGroupController do
   def new(conn, _params) do
     changeset = DoorGroup.changeset(%DoorGroup{})
     doors = Repo.all(Door)
-    IO.puts inspect doors
     render(conn, "new.html", doors: doors, changeset: changeset, foo: "bar")
   end
 
