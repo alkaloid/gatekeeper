@@ -1,4 +1,4 @@
-defmodule Gatekeeper.Door do
+defmodule Gatekeeper.DoorInterface do
   require Logger
 
   use GenServer
