@@ -8,27 +8,32 @@ defmodule Gatekeeper.DoorGroupController do
 
   plug :scrub_params, "door_group" when action in [:create, :update]
 
+  def blank_door_group do
+    %DoorGroup{} |> Repo.preload(:doors)
+  end
+
   def index(conn, _params) do
     door_groups = Repo.all(DoorGroup)
     render(conn, "index.html", door_groups: door_groups)
   end
 
   def new(conn, _params) do
-    changeset = DoorGroup.changeset(%DoorGroup{})
+    changeset = DoorGroup.changeset(blank_door_group)
     doors = Repo.all(Door)
-    render(conn, "new.html", doors: doors, changeset: changeset, foo: "bar")
+    render(conn, "new.html", doors: doors, door_group: blank_door_group, changeset: changeset, foo: "bar")
   end
 
   def create(conn, %{"door_group" => door_group_params}) do
     changeset = DoorGroup.changeset(%DoorGroup{}, door_group_params)
+    doors = Repo.all(Door)
 
     case Repo.insert(changeset) do
-      {:ok, _door_group} ->
+      {:ok, door_group} ->
         conn
         |> put_flash(:info, "Door group created successfully.")
         |> redirect(to: door_group_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", doors: doors, door_group: blank_door_group, changeset: changeset)
     end
   end
 
@@ -39,13 +44,14 @@ defmodule Gatekeeper.DoorGroupController do
 
   def edit(conn, %{"id" => id}) do
     door_group = Repo.get!(DoorGroup, id) |> Repo.preload :doors
-    doors = Repo.all(Door)
     changeset = DoorGroup.changeset(door_group)
+    doors = Repo.all(Door)
     render(conn, "edit.html", door_group: door_group, doors: doors, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "door_group" => door_group_params}) do
-    door_group = Repo.get!(DoorGroup, id)
+    door_group = Repo.get!(DoorGroup, id) |> Repo.preload :doors
+    doors = Repo.all(Door)
     changeset = DoorGroup.changeset(door_group, door_group_params)
 
     case Repo.update(changeset) do
@@ -65,7 +71,7 @@ defmodule Gatekeeper.DoorGroupController do
         |> put_flash(:info, "Door group updated successfully.")
         |> redirect(to: door_group_path(conn, :show, door_group))
       {:error, changeset} ->
-        render(conn, "edit.html", door_group: door_group, changeset: changeset)
+        render(conn, "edit.html", doors: doors, door_group: door_group, changeset: changeset)
     end
   end
 
