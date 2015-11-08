@@ -3,6 +3,7 @@ defmodule Gatekeeper.RfidToken do
 
   alias Gatekeeper.Member
   alias Gatekeeper.Repo
+  alias Gatekeeper.Door
 
   schema "rfid_tokens" do
     field :identifier, :string
@@ -33,9 +34,14 @@ defmodule Gatekeeper.RfidToken do
     rfid_token.active && Member.active?(rfid_token.member)
   end
 
-  def access_permitted?(identifier) do
-    rfid_token = Repo.get_by(Gatekeeper.RfidToken, identifier: identifier)
-    # TODO: Take a door as another argument and perform authz
-    rfid_token && active?(rfid_token)
+  def access_permitted?(identifier, door_id) do
+    case Repo.get_by(Gatekeeper.RfidToken, identifier: identifier) do
+      nil ->
+        false
+      rfid_token ->
+        rfid_token = Repo.preload(rfid_token, :member)
+    end
+    door = Repo.get!(Gatekeeper.Door, door_id)
+    rfid_token && active?(rfid_token) && Door.member_access_allowed?(door, rfid_token.member)
   end
 end

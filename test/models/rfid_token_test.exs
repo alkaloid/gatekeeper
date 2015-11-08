@@ -4,6 +4,10 @@ defmodule Gatekeeper.RfidTokenTest do
   alias Gatekeeper.RfidToken
   alias Gatekeeper.Member
   alias Gatekeeper.Company
+  alias Gatekeeper.Door
+  alias Gatekeeper.DoorGroup
+  alias Gatekeeper.DoorGroupDoor
+  alias Gatekeeper.DoorGroupMember
 
   @valid_attrs %{identifier: "some content", active: false, member_id: 1}
   @invalid_attrs %{}
@@ -12,7 +16,7 @@ defmodule Gatekeeper.RfidTokenTest do
     default_params = %{
       name: "Test Company",
       join_date: :calendar.local_time(),
-      departure_date: nil
+      departure_date: nil,
     }
     params = Dict.merge(default_params, params)
     changeset = Company.changeset(%Company{}, params)
@@ -24,7 +28,7 @@ defmodule Gatekeeper.RfidTokenTest do
     default_params = %{
       name: "Test Member",
       email: "test@example.com",
-      active: true
+      active: true,
     }
     # :company is a required parameter
     default_params = Dict.merge(default_params, company_id: params[:company].id)
@@ -32,6 +36,12 @@ defmodule Gatekeeper.RfidTokenTest do
     params = Dict.merge(default_params, params)
     changeset = Member.changeset(%Member{}, params)
     {:ok, member} = Repo.insert(changeset)
+
+    if params[:door_group] do
+      changeset = DoorGroupMember.changeset(%DoorGroupMember{}, member_id: member.id, door_group_id: params.door_group.id)
+      Repo.insert(changeset)
+    end
+
     member
   end
 
@@ -47,6 +57,32 @@ defmodule Gatekeeper.RfidTokenTest do
     changeset = RfidToken.changeset(%RfidToken{}, params)
     {:ok, rfid_token} = Repo.insert(changeset)
     rfid_token
+  end
+
+  def create_door_group(params \\ %{}) do
+    default_params = %{
+      name: "Test Dooor Group",
+    }
+    params = Dict.merge(default_params, params)
+    changeset = DoorGroup.changeset(%DoorGroup{}, params)
+    {:ok, door_group} = Repo.insert(changeset)
+    door_group
+  end
+
+  def create_door(params \\ %{}) do
+    default_params = %{
+      name: "Test Door",
+    }
+    params = Dict.merge(default_params, params)
+    changeset = Door.changeset(%Door{}, params)
+    {:ok, door} = Repo.insert(changeset)
+
+    if params[:door_group] do
+      changeset = DoorGroupDoor.changeset(%DoorGroupDoor{}, door_id: door.id, door_group_id: params.door_group.id)
+      Repo.insert(changeset)
+    end
+
+    door
   end
 
   test "changeset with valid attributes" do
@@ -81,9 +117,11 @@ defmodule Gatekeeper.RfidTokenTest do
 
   test "checking that the door should be allowed to open" do
     company = create_company
-    member = create_member company: company
+    door_group = create_door_group
+    door = create_door door_group: door_group
+    member = create_member company: company, door_group: door_group
     rfid_token = create_rfid_token member: member
-    assert RfidToken.access_permitted?("abcd1234")
+    assert RfidToken.access_permitted?("abcd1234", door.id)
   end
 
   test "checking that the door should not be allowed to open if the token is inactive" do
