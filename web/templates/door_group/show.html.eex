@@ -1,0 +1,13 @@
+<h2>Show door group</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @door_group.name %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: door_group_path(@conn, :edit, @door_group) %>
+<%= link "Back", to: door_group_path(@conn, :index) %>

@@ -1,0 +1,6 @@
+<h2>New door</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: door_path(@conn, :create) %>
+
+<%= link "Back", to: door_path(@conn, :index) %>
