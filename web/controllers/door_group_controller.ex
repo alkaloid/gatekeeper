@@ -29,6 +29,7 @@ defmodule Gatekeeper.DoorGroupController do
 
     case Repo.insert(changeset) do
       {:ok, door_group} ->
+        save_door_groups door_group, door_group_params
         conn
         |> put_flash(:info, "Door group created successfully.")
         |> redirect(to: door_group_path(conn, :index))
@@ -56,17 +57,7 @@ defmodule Gatekeeper.DoorGroupController do
 
     case Repo.update(changeset) do
       {:ok, door_group} ->
-        # Remove all existing door <-> door group associations
-        Ecto.Query.from(door_group_door in DoorGroupDoor, where: door_group_door.door_group_id == ^door_group.id) |> Repo.delete_all
-
-        # Insert new door <-> door group associations based on provided checkboxes
-        if door_group_params["doors"] do
-          for {id, _door_params} <- door_group_params["doors"] do
-            changeset = DoorGroupDoor.changeset(%DoorGroupDoor{}, %{door_group_id: door_group.id, door_id: id})
-            {:ok, _} = Repo.insert(changeset)
-          end
-        end
-
+        save_door_groups door_group, door_group_params
         conn
         |> put_flash(:info, "Door group updated successfully.")
         |> redirect(to: door_group_path(conn, :show, door_group))
@@ -85,5 +76,18 @@ defmodule Gatekeeper.DoorGroupController do
     conn
     |> put_flash(:info, "Door group deleted successfully.")
     |> redirect(to: door_group_path(conn, :index))
+  end
+
+  def save_door_groups(door_group, new_door_group_params) do
+    # Remove all existing door <-> door group associations
+    Ecto.Query.from(door_group_door in DoorGroupDoor, where: door_group_door.door_group_id == ^door_group.id) |> Repo.delete_all
+
+    # Insert new door <-> door group associations based on provided checkboxes
+    if new_door_group_params["doors"] do # can be nil if no boxes were checked
+      for {id, _door_params} <- new_door_group_params["doors"] do
+        changeset = DoorGroupDoor.changeset(%DoorGroupDoor{}, %{door_group_id: door_group.id, door_id: id})
+        {:ok, _} = Repo.insert(changeset)
+      end
+    end
   end
 end
