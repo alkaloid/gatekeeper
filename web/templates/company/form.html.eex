@@ -24,7 +24,6 @@
     <h4>Doors Groups</h4>
     <p>Check each door group to which this company should have access</p>
     <table class="table">
-      <% IO.puts inspect @company %>
       <% door_group_ids = Enum.map @company.door_groups, &(&1.id) %>
       <%= for door_group <- @door_groups do %>
         <tr>
