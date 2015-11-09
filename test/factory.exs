@@ -8,7 +8,6 @@ defmodule Gatekeeper.Factory do
   alias Gatekeeper.DoorGroup
   alias Gatekeeper.DoorGroupDoor
   alias Gatekeeper.DoorGroupMember
-  alias Gatekeeper.DoorGroupCompany
 
   def create_company(params \\ %{}) do
     default_params = %{
