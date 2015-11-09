@@ -85,7 +85,6 @@ defmodule Gatekeeper.CompanyControllerTest do
     assert [] == Enum.map(company.door_groups, &(&1.id))
   end
 
-
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
     company = Repo.insert! %Company{}
     conn = put conn, company_path(conn, :update, company), company: @invalid_attrs
