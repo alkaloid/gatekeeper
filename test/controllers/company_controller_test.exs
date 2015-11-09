@@ -1,6 +1,8 @@
 defmodule Gatekeeper.CompanyControllerTest do
   use Gatekeeper.ConnCase
 
+  import Gatekeeper.Factory
+
   alias Gatekeeper.Company
   @valid_attrs %{departure_date: "2010-04-17 14:00:00", join_date: "2010-04-17 14:00:00", name: "some content"}
   @invalid_attrs %{}
@@ -54,6 +56,21 @@ defmodule Gatekeeper.CompanyControllerTest do
     conn = put conn, company_path(conn, :update, company), company: @valid_attrs
     assert redirected_to(conn) == company_path(conn, :show, company)
     assert Repo.get_by(Company, @valid_attrs)
+  end
+
+  test "updates company with associated door groups and redirects when data is valid", %{conn: conn} do
+    door_group = create_door_group
+    company = Repo.insert! %Company{}
+    # We can't dynamically construct a map with a variable without this
+    # See: http://stackoverflow.com/questions/29837103/how-to-put-key-value-pair-into-map-with-variable-key-name
+    # "Note that variables cannot be used as keys to add items to a map:"
+    # See: http://elixir-lang.org/getting-started/maps-and-dicts.html#maps
+    door_group_param = Map.put(%{}, "#{door_group.id}", "on")
+    conn = put conn, company_path(conn, :update, company), company: Dict.merge(@valid_attrs, %{door_groups: door_group_param })
+    assert redirected_to(conn) == company_path(conn, :show, company)
+    company = Repo.get_by(Company, @valid_attrs) |> Repo.preload :door_groups
+    assert company
+    assert [door_group.id] == Enum.map(company.door_groups, &(&1.id))
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
