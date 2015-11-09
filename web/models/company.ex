@@ -6,6 +6,8 @@ defmodule Gatekeeper.Company do
     field :join_date, Ecto.DateTime
     field :departure_date, Ecto.DateTime
     has_many :members, Gatekeeper.Member, on_delete: :fetch_and_delete
+    has_many :door_group_companies, Gatekeeper.DoorGroupCompany, on_delete: :fetch_and_delete
+    has_many :door_groups, through: [:door_group_companies, :company]
 
     timestamps
   end

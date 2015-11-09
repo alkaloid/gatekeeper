@@ -6,6 +6,9 @@ defmodule Gatekeeper.DoorGroup do
     has_many :door_group_doors, Gatekeeper.DoorGroupDoor
     has_many :doors, through: [:door_group_doors, :door]
 
+    has_many :door_group_companies, Gatekeeper.DoorGroupCompany
+    has_many :companies, through: [:door_group_companies, :company]
+
     has_many :door_group_members, Gatekeeper.DoorGroupMember
     has_many :members, through: [:door_group_members, :member]
 
