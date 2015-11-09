@@ -73,6 +73,19 @@ defmodule Gatekeeper.CompanyControllerTest do
     assert [door_group.id] == Enum.map(company.door_groups, &(&1.id))
   end
 
+  test "removes unchecked associated door groups from a company", %{conn: conn} do
+    door_group = create_door_group
+    company = create_company
+    door_group_company = Repo.insert! %Gatekeeper.DoorGroupCompany{company_id: company.id, door_group_id: door_group.id}
+
+    conn = put conn, company_path(conn, :update, company), company: Dict.merge(@valid_attrs, id: company.id)
+    assert redirected_to(conn) == company_path(conn, :show, company)
+    company = Repo.get!(Company, company.id) |> Repo.preload :door_groups
+    assert company
+    assert [] == Enum.map(company.door_groups, &(&1.id))
+  end
+
+
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
     company = Repo.insert! %Company{}
     conn = put conn, company_path(conn, :update, company), company: @invalid_attrs
