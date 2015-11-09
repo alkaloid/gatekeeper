@@ -30,7 +30,10 @@ defmodule Gatekeeper.Door do
   end
 
   def members(door) do
-    door = Repo.preload(door, [door_groups: :members])
-    Enum.reduce([ [] | door.door_groups ], &(&2 ++ &1.members))
+    door = Repo.preload(door, [door_groups: [:members, companies: :members]])
+    members = Enum.reduce([ [] | door.door_groups ], &(&2 ++ &1.members))
+    companies = Enum.reduce([ [] | door.door_groups ], &(&2 ++ &1.companies))
+    company_members = Enum.reduce([ [] | companies ], &(&2 ++ &1.members))
+    members ++ company_members
   end
 end
