@@ -8,6 +8,7 @@ defmodule Gatekeeper.Factory do
   alias Gatekeeper.DoorGroup
   alias Gatekeeper.DoorGroupDoor
   alias Gatekeeper.DoorGroupMember
+  alias Gatekeeper.DoorGroupCompany
 
   def create_company(params \\ %{}) do
     default_params = %{
@@ -18,6 +19,12 @@ defmodule Gatekeeper.Factory do
     params = Dict.merge(default_params, params)
     changeset = Company.changeset(%Company{}, params)
     {:ok, company} = Repo.insert(changeset)
+
+    if params[:door_group] do
+      changeset = DoorGroupCompany.changeset(%DoorGroupCompany{}, %{company_id: company.id, door_group_id: params.door_group.id})
+      Repo.insert!(changeset)
+    end
+
     company
   end
 
@@ -36,7 +43,7 @@ defmodule Gatekeeper.Factory do
 
     if params[:door_group] do
       changeset = DoorGroupMember.changeset(%DoorGroupMember{}, %{member_id: member.id, door_group_id: params.door_group.id})
-      Repo.insert(changeset)
+      Repo.insert!(changeset)
     end
 
     member
@@ -76,7 +83,7 @@ defmodule Gatekeeper.Factory do
 
     if params[:door_group] do
       changeset = DoorGroupDoor.changeset(%DoorGroupDoor{}, %{door_id: door.id, door_group_id: params.door_group.id})
-      Repo.insert(changeset)
+      Repo.insert!(changeset)
     end
 
     door
