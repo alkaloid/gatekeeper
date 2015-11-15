@@ -76,7 +76,7 @@ defmodule Gatekeeper.CompanyControllerTest do
   test "removes unchecked associated door groups from a company", %{conn: conn} do
     door_group = create_door_group
     company = create_company
-    door_group_company = Repo.insert! %Gatekeeper.DoorGroupCompany{company_id: company.id, door_group_id: door_group.id}
+    Repo.insert! %Gatekeeper.DoorGroupCompany{company_id: company.id, door_group_id: door_group.id}
 
     conn = put conn, company_path(conn, :update, company), company: Dict.merge(@valid_attrs, id: company.id)
     assert redirected_to(conn) == company_path(conn, :show, company)
