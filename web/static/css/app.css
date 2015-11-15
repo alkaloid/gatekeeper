@@ -84,3 +84,7 @@ form.link, form.button {
 ul.member-list {
   margin: 0;
 }
+
+p.no-associations {
+  font-style: italic;
+}

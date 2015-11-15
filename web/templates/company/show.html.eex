@@ -13,16 +13,26 @@
   </li>
 
   <li>
-    <strong>Members:</strong>
-    <ul class="member-list">
-      <%= for member <- @company.members do %>
-        <li><%= link member.name, to: company_member_path(@conn, :show, @company, member) %></li>
-      <% end %>
-      <li><%= link "Add new...", to: company_member_path(@conn, :new, @company) %></li>
-    </ul>
+    <strong>Access to Door Groups:</strong>
+    <%= if length(@company.door_groups) > 0 do %>
+      <ul class="door-group-list">
+        <%= for door_group <- @company.door_groups do %>
+          <li><%= link door_group.name, to: door_group_path(@conn, :show, door_group) %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="no-associations">No Door Group Access</p>
+    <% end %>
   </li>
+</ul>
+<%= link "Edit", to: company_path(@conn, :edit, @company) %> |
+<%= link "Back", to: company_path(@conn, :index) %>
 
+<h4>Members:</h4>
+<ul class="member-list">
+  <%= for member <- @company.members do %>
+    <li><%= link member.name, to: company_member_path(@conn, :show, @company, member) %></li>
+  <% end %>
+  <li><%= link "Add new...", to: company_member_path(@conn, :new, @company) %></li>
 </ul>
 
-<%= link "Edit", to: company_path(@conn, :edit, @company) %>
-<%= link "Back", to: company_path(@conn, :index) %>

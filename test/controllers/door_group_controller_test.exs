@@ -32,9 +32,9 @@ defmodule Gatekeeper.DoorGroupControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    door_group = Repo.insert! %DoorGroup{}
+    door_group = Repo.insert! %DoorGroup{name: "Test DG"}
     conn = get conn, door_group_path(conn, :show, door_group)
-    assert html_response(conn, 200) =~ "Show door group"
+    assert html_response(conn, 200) =~ "Door Group: #{door_group.name}"
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
