@@ -54,8 +54,9 @@ defmodule Gatekeeper.Factory do
       identifier: "abcd1234",
       active: true,
     }
-    # :member is a required parameter
-    default_params = Dict.merge(default_params, member_id: params[:member].id)
+    if params[:member] do
+      default_params = Dict.merge(default_params, member_id: params[:member].id)
+    end
 
     params = Dict.merge(default_params, params)
     changeset = RfidToken.changeset(%RfidToken{}, params)

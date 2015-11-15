@@ -28,7 +28,7 @@
       </tr>
       <%= for rfid_token <- @member.rfid_tokens do %>
         <tr>
-          <td><%= link rfid_token.identifier, to: company_member_rfid_token_path(@conn, :show, @company, @member, rfid_token) %></td>
+          <td><%= link RfidToken.display_name(rfid_token), to: company_member_rfid_token_path(@conn, :show, @company, @member, rfid_token) %></td>
           <td><%= link "Delete", to: company_member_rfid_token_path(@conn, :delete, @company, @member, rfid_token), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></td>
         </tr>
       <% end %>

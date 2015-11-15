@@ -101,4 +101,15 @@ defmodule Gatekeeper.RfidTokenTest do
     rfid_token = Repo.get_by(RfidToken, %{identifier: rfid_token_identifier})
     assert Repo.get_by(DoorAccessAttempt, %{rfid_token_id: rfid_token.id, door_id: door.id})
   end
+
+  test "it displays the name when a name is provided" do
+    name = "My RFID Token"
+    rfid_token = create_rfid_token name: name
+    assert name == RfidToken.display_name(rfid_token)
+  end
+
+  test "it displays the identifier when a name is not provided" do
+    rfid_token = create_rfid_token
+    assert rfid_token.identifier == RfidToken.display_name(rfid_token)
+  end
 end

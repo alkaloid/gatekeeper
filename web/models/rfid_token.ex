@@ -38,6 +38,10 @@ defmodule Gatekeeper.RfidToken do
     rfid_token.active && Member.active?(rfid_token.member)
   end
 
+  def display_name(rfid_token) do
+    rfid_token.name || rfid_token.identifier
+  end
+
   def access_permitted?(rfid_token, door) do
     rfid_token = Repo.preload(rfid_token, [:member])
     active?(rfid_token) && Door.member_access_allowed?(door, rfid_token.member)
