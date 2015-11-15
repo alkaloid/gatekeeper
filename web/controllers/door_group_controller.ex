@@ -39,7 +39,7 @@ defmodule Gatekeeper.DoorGroupController do
   end
 
   def show(conn, %{"id" => id}) do
-    door_group = Repo.get!(DoorGroup, id)
+    door_group = Repo.get!(DoorGroup, id) |> Repo.preload :doors
     render(conn, "show.html", door_group: door_group)
   end
 

@@ -1,12 +1,10 @@
-<h2>Show door group</h2>
+<h2>Door Group: <%= @door_group.name %></h2>
 
+<h4>Associated Doors</h4>
 <ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @door_group.name %>
-  </li>
-
+  <%= for door <- @door_group.doors do %>
+    <li><%= link door.name, to: door_path(@conn, :show, door) %></li>
+  <% end %>
 </ul>
 
 <%= link "Edit", to: door_group_path(@conn, :edit, @door_group) %>
