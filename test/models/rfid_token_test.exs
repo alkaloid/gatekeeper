@@ -6,6 +6,7 @@ defmodule Gatekeeper.RfidTokenTest do
   alias Gatekeeper.Member
   alias Gatekeeper.RfidToken
   alias Gatekeeper.Repo
+  alias Gatekeeper.DoorAccessAttempt
 
   @valid_attrs %{identifier: "some content", active: false, member_id: 1}
   @invalid_attrs %{}
@@ -91,5 +92,13 @@ defmodule Gatekeeper.RfidTokenTest do
     door = create_door
     refute RfidToken.attempt_access!(rfid_token_identifier, door.id)
     assert Repo.get_by(RfidToken, %{identifier: rfid_token_identifier})
+  end
+
+  test "that an DoorAccessAttempt object is auto-created when an unrecognized badge is scanned" do
+    rfid_token_identifier = "this_is_another_unrecognized_token_id"
+    door = create_door
+    refute RfidToken.attempt_access!(rfid_token_identifier, door.id)
+    rfid_token = Repo.get_by(RfidToken, %{identifier: rfid_token_identifier})
+    assert Repo.get_by(DoorAccessAttempt, %{rfid_token_id: rfid_token.id, door_id: door.id})
   end
 end

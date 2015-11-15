@@ -52,11 +52,19 @@ defmodule Gatekeeper.RfidToken do
     end
     door = Repo.get!(Door, door_id)
 
-    access_permitted? rfid_token, door
+
+    allowed = access_permitted? rfid_token, door
+    create_access_attempt rfid_token, door, allowed
+    allowed
   end
 
   def autocreate_rfid_token(identifier) do
     change = changeset(%Gatekeeper.RfidToken{}, %{identifier: identifier, active: false})
     Repo.insert! change
+  end
+
+  def create_access_attempt(rfid_token, door, allowed) do
+    changeset = DoorAccessAttempt.changeset(%DoorAccessAttempt{}, %{rfid_token_id: rfid_token.id, door_id: door.id, access_allowed: allowed})
+    Repo.insert! changeset
   end
 end
