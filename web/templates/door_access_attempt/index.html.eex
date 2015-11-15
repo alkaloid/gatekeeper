@@ -1,0 +1,30 @@
+<h2>Listing door access attempts</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Door</th>
+      <th>Rfid token</th>
+      <th>Access allowed</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for door_access_attempt <- @door_access_attempts do %>
+    <tr>
+      <td><%= door_access_attempt.door_id %></td>
+      <td><%= door_access_attempt.rfid_token_id %></td>
+      <td><%= door_access_attempt.access_allowed %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: door_access_attempt_path(@conn, :show, door_access_attempt), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: door_access_attempt_path(@conn, :edit, door_access_attempt), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: door_access_attempt_path(@conn, :delete, door_access_attempt), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New door access attempt", to: door_access_attempt_path(@conn, :new) %>

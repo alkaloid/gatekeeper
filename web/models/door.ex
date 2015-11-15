@@ -3,11 +3,13 @@ defmodule Gatekeeper.Door do
 
   alias Gatekeeper.Repo
   alias Gatekeeper.DoorGroupDoor
+  alias Gatekeeper.DoorAccessAttempt
 
   schema "doors" do
     field :name, :string
     has_many :door_group_doors, DoorGroupDoor
     has_many :door_groups, through: [:door_group_doors, :door_group]
+    has_many :door_access_attempts, DoorAccessAttempt
 
     timestamps
   end

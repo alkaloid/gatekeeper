@@ -4,12 +4,14 @@ defmodule Gatekeeper.RfidToken do
   alias Gatekeeper.Member
   alias Gatekeeper.Repo
   alias Gatekeeper.Door
+  alias Gatekeeper.DoorAccessAttempt
 
   schema "rfid_tokens" do
     field :identifier, :string
     field :name, :string
     field :active, :boolean, default: true
     belongs_to :member, Member
+    has_many :door_access_attempts, DoorAccessAttempt
 
     timestamps
   end

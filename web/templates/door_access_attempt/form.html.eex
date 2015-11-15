@@ -1,0 +1,31 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below:</p>
+      <ul>
+        <%= for {attr, message} <- f.errors do %>
+          <li><%= humanize(attr) %> <%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= label f, :door_id, "Door", class: "control-label" %>
+    <%= number_input f, :door_id, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :rfid_token_id, "Rfid token", class: "control-label" %>
+    <%= number_input f, :rfid_token_id, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :access_allowed, "Access allowed", class: "control-label" %>
+    <%= checkbox f, :access_allowed, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>

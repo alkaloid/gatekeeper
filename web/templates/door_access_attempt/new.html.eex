@@ -1,0 +1,6 @@
+<h2>New door access attempt</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: door_access_attempt_path(@conn, :create) %>
+
+<%= link "Back", to: door_access_attempt_path(@conn, :index) %>
