@@ -4,6 +4,7 @@ defmodule Gatekeeper.Member do
   alias Gatekeeper.Company
   alias Gatekeeper.Repo
   alias Gatekeeper.RfidToken
+  alias Gatekeeper.DoorGroupMember
 
   schema "members" do
     field :name, :string
@@ -13,7 +14,7 @@ defmodule Gatekeeper.Member do
     belongs_to :company, Company
     has_many :rfid_tokens, RfidToken
 
-    has_many :door_group_members, Gatekeeper.DoorGroupMember
+    has_many :door_group_members, DoorGroupMember
     has_many :door_groups, through: [:door_group_members, :door_group]
     has_many :doors, through: [:door_groups, :door]
 

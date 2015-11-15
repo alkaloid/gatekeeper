@@ -2,10 +2,11 @@ defmodule Gatekeeper.Door do
   use Gatekeeper.Web, :model
 
   alias Gatekeeper.Repo
+  alias Gatekeeper.DoorGroupDoor
 
   schema "doors" do
     field :name, :string
-    has_many :door_group_doors, Gatekeeper.DoorGroupDoor
+    has_many :door_group_doors, DoorGroupDoor
     has_many :door_groups, through: [:door_group_doors, :door_group]
 
     timestamps
