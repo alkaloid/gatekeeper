@@ -37,7 +37,7 @@ defmodule Gatekeeper.MemberController do
 
   def show(conn, %{"company_id" => company_id, "id" => id}) do
     company = Repo.get!(Company, company_id)
-    member = Repo.get!(Member, id) |> Repo.preload([:rfid_tokens, :door_groups])
+    member = Repo.get!(Member, id) |> Repo.preload([:door_groups, :rfid_tokens, door_access_attempts: [:rfid_token, :door]])
     render(conn, "show.html", company: company, member: member)
   end
 

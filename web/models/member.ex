@@ -17,6 +17,7 @@ defmodule Gatekeeper.Member do
     has_many :door_group_members, DoorGroupMember
     has_many :door_groups, through: [:door_group_members, :door_group]
     has_many :doors, through: [:door_groups, :door]
+    has_many :door_access_attempts, through: [:rfid_tokens, :door_access_attempts]
 
     timestamps
   end
