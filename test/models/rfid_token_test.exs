@@ -46,7 +46,7 @@ defmodule Gatekeeper.RfidTokenTest do
     door = create_door door_group: door_group
     member = create_member company: company, door_group: door_group
     rfid_token = create_rfid_token member: member
-    assert RfidToken.access_permitted?(rfid_token.identifier, door.id)
+    assert RfidToken.access_permitted?(rfid_token, door)
   end
 
   test "checking that the door should not be allowed to open if the token is inactive" do
@@ -55,7 +55,7 @@ defmodule Gatekeeper.RfidTokenTest do
     door_group = create_door_group
     door = create_door door_group: door_group
     rfid_token = create_rfid_token member: member, active: false
-    refute RfidToken.access_permitted?(rfid_token.identifier, door.id)
+    refute RfidToken.access_permitted?(rfid_token, door)
   end
 
   test "the door should not be allowed to open if the member is inactive" do
@@ -64,7 +64,7 @@ defmodule Gatekeeper.RfidTokenTest do
     door_group = create_door_group
     door = create_door door_group: door_group
     rfid_token = create_rfid_token member: member
-    refute RfidToken.access_permitted?(rfid_token.identifier, door.id)
+    refute RfidToken.access_permitted?(rfid_token, door)
   end
 
   test "the door should not be allowed to open if the company departed" do
@@ -74,13 +74,7 @@ defmodule Gatekeeper.RfidTokenTest do
     door_group = create_door_group
     door = create_door door_group: door_group
     rfid_token = create_rfid_token member: member
-    refute RfidToken.access_permitted?(rfid_token.identifier, door.id)
-  end
-
-  test "the door should not be allowed to open if the token is not enrolled" do
-    door_group = create_door_group
-    door = create_door door_group: door_group
-    refute RfidToken.access_permitted?("does_not_exist", door.id)
+    refute RfidToken.access_permitted?(rfid_token, door)
   end
 
   test "that the RFID Token identifier enforces uniqueness" do
@@ -90,5 +84,12 @@ defmodule Gatekeeper.RfidTokenTest do
     rfid_token1 = create_rfid_token member: member, identifier: rfid_token_identifier
     changeset = RfidToken.changeset(%RfidToken{member_id: member.id, identifier: rfid_token_identifier})
     assert {:error, message} = Repo.insert changeset
+  end
+
+  test "that an RfidToken object is auto-created when an unrecognized badge is scanned" do
+    rfid_token_identifier = "this_is_an_unrecognized_token_id"
+    door = create_door
+    refute RfidToken.attempt_access!(rfid_token_identifier, door.id)
+    assert Repo.get_by(RfidToken, %{identifier: rfid_token_identifier})
   end
 end
