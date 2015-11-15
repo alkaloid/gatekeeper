@@ -2,7 +2,10 @@ defmodule Gatekeeper.RfidTokenTest do
   use Gatekeeper.ModelCase
   import Gatekeeper.Factory
 
+  alias Gatekeeper.Company
+  alias Gatekeeper.Member
   alias Gatekeeper.RfidToken
+  alias Gatekeeper.Repo
 
   @valid_attrs %{identifier: "some content", active: false, member_id: 1}
   @invalid_attrs %{}
@@ -78,5 +81,14 @@ defmodule Gatekeeper.RfidTokenTest do
     door_group = create_door_group
     door = create_door door_group: door_group
     refute RfidToken.access_permitted?("does_not_exist", door.id)
+  end
+
+  test "that the RFID Token identifier enforces uniqueness" do
+    rfid_token_identifier = "abcd1234"
+    company = create_company
+    member = create_member company: company
+    rfid_token1 = create_rfid_token member: member, identifier: rfid_token_identifier
+    changeset = RfidToken.changeset(%RfidToken{member_id: member.id, identifier: rfid_token_identifier})
+    assert {:error, message} = Repo.insert changeset
   end
 end
