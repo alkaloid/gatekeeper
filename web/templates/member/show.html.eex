@@ -37,7 +37,8 @@
 
   <%= if length(@member.door_groups) > 0 do %>
     <li>
-      <strong>Door Groups:</strong>
+      <p><strong>Door Groups</strong></p>
+      <p>The member has special access to the following Door Groups:</p>
       <ul>
         <%= for door_group <- @member.door_groups do %>
           <li><%= link door_group.name, to: door_group_path(@conn, :show, door_group) %></li>
