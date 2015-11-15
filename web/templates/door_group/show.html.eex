@@ -1,0 +1,23 @@
+<h2>Door Group: <%= @door_group.name %></h2>
+
+<h4>Associated Doors</h4>
+<ul>
+  <%= for door <- @door_group.doors do %>
+    <li><%= link door.name, to: door_path(@conn, :show, door) %></li>
+  <% end %>
+</ul>
+
+<h4>Companies with access to this group</h4>
+<%= if length(@door_group.companies) > 0 do %>
+  <ul>
+    <%= for company <- @door_group.companies do %>
+      <li><%= link company.name, to: company_path(@conn, :show, company) %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="no-associations">No companies</p>
+<% end %>
+
+
+<%= link "Edit", to: door_group_path(@conn, :edit, @door_group) %>
+<%= link "Back", to: door_group_path(@conn, :index) %>

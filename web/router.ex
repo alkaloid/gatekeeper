@@ -22,6 +22,9 @@ defmodule Gatekeeper.Router do
         resources "/rfid_tokens", RfidTokenController
       end
     end
+
+    resources "/doors", DoorController
+    resources "/door_groups", DoorGroupController
   end
 
   # Other scopes may use custom stacks.

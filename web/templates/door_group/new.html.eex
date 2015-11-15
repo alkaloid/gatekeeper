@@ -1,0 +1,5 @@
+<h2>New door group</h2>
+
+<%= render "form.html", Dict.merge(@conn.assigns, action: door_group_path(@conn, :create)) %>
+
+<%= link "Back", to: door_group_path(@conn, :index) %>

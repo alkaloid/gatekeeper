@@ -16,19 +16,13 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :join_date, "Join date", class: "control-label" %>
-    <%= datetime_select f, :join_date, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <h4>Door Groups</h4>
-    <p>Check each door group to which this company should have access</p>
+    <h4>Doors in this Group</h4>
     <table class="table">
-      <% door_group_ids = Enum.map @company.door_groups, &(&1.id) %>
-      <%= for door_group <- @door_groups do %>
+      <%= door_ids = Enum.map @door_group.doors, &(&1.id) %>
+      <%= for door <- @doors do %>
         <tr>
-          <td><input name="company[door_groups][<%= door_group.id %>]" type="checkbox" <%= (door_group.id in door_group_ids) && "checked" %>></td>
-          <td><%= door_group.name %></td>
+          <td><input name="door_group[doors][<%= door.id %>]" type="checkbox" <%= (door.id in door_ids) && "checked" %>></td>
+          <td><%= door.name %></td>
         </tr>
       <%= end %>
     </table>
