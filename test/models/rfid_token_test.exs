@@ -5,6 +5,7 @@ defmodule Gatekeeper.RfidTokenTest do
   alias Gatekeeper.Company
   alias Gatekeeper.Member
   alias Gatekeeper.RfidToken
+  alias Gatekeeper.Repo
 
   @valid_attrs %{identifier: "some content", active: false, member_id: 1}
   @invalid_attrs %{}
@@ -83,11 +84,11 @@ defmodule Gatekeeper.RfidTokenTest do
   end
 
   test "that the RFID Token identifier enforces uniqueness" do
-    {:ok, departure} = Ecto.DateTime.cast("2015-04-30 00:00:00")
-    {:ok, company} = Gatekeeper.Repo.insert %Company{departure_date: departure}
-    {:ok, member} = Gatekeeper.Repo.insert %Member{active: true, company_id: company.id}
-    {:ok, token1} = Gatekeeper.Repo.insert %RfidToken{identifier: "abcd1234", active: true, member_id: member.id}
-    {:error, message} = Gatekeeper.Repo.insert %RfidToken{identifier: "abcd1234", active: true, member_id: member.id}
-
+    rfid_token_identifier = "abcd1234"
+    company = create_company
+    member = create_member company: company
+    rfid_token1 = create_rfid_token member: member, identifier: rfid_token_identifier
+    changeset = RfidToken.changeset(%RfidToken{member_id: member.id, identifier: rfid_token_identifier})
+    assert {:error, message} = Repo.insert changeset
   end
 end
