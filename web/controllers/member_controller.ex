@@ -15,9 +15,10 @@ defmodule Gatekeeper.MemberController do
 
   def new(conn, %{"company_id" => company_id}) do
     company = Repo.get!(Company, company_id)
-    changeset = Member.changeset %Member{}
+    member = %Member{} |> Repo.preload([:door_groups])
+    changeset = Member.changeset member
     door_groups = Repo.all(DoorGroup)
-    render(conn, "new.html", changeset: changeset, company: company, door_groups: door_groups)
+    render(conn, "new.html", changeset: changeset, company: company, member: member, door_groups: door_groups)
   end
 
   def create(conn, %{"company_id" => company_id, "member" => member_params}) do
