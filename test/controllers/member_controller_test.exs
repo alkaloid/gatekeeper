@@ -6,7 +6,7 @@ defmodule Gatekeeper.MemberControllerTest do
   alias Gatekeeper.Company
   alias Gatekeeper.Member
 
-  @valid_attrs %{name: "Test Person",  email: "tperson@example.com", active: true, company_id: 1}
+  @valid_attrs %{name: "Test Person",  email: "tperson@example.com", active: true}
   @invalid_attrs %{name: "", company_id: nil}
 
   setup do
@@ -63,7 +63,7 @@ defmodule Gatekeeper.MemberControllerTest do
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
     company = create_company
     member = create_member company: company
-    conn = put conn, company_member_path(conn, :update, company, member), member: @valid_attrs
+    conn = put conn, company_member_path(conn, :update, company, member), member: Dict.merge(@valid_attrs, company_id: company.id)
     assert redirected_to(conn) == company_member_path(conn, :show, company, member)
     assert Repo.get_by(Member, @valid_attrs)
   end
