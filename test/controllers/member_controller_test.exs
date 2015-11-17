@@ -29,7 +29,7 @@ defmodule Gatekeeper.MemberControllerTest do
   test "creates resource and redirects when data is valid", %{conn: conn} do
     company = create_company
     conn = post conn, company_member_path(conn, :create, company), member: @valid_attrs
-    assert redirected_to(conn) == company_member_path(conn, :index, company)
+    assert redirected_to(conn) == company_path(conn, :show, company)
     assert Repo.get_by(Member, @valid_attrs)
   end
 
