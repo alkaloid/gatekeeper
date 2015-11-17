@@ -17,13 +17,13 @@ defmodule Gatekeeper.MemberControllerTest do
   test "lists all entries on index", %{conn: conn} do
     company = create_company
     conn = get conn, company_member_path(conn, :index, company)
-    assert html_response(conn, 200) =~ "Listing members for #{company.name}"
+    assert html_response(conn, 200) =~ ~r/Listing members for .*#{company.name}/
   end
 
   test "renders form for new resources", %{conn: conn} do
     company = create_company
     conn = get conn, company_member_path(conn, :new, company)
-    assert html_response(conn, 200) =~ "New member of .*#{company.name}.*"
+    assert html_response(conn, 200) =~ ~r/New member of .*#{company.name}/
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
