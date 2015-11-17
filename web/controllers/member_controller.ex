@@ -60,7 +60,7 @@ defmodule Gatekeeper.MemberController do
     changeset = Member.changeset(member, member_params)
 
     case Repo.update(changeset) do
-      {:ok, company} ->
+      {:ok, member} ->
         save_door_groups(member, member_params["door_groups"])
         conn
         |> put_flash(:info, "Member updated successfully.")
