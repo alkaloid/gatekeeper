@@ -78,9 +78,9 @@ defmodule Gatekeeper.MemberControllerTest do
     # "Note that variables cannot be used as keys to add items to a map:"
     # See: http://elixir-lang.org/getting-started/maps-and-dicts.html#maps
     door_group_param = Map.put(%{}, "#{door_group.id}", "on")
-    conn = put conn, company_member_path(conn, :update, company, member), member: Dict.merge(@valid_attrs, %{door_groups: door_group_param })
+    conn = put conn, company_member_path(conn, :update, company, member), member: Dict.merge(@valid_attrs, %{door_groups: door_group_param, company_id: company.id})
     assert redirected_to(conn) == company_member_path(conn, :show, company, member)
-    member = Repo.get_by(Member, @valid_attrs) |> Repo.preload :door_groups
+    member = Repo.get(Member, member.id) |> Repo.preload :door_groups
     assert member
     assert [door_group.id] == Enum.map(member.door_groups, &(&1.id))
   end
