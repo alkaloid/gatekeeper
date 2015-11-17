@@ -52,7 +52,8 @@ defmodule Gatekeeper.MemberController do
 
   def update(conn, %{"company_id" => company_id, "id" => id, "member" => member_params}) do
     company = Repo.get!(Company, company_id)
-    member = Repo.get!(Member, id)
+    member = Repo.get!(Member, id) |> Repo.preload(:door_groups)
+    door_groups = Repo.all(DoorGroup)
     changeset = Member.changeset(member, member_params)
 
     case Repo.update(changeset) do
@@ -62,7 +63,7 @@ defmodule Gatekeeper.MemberController do
         |> put_flash(:info, "Member updated successfully.")
         |> redirect(to: company_member_path(conn, :show, company, member))
       {:error, changeset} ->
-        render(conn, "edit.html", company: company, member: member, changeset: changeset)
+        render(conn, "edit.html", company: company, member: member, changeset: changeset, door_groups: door_groups)
     end
   end
 
