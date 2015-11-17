@@ -34,6 +34,7 @@ defmodule Gatekeeper.Member do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> foreign_key_constraint(:company_id)
   end
 
   def active?(member) do
