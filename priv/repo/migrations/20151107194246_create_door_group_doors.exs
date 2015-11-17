@@ -4,7 +4,7 @@ defmodule Gatekeeper.Repo.Migrations.CreateDoorGroupDoors do
   def change do
     create table(:door_group_doors) do
       add :door_group_id, :integer
-      add :door_id, :integer
+      add :door_id, references(:doors)
 
       timestamps
     end
