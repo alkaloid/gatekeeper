@@ -109,7 +109,7 @@ defmodule Gatekeeper.MemberControllerTest do
     company = create_company
     member = create_member company: company
     conn = delete conn, company_member_path(conn, :delete, company, member)
-    assert redirected_to(conn) == company_member_path(conn, :index, company)
+    assert redirected_to(conn) == company_path(conn, :show, company)
     refute Repo.get(Member, member.id)
   end
 end
