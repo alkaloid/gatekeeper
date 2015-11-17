@@ -16,13 +16,16 @@ defmodule Gatekeeper.MemberController do
   def new(conn, %{"company_id" => company_id}) do
     company = Repo.get!(Company, company_id)
     member = %Member{} |> Repo.preload([:door_groups])
-    changeset = Member.changeset member
     door_groups = Repo.all(DoorGroup)
+    changeset = Member.changeset member
+
     render(conn, "new.html", changeset: changeset, company: company, member: member, door_groups: door_groups)
   end
 
   def create(conn, %{"company_id" => company_id, "member" => member_params}) do
     company = Repo.get!(Company, company_id)
+    member = %Member{} |> Repo.preload([:door_groups])
+    door_groups = Repo.all(DoorGroup)
     changeset = Member.changeset(%Member{company_id: String.to_integer(company_id)}, member_params)
 
     case Repo.insert(changeset) do
@@ -32,7 +35,7 @@ defmodule Gatekeeper.MemberController do
         |> put_flash(:info, "Member created successfully.")
         |> redirect(to: company_path(conn, :show, company))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset, company: company)
+        render(conn, "new.html", changeset: changeset, company: company, member: member, door_groups: door_groups)
     end
   end
 
