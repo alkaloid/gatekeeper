@@ -88,3 +88,11 @@ ul.member-list {
 p.no-associations {
   font-style: italic;
 }
+
+.door_access_attempt_allowed_true {
+  background-color: #cfc;
+}
+
+.door_access_attempt_allowed_false {
+  background-color: #fcc;
+}

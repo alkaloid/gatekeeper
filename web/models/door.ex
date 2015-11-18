@@ -9,7 +9,7 @@ defmodule Gatekeeper.Door do
     field :name, :string
     has_many :door_group_doors, DoorGroupDoor
     has_many :door_groups, through: [:door_group_doors, :door_group]
-    has_many :door_access_attempts, DoorAccessAttempt
+    has_many :access_attempts, DoorAccessAttempt
 
     timestamps
   end

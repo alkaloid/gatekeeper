@@ -6,7 +6,8 @@ defmodule Gatekeeper.DoorAccessAttemptController do
   plug :scrub_params, "door_access_attempt" when action in [:create, :update]
 
   def index(conn, _params) do
-    door_access_attempts = Repo.all(DoorAccessAttempt)
+    query = from daa in DoorAccessAttempt, order_by: [desc: daa.inserted_at]
+    door_access_attempts = Repo.all(query) |> Repo.preload([:door, rfid_token: [member: :company]])
     render(conn, "index.html", door_access_attempts: door_access_attempts)
   end
 
