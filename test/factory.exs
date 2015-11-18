@@ -9,6 +9,7 @@ defmodule Gatekeeper.Factory do
   alias Gatekeeper.DoorGroupDoor
   alias Gatekeeper.DoorGroupMember
   alias Gatekeeper.DoorGroupCompany
+  alias Gatekeeper.DoorAccessAttempt
 
   def create_company(params \\ %{}) do
     default_params = %{
@@ -88,5 +89,12 @@ defmodule Gatekeeper.Factory do
     end
 
     door
+  end
+
+  def create_door_access_attempt(door, rfid_token, params \\ %{}) do
+    params = %{access_allowed: true, door_id: door.id, rfid_token_id: rfid_token.id}
+    changeset = DoorAccessAttempt.changeset(%DoorAccessAttempt{}, params)
+    {:ok, door_access_attempt} = Repo.insert(changeset)
+    door_access_attempt
   end
 end
