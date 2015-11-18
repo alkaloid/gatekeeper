@@ -3,7 +3,6 @@ defmodule Gatekeeper.MemberControllerTest do
 
   import Gatekeeper.Factory
 
-  alias Gatekeeper.Company
   alias Gatekeeper.Member
 
   @valid_attrs %{name: "Test Person",  email: "tperson@example.com", active: true}

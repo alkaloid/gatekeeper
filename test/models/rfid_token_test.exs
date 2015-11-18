@@ -2,8 +2,6 @@ defmodule Gatekeeper.RfidTokenTest do
   use Gatekeeper.ModelCase
   import Gatekeeper.Factory
 
-  alias Gatekeeper.Company
-  alias Gatekeeper.Member
   alias Gatekeeper.RfidToken
   alias Gatekeeper.Repo
   alias Gatekeeper.DoorAccessAttempt
@@ -82,9 +80,9 @@ defmodule Gatekeeper.RfidTokenTest do
     rfid_token_identifier = "abcd1234"
     company = create_company
     member = create_member company: company
-    rfid_token1 = create_rfid_token member: member, identifier: rfid_token_identifier
+    create_rfid_token member: member, identifier: rfid_token_identifier
     changeset = RfidToken.changeset(%RfidToken{member_id: member.id, identifier: rfid_token_identifier})
-    assert {:error, message} = Repo.insert changeset
+    assert {:error, _message} = Repo.insert changeset
   end
 
   test "that an RfidToken object is auto-created when an unrecognized badge is scanned" do
