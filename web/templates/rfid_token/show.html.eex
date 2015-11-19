@@ -1,5 +1,7 @@
 <h2>RFID Token <%= @rfid_token.identifier %></h2>
-<h3>Belonging to <%= link @member.name, to: company_member_path(@conn, :show, @member.company, @member) %> with <%= link @member.company.name, to: company_path(@conn, :show, @member.company) %></h3>
+<%= if @member do %>
+  <h3>Belonging to <%= link @member.name, to: company_member_path(@conn, :show, @member.company, @member) %> with <%= link @member.company.name, to: company_path(@conn, :show, @member.company) %></h3>
+<% end %>
 
 <ul>
 
@@ -12,8 +14,12 @@
 
 <%= Phoenix.View.render Gatekeeper.DoorAccessAttemptView, "access_log.html", access_attempts: @door_access_attempts, conn: @conn %>
 
-<%= link "Edit", to: company_member_rfid_token_path(@conn, :edit, @member.company, @member, @rfid_token) %>
+<%= link "Edit", to: rfid_token_path(@conn, :edit, @rfid_token) %>
 |
-<%= link "Back", to: company_member_path(@conn, :show, @member.company, @member) %>
+<%= if @member do %>
+  <%= link "Back", to: company_member_path(@conn, :show, @member.company, @member) %>
+<% else %>
+  <%= link "Back", to: rfid_token_path(@conn, :index) %>
+<% end %>
 |
-<%= link "Delete", to: company_member_rfid_token_path(@conn, :delete, @member.company, @member, @rfid_token), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+<%= link "Delete", to: rfid_token_path(@conn, :delete, @rfid_token), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>

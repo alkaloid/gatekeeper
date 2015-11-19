@@ -23,6 +23,8 @@ defmodule Gatekeeper.Router do
       end
     end
 
+    resources "/rfid_tokens", RfidTokenController
+
     resources "/doors", DoorController
     resources "/door_groups", DoorGroupController
     resources "/door_access_attempts", DoorAccessAttemptController
