@@ -13,9 +13,26 @@
 
   <body>
     <div class="container" role="main">
-      <div class="header">
-        <span class="logo"><h1>Gatekeeper</h1></span>
-      </div>
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="logo" href="/"><h1></h1></a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><%= link "Companies", to: company_path(@conn, :index) %></li>
+              <li><%= link "RFID Tokens", to: rfid_token_path(@conn, :index) %></li>
+              <li><%= link "Access Log", to: door_access_attempt_path(@conn, :index) %></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
