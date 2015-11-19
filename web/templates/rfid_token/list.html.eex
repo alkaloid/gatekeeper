@@ -1,0 +1,43 @@
+<h4>RFID Tokens
+  <%= if @member do %>
+    <%= link "Add new RFID token", to: company_member_rfid_token_path(@conn, :new, @member.company, @member), class: "btn btn-default btn-xs" %>
+  <% end %>
+</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Identifier</th>
+      <th>Active?</th>
+      <%= unless @member do %>
+        <th>Owner</th>
+      <% end %>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for rfid_token <- @rfid_tokens do %>
+    <tr>
+      <td><%= link RfidToken.display_name(rfid_token), to: rfid_token_path(@conn, :show, rfid_token) %></td>
+      <td><%= rfid_token.identifier %></td>
+      <td><%= rfid_token.active %></td>
+      <%= unless @member do %>
+        <td>
+          <%= if rfid_token.member do %>
+            <% member = rfid_token.member %>
+            <%= link member.name, to: company_member_path(@conn, :show, member.company, member) %> (<%= link member.company.name, to: company_path(@conn, :show, member.company) %>)
+          <% else %>
+            Unassigned
+          <% end %>
+        </td>
+      <% end %>
+
+      <td class="text-right">
+        <%= link "Edit", to: rfid_token_path(@conn, :edit, rfid_token), class: "btn btn-default btn-xs" %>
+        <%= link "Deactivate", to: rfid_token_path(@conn, :delete, rfid_token), method: :delete, data: [confirm: "This will deactivate this RFID token and prevent it from being used on any door. Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
