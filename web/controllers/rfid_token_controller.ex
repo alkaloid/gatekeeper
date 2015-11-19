@@ -91,12 +91,13 @@ defmodule Gatekeeper.RfidTokenController do
     member = Repo.get!(Member, member_id)
     rfid_token = Repo.get!(RfidToken, id)
 
-    # Here we use delete! (with a bang) because we expect
+    # Here we use update! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Repo.delete!(rfid_token)
+    changeset = RfidToken.changeset(rfid_token, %{active: false})
+    Repo.update!(changeset)
 
     conn
-    |> put_flash(:info, "RFID Token deleted successfully.")
+    |> put_flash(:info, "RFID Token deactivated successfully.")
     |> redirect(to: company_member_path(conn, :show, company, member))
   end
 end

@@ -89,9 +89,10 @@ defmodule Gatekeeper.RfidTokenControllerTest do
     company = create_company
     member = create_member company: company
     rfid_token = create_rfid_token member: member
+    assert %{active: true} = Repo.get(RfidToken, rfid_token.id)
     conn = delete conn, company_member_rfid_token_path(conn, :delete, company, member, rfid_token)
     assert redirected_to(conn) == company_member_path(conn, :show, company, member)
-    refute Repo.get(RfidToken, rfid_token.id)
+    assert %{active: false} = Repo.get(RfidToken, rfid_token.id)
   end
 
   ## Tokens NOT associated with Members

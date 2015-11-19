@@ -32,4 +32,4 @@
   <%= link "Back", to: rfid_token_path(@conn, :index) %>
 <% end %>
 |
-<%= link "Delete", to: rfid_token_path(@conn, :delete, @rfid_token), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+<%= link "Deactivate", to: rfid_token_path(@conn, :delete, @rfid_token), method: :delete, data: [confirm: "This will deactivate this RFID token and prevent it from being used on any door. Are you sure?"], class: "btn btn-danger btn-xs" %>

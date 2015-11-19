@@ -104,11 +104,12 @@ defmodule Gatekeeper.MemberControllerTest do
     assert html_response(conn, 200) =~ "Edit member"
   end
 
-  test "deletes chosen resource", %{conn: conn} do
+  test "deactivates chosen resource", %{conn: conn} do
     company = create_company
     member = create_member company: company
+    assert %{active: true} = Repo.get(Member, member.id)
     conn = delete conn, company_member_path(conn, :delete, company, member)
     assert redirected_to(conn) == company_path(conn, :show, company)
-    refute Repo.get(Member, member.id)
+    assert %{active: false} = Repo.get(Member, member.id)
   end
 end

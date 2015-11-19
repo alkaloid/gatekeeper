@@ -19,7 +19,7 @@
 
       <td class="text-right">
         <%= link "Edit", to: company_member_path(@conn, :edit, @company, member), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: company_member_path(@conn, :delete, @company, member), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= link "Deactivate", to: company_member_path(@conn, :delete, @company, member), method: :delete, data: [confirm: "This will revoke this member's access to all doors. Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
 <% end %>

@@ -91,10 +91,12 @@ defmodule Gatekeeper.CompanyControllerTest do
     assert html_response(conn, 200) =~ "Edit company"
   end
 
-  test "deletes chosen resource", %{conn: conn} do
-    company = Repo.insert! %Company{}
+  test "deactivates chosen resource", %{conn: conn} do
+    company = create_company
+    refute company.departure_date
     conn = delete conn, company_path(conn, :delete, company)
     assert redirected_to(conn) == company_path(conn, :index)
-    refute Repo.get(Company, company.id)
+    company = Repo.get(Company, company.id)
+    assert company.departure_date
   end
 end

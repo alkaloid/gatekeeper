@@ -75,12 +75,11 @@ defmodule Gatekeeper.MemberController do
     company = Repo.get!(Company, company_id)
     member = Repo.get!(Member, id)
 
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(member)
+    changeset = Member.changeset(member, %{active: false})
+    Repo.update!(changeset)
 
     conn
-    |> put_flash(:info, "Member deleted successfully.")
+    |> put_flash(:info, "Member successfully deactivated")
     |> redirect(to: company_path(conn, :show, company))
   end
 

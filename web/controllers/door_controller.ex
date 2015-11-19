@@ -59,14 +59,8 @@ defmodule Gatekeeper.DoorController do
   end
 
   def delete(conn, %{"id" => id}) do
-    door = Repo.get!(Door, id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(door)
-
     conn
-    |> put_flash(:info, "Door deleted successfully.")
+    |> put_flash(:error, "Doors may not be deleted.")
     |> redirect(to: door_path(conn, :index))
   end
 end
