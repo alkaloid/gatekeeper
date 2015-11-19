@@ -9,8 +9,10 @@ defmodule Gatekeeper.RfidTokenController do
   plug :scrub_params, "rfid_token" when action in [:create, :update]
 
   def index(conn, %{"company_id" => _company_id, "member_id" => member_id}) do
-    member = Repo.get!(Member, member_id) |> Repo.preload(:company) |> Repo.preload(:rfid_tokens)
-    render(conn, "index.html", member: member, company: member.company, rfid_tokens: member.rfid_tokens)
+    member = Repo.get!(Member, member_id) |> Repo.preload([:rfid_tokens, :company])
+    rfid_tokens = member.rfid_tokens |> Repo.preload([:door_access_attempts, [member: :company]])
+    render(conn, "index.html", rfid_tokens: rfid_tokens, member: member)
+  end
   end
 
   def new(conn, %{"company_id" => _company_id, "member_id" => member_id}) do

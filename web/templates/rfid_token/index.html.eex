@@ -1,31 +1,40 @@
-<h2>Listing members for <%= link @company.name, to: company_path(@conn, :show, @company) %></h2>
+<h2>Listing RFID tokens
+  <%= if @member do %>
+    for <%= link @member.name, to: company_member_path(@conn, :show, @member.company, @member) %>
+  <% end %>
+</h2>
 
 <table class="table">
   <thead>
     <tr>
       <th>Name</th>
-      <th>Email</th>
-      <th>Phone</th>
+      <th>Identifier</th>
+      <th>Active?</th>
 
       <th></th>
     </tr>
   </thead>
   <tbody>
-<%= for member <- @company.members do %>
+<%= for rfid_token <- @rfid_tokens do %>
     <tr>
-      <td><%= link member.name, to: company_member_path(@conn, :show, @company, member) %></td>
-      <td><%= member.email %></td>
-      <td><%= member.phone %></td>
+      <td><%= link RfidToken.display_name(rfid_token), to: rfid_token_path(@conn, :show, rfid_token) %></td>
+      <td><%= rfid_token.identifier %></td>
+      <td><%= rfid_token.active %></td>
 
       <td class="text-right">
-        <%= link "Edit", to: company_member_path(@conn, :edit, @company, member), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: company_member_path(@conn, :delete, @company, member), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= link "Edit", to: rfid_token_path(@conn, :edit, rfid_token), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: rfid_token_path(@conn, :delete, rfid_token), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
 <% end %>
   </tbody>
 </table>
 
-<%= link "New member", to: company_member_path(@conn, :new, @company) %>
+<%= if @member do %>
+  <%= link "New RFID Token", to: company_member_rfid_token_path(@conn, :new, @member.company, @member) %>
+<% else %>
+  <%= link "New RFID Token", to: rfid_token_path(@conn, :new) %>
+<% end %>
 |
-<%= link "Back", to: company_path(@conn, :show, @company) %>
+<% # TODO: Fix this to a javascript:history(-1) link %>
+<%= #link "Back", to: company_path(@conn, :show, @company) %>
