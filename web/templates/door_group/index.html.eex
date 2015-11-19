@@ -11,10 +11,9 @@
   <tbody>
 <%= for door_group <- @door_groups do %>
     <tr>
-      <td><%= door_group.name %></td>
+      <td><%= link door_group.name, to: door_group_path(@conn, :show, door_group) %></td>
 
       <td class="text-right">
-        <%= link "Show", to: door_group_path(@conn, :show, door_group), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: door_group_path(@conn, :edit, door_group), class: "btn btn-default btn-xs" %>
         <%= link "Delete", to: door_group_path(@conn, :delete, door_group), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
