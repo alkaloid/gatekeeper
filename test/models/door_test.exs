@@ -24,7 +24,7 @@ defmodule Gatekeeper.DoorTest do
     company = create_company
     member = create_member company: company
 
-    refute Door.member_access_allowed? door, member
+    assert {false, :no_access_to_door} = Door.member_access_allowed? door, member
   end
 
   test "member is allowed access if he has an association with a door group containing the door" do
@@ -33,7 +33,7 @@ defmodule Gatekeeper.DoorTest do
     company = create_company
     member = create_member company: company, door_group: door_group
 
-    assert Door.member_access_allowed? door, member
+    assert {true, _reason} = Door.member_access_allowed? door, member
   end
 
   test "member is allowed access if his company has an association with a door group containing the door" do
@@ -42,6 +42,6 @@ defmodule Gatekeeper.DoorTest do
     company = create_company door_group: door_group
     member = create_member company: company
 
-    assert Door.member_access_allowed? door, member
+    assert {true, _reason} = Door.member_access_allowed? door, member
   end
 end

@@ -21,22 +21,22 @@ defmodule Gatekeeper.RfidTokenTest do
 
   test "checks whether an RFID token permits access when it should" do
     m = %RfidToken{active: true, member: create_member(company: create_company)}
-    assert RfidToken.active?(m)
+    assert {true, _reason} = RfidToken.active?(m)
   end
 
   test "checking for an inactive RFID token" do
     m = %RfidToken{active: false, member: create_member(company: create_company)}
-    refute RfidToken.active?(m)
+    assert {false, :rfid_token_inactive} = RfidToken.active?(m)
   end
 
   test "checking for an inactive member" do
     m = %RfidToken{active: true, member: create_member(active: false, company: create_company)}
-    refute RfidToken.active?(m)
+    assert {false, :member_inactive} = RfidToken.active?(m)
   end
 
   test "checking for an inactive company" do
     m = %RfidToken{active: true, member: create_member(company: create_company(departure_date: "2015-04-30 00:00:00"))}
-    refute RfidToken.active?(m)
+    assert {false, :company_inactive} = RfidToken.active?(m)
   end
 
   test "checking that the door should be allowed to open" do
@@ -45,7 +45,7 @@ defmodule Gatekeeper.RfidTokenTest do
     door = create_door door_group: door_group
     member = create_member company: company, door_group: door_group
     rfid_token = create_rfid_token member: member
-    assert RfidToken.access_permitted?(rfid_token, door)
+    assert {true, _reason} = RfidToken.access_permitted?(rfid_token, door)
   end
 
   test "checking that the door should not be allowed to open if the token is inactive" do
@@ -54,7 +54,7 @@ defmodule Gatekeeper.RfidTokenTest do
     door_group = create_door_group
     door = create_door door_group: door_group
     rfid_token = create_rfid_token member: member, active: false
-    refute RfidToken.access_permitted?(rfid_token, door)
+    assert {false, :rfid_token_inactive} = RfidToken.access_permitted?(rfid_token, door)
   end
 
   test "the door should not be allowed to open if the member is inactive" do
@@ -63,7 +63,7 @@ defmodule Gatekeeper.RfidTokenTest do
     door_group = create_door_group
     door = create_door door_group: door_group
     rfid_token = create_rfid_token member: member
-    refute RfidToken.access_permitted?(rfid_token, door)
+    assert {false, :member_inactive} = RfidToken.access_permitted?(rfid_token, door)
   end
 
   test "the door should not be allowed to open if the company departed" do
@@ -73,7 +73,7 @@ defmodule Gatekeeper.RfidTokenTest do
     door_group = create_door_group
     door = create_door door_group: door_group
     rfid_token = create_rfid_token member: member
-    refute RfidToken.access_permitted?(rfid_token, door)
+    assert {false, :company_inactive} = RfidToken.access_permitted?(rfid_token, door)
   end
 
   test "that the RFID Token identifier enforces uniqueness" do
@@ -88,16 +88,29 @@ defmodule Gatekeeper.RfidTokenTest do
   test "that an RfidToken object is auto-created when an unrecognized badge is scanned" do
     rfid_token_identifier = "this_is_an_unrecognized_token_id"
     door = create_door
-    refute RfidToken.attempt_access!(rfid_token_identifier, door.id)
+    assert {false, :rfid_token_inactive} = RfidToken.attempt_access!(rfid_token_identifier, door.id)
     assert Repo.get_by(RfidToken, %{identifier: rfid_token_identifier})
   end
 
-  test "that an DoorAccessAttempt object is auto-created when an unrecognized badge is scanned" do
+  test "that a DoorAccessAttempt record is auto-created when an unrecognized badge is scanned" do
     rfid_token_identifier = "this_is_another_unrecognized_token_id"
+    reason = :rfid_token_inactive
     door = create_door
-    refute RfidToken.attempt_access!(rfid_token_identifier, door.id)
+    assert {false, ^reason} = RfidToken.attempt_access!(rfid_token_identifier, door.id)
     rfid_token = Repo.get_by(RfidToken, %{identifier: rfid_token_identifier})
-    assert Repo.get_by(DoorAccessAttempt, %{rfid_token_id: rfid_token.id, door_id: door.id})
+    assert door_access_attempt = Repo.get_by(DoorAccessAttempt, %{rfid_token_id: rfid_token.id, door_id: door.id, reason: reason})
+    assert door_access_attempt.member_id == nil
+  end
+
+  test "that a DoorAccessAttempt record is created when a recognized badge is scanned" do
+    door_group = create_door_group
+    door = create_door door_group: door_group
+    company = create_company door_group: door_group
+    member = create_member company: company
+    rfid_token = create_rfid_token member: member
+
+    assert {true, reason} = RfidToken.attempt_access!(rfid_token.identifier, door.id)
+    assert Repo.get_by(DoorAccessAttempt, %{rfid_token_id: rfid_token.id, door_id: door.id, reason: reason, member_id: member.id})
   end
 
   test "it displays the name when a name is provided" do

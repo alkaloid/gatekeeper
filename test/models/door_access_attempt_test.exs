@@ -3,7 +3,7 @@ defmodule Gatekeeper.DoorAccessAttemptTest do
 
   alias Gatekeeper.DoorAccessAttempt
 
-  @valid_attrs %{access_allowed: true, door_id: 42, rfid_token_id: 42}
+  @valid_attrs %{access_allowed: true, door_id: 42, rfid_token_id: 42, reason: "because"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

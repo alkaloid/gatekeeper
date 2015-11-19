@@ -7,13 +7,15 @@ defmodule Gatekeeper.DoorAccessAttempt do
   schema "door_access_attempts" do
     belongs_to :rfid_token, RfidToken
     belongs_to :door, Door
+    belongs_to :member, Member
     field :access_allowed, :boolean, default: false
+    field :reason, :string
 
     timestamps
   end
 
-  @required_fields ~w(door_id rfid_token_id access_allowed)
-  @optional_fields ~w()
+  @required_fields ~w(door_id rfid_token_id access_allowed reason)
+  @optional_fields ~w(member_id)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
