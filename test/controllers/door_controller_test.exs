@@ -38,7 +38,7 @@ defmodule Gatekeeper.DoorControllerTest do
   test "shows chosen resource", %{conn: conn} do
     door = Repo.insert! %Door{}
     conn = get conn, door_path(conn, :show, door)
-    assert html_response(conn, 200) =~ "Show door"
+    assert html_response(conn, 200) =~ "<h1>#{door.name}</h1>"
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
