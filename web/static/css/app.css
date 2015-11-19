@@ -28,11 +28,10 @@ form.link, form.button {
   width: 69px;
   height: 71px;
   display: inline-block;
-  margin-bottom: 1em;
   background-image: url("/images/alkaloid-logo.png");
   background-size: 69px 71px;
   background-repeat: no-repeat;
-  padding-left: 100px;
+  margin: 5px;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -87,6 +86,10 @@ ul.member-list {
 
 p.no-associations {
   font-style: italic;
+}
+
+.door-group-list {
+  margin: 0;
 }
 
 .door_access_attempt_allowed_true {

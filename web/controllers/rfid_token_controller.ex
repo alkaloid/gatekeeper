@@ -9,8 +9,14 @@ defmodule Gatekeeper.RfidTokenController do
   plug :scrub_params, "rfid_token" when action in [:create, :update]
 
   def index(conn, %{"company_id" => _company_id, "member_id" => member_id}) do
-    member = Repo.get!(Member, member_id) |> Repo.preload(:company) |> Repo.preload(:rfid_tokens)
-    render(conn, "index.html", member: member, company: member.company, rfid_tokens: member.rfid_tokens)
+    member = Repo.get!(Member, member_id) |> Repo.preload([:rfid_tokens, :company])
+    rfid_tokens = member.rfid_tokens |> Repo.preload([:door_access_attempts, [member: :company]])
+    render(conn, "index.html", rfid_tokens: rfid_tokens, member: member)
+  end
+
+  def index(conn, _params) do
+    rfid_tokens = Repo.all(RfidToken) |> Repo.preload([:door_access_attempts, [member: :company]])
+    render(conn, "index.html", rfid_tokens: rfid_tokens, member: nil)
   end
 
   def new(conn, %{"company_id" => _company_id, "member_id" => member_id}) do
@@ -33,7 +39,7 @@ defmodule Gatekeeper.RfidTokenController do
     end
   end
 
-  def show(conn, %{"company_id" => _company_id, "member_id" => _member_id, "id" => id}) do
+  def show(conn, %{"id" => id}) do
     rfid_token = Repo.get!(RfidToken, id)
                  |> Repo.preload([
                       [member: :company],
@@ -49,16 +55,32 @@ defmodule Gatekeeper.RfidTokenController do
     render(conn, "edit.html", member: member, rfid_token: rfid_token, changeset: changeset)
   end
 
-  def update(conn, %{"company_id" => _company_id, "member_id" => _member_id, "id" => id, "rfid_token" => rfid_token_params}) do
+  def edit(conn, %{"id" => id}) do
+    rfid_token = Repo.get!(RfidToken, id) |> Repo.preload(member: :company)
+    changeset = RfidToken.changeset(rfid_token)
+    render(conn, "edit.html", member: nil, rfid_token: rfid_token, changeset: changeset)
+  end
+
+  def update(conn, %{"id" => id, "rfid_token" => rfid_token_params}) do
     rfid_token = Repo.get!(RfidToken, id) |> Repo.preload(:member)
-    member = Repo.preload(rfid_token.member, :company)
+    if rfid_token.member do
+      member = Repo.preload(rfid_token.member, :company)
+    else
+      member = nil
+    end
+
     changeset = RfidToken.changeset(rfid_token, rfid_token_params)
 
     case Repo.update(changeset) do
       {:ok, _rfid_token} ->
+        if member do
+          destination = company_member_path(conn, :show, member.company, member)
+        else
+          destination = rfid_token_path(conn, :show, rfid_token)
+        end
         conn
         |> put_flash(:info, "RFID Token updated successfully.")
-        |> redirect(to: company_member_path(conn, :show, member.company, member))
+        |> redirect(to: destination)
       {:error, changeset} ->
         render(conn, "edit.html", member: member, rfid_token: rfid_token, changeset: changeset)
     end
