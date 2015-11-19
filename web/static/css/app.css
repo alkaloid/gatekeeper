@@ -88,6 +88,10 @@ p.no-associations {
   font-style: italic;
 }
 
+.door-group-list {
+  margin: 0;
+}
+
 .door_access_attempt_allowed_true {
   background-color: #cfc;
 }
