@@ -27,6 +27,8 @@
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li><%= link "Companies", to: company_path(@conn, :index) %></li>
+              <li><%= link "Door Groups", to: door_group_path(@conn, :index) %></li>
+              <li><%= link "Doors", to: door_path(@conn, :index) %></li>
               <li><%= link "RFID Tokens", to: rfid_token_path(@conn, :index) %></li>
               <li><%= link "Access Log", to: door_access_attempt_path(@conn, :index) %></li>
             </ul>
