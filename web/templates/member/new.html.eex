@@ -1,6 +1,8 @@
-<h2>New member</h2>
+<h2>New member of <%= link @company.name, to: company_path(@conn, :show, @company) %></h2>
 
-<%= render "form.html", changeset: @changeset,
-                        action: company_member_path(@conn, :create, @company) %>
+<%= render "form.html", Dict.merge(@conn.assigns, 
+                        action: company_member_path(@conn, :create, @company),
+                        conn: @conn)
+%>
 
 <%= link "Back", to: company_member_path(@conn, :index, @company) %>

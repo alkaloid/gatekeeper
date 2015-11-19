@@ -1,0 +1,34 @@
+<h4>Access Log</h4>
+<%= if length(@access_attempts) > 0 do %>
+  <table class="table">
+    <tr>
+      <th>Allowed</td>
+      <th>When</th>
+      <th>Who</th>
+      <th>Where</th>
+    </tr>
+    <%= for access_attempt <- @access_attempts do %>
+      <tr class="door_access_attempt_allowed_<%= access_attempt.access_allowed %>">
+        <td>
+          <%= if access_attempt.access_allowed do %>
+            <!-- TODO: Replace with icons -->
+            Yes
+          <% else %>
+            No
+          <% end %>
+        </td>
+        <td><%= access_attempt.inserted_at %></td>
+        <td>
+          <%= if member = access_attempt.rfid_token.member do %>
+            <%= link member.name, to: company_member_path(@conn, :show, member, member.company) %> (<%= link member.company.name, to: company_path(@conn, :show, member.company) %>)
+          <% else %>
+            Unknown Token: <%= access_attempt.rfid_token.identifier %>
+          <% end %>
+        </td>
+        <td><%= link access_attempt.door.name, to: door_path(@conn, :show, access_attempt.door) %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <p class="no-associations">No attempts to access a door</p>
+<% end %>

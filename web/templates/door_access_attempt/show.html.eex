@@ -1,0 +1,23 @@
+<h2>Show door access attempt</h2>
+
+<ul>
+
+  <li>
+    <strong>Door:</strong>
+    <%= @door_access_attempt.door_id %>
+  </li>
+
+  <li>
+    <strong>Rfid token:</strong>
+    <%= @door_access_attempt.rfid_token_id %>
+  </li>
+
+  <li>
+    <strong>Access allowed:</strong>
+    <%= @door_access_attempt.access_allowed %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: door_access_attempt_path(@conn, :edit, @door_access_attempt) %>
+<%= link "Back", to: door_access_attempt_path(@conn, :index) %>

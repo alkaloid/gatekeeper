@@ -2,6 +2,7 @@ defmodule Gatekeeper.DoorController do
   use Gatekeeper.Web, :controller
 
   alias Gatekeeper.Door
+  alias Gatekeeper.DoorAccessAttempt
 
   plug :scrub_params, "door" when action in [:create, :update]
 
@@ -29,7 +30,11 @@ defmodule Gatekeeper.DoorController do
   end
 
   def show(conn, %{"id" => id}) do
-    door = Repo.get!(Door, id)
+    # I could not find a simpler way to preload all the associations while
+    # still providing an order to the access_attempts query
+    access_attempts_query = DoorAccessAttempt.ordered_preloaded
+    door_query = from d in Door, preload: [access_attempts: ^access_attempts_query]
+    door = Repo.get! door_query, id
     render(conn, "show.html", door: door)
   end
 

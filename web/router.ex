@@ -25,6 +25,7 @@ defmodule Gatekeeper.Router do
 
     resources "/doors", DoorController
     resources "/door_groups", DoorGroupController
+    resources "/door_access_attempts", DoorAccessAttemptController
   end
 
   # Other scopes may use custom stacks.

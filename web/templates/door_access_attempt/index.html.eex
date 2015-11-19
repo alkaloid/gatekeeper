@@ -1,0 +1,1 @@
+<%= render "access_log.html", access_attempts: @door_access_attempts, conn: @conn %>

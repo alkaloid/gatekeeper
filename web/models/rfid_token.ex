@@ -1,21 +1,24 @@
 defmodule Gatekeeper.RfidToken do
   use Gatekeeper.Web, :model
 
+  alias Gatekeeper.RfidToken
   alias Gatekeeper.Member
   alias Gatekeeper.Repo
   alias Gatekeeper.Door
+  alias Gatekeeper.DoorAccessAttempt
 
   schema "rfid_tokens" do
     field :identifier, :string
     field :name, :string
     field :active, :boolean, default: true
     belongs_to :member, Member
+    has_many :door_access_attempts, DoorAccessAttempt
 
     timestamps
   end
 
-  @required_fields ~w(identifier active member_id)
-  @optional_fields ~w(name)
+  @required_fields ~w(identifier active)
+  @optional_fields ~w(name member_id)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -35,14 +38,37 @@ defmodule Gatekeeper.RfidToken do
     rfid_token.active && Member.active?(rfid_token.member)
   end
 
-  def access_permitted?(identifier, door_id) do
-    case Repo.get_by(Gatekeeper.RfidToken, identifier: identifier) do
+  def display_name(rfid_token) do
+    rfid_token.name || rfid_token.identifier
+  end
+
+  def access_permitted?(rfid_token, door) do
+    rfid_token = Repo.preload(rfid_token, [:member])
+    active?(rfid_token) && Door.member_access_allowed?(door, rfid_token.member)
+  end
+
+  def attempt_access!(identifier, door_id) do
+    case Repo.get_by(RfidToken, identifier: identifier) do
       nil ->
-        false
+        rfid_token = autocreate_rfid_token identifier
       rfid_token ->
         rfid_token = Repo.preload(rfid_token, :member)
     end
-    door = Repo.get!(Gatekeeper.Door, door_id)
-    rfid_token && active?(rfid_token) && Door.member_access_allowed?(door, rfid_token.member)
+    door = Repo.get!(Door, door_id)
+
+
+    allowed = access_permitted? rfid_token, door
+    create_access_attempt rfid_token, door, allowed
+    allowed
+  end
+
+  def autocreate_rfid_token(identifier) do
+    change = changeset(%Gatekeeper.RfidToken{}, %{identifier: identifier, active: false})
+    Repo.insert! change
+  end
+
+  def create_access_attempt(rfid_token, door, allowed) do
+    changeset = DoorAccessAttempt.changeset(%DoorAccessAttempt{}, %{rfid_token_id: rfid_token.id, door_id: door.id, access_allowed: allowed})
+    Repo.insert! changeset
   end
 end

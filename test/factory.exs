@@ -9,6 +9,7 @@ defmodule Gatekeeper.Factory do
   alias Gatekeeper.DoorGroupDoor
   alias Gatekeeper.DoorGroupMember
   alias Gatekeeper.DoorGroupCompany
+  alias Gatekeeper.DoorAccessAttempt
 
   def create_company(params \\ %{}) do
     default_params = %{
@@ -54,8 +55,9 @@ defmodule Gatekeeper.Factory do
       identifier: "abcd1234",
       active: true,
     }
-    # :member is a required parameter
-    default_params = Dict.merge(default_params, member_id: params[:member].id)
+    if params[:member] do
+      default_params = Dict.merge(default_params, member_id: params[:member].id)
+    end
 
     params = Dict.merge(default_params, params)
     changeset = RfidToken.changeset(%RfidToken{}, params)
@@ -87,5 +89,12 @@ defmodule Gatekeeper.Factory do
     end
 
     door
+  end
+
+  def create_door_access_attempt(door, rfid_token, params \\ %{}) do
+    params = %{access_allowed: true, door_id: door.id, rfid_token_id: rfid_token.id}
+    changeset = DoorAccessAttempt.changeset(%DoorAccessAttempt{}, params)
+    {:ok, door_access_attempt} = Repo.insert(changeset)
+    door_access_attempt
   end
 end

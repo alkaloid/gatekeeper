@@ -8,6 +8,7 @@ defmodule Gatekeeper.Company do
     has_many :members, Gatekeeper.Member, on_delete: :fetch_and_delete
     has_many :door_group_companies, Gatekeeper.DoorGroupCompany, on_delete: :fetch_and_delete
     has_many :door_groups, through: [:door_group_companies, :door_group]
+    has_many :door_access_attempts, through: [:members, :door_access_attempts]
 
     timestamps
   end

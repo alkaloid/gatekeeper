@@ -4,6 +4,7 @@ defmodule Gatekeeper.RfidTokenController do
   alias Gatekeeper.Company
   alias Gatekeeper.Member
   alias Gatekeeper.RfidToken
+  alias Gatekeeper.DoorAccessAttempt
 
   plug :scrub_params, "rfid_token" when action in [:create, :update]
 
@@ -33,9 +34,12 @@ defmodule Gatekeeper.RfidTokenController do
   end
 
   def show(conn, %{"company_id" => _company_id, "member_id" => _member_id, "id" => id}) do
-    rfid_token = Repo.get!(RfidToken, id) |> Repo.preload(:member)
-    member = Repo.preload(rfid_token.member, :company)
-    render(conn, "show.html", rfid_token: rfid_token, member: member)
+    rfid_token = Repo.get!(RfidToken, id)
+                 |> Repo.preload([
+                      [member: :company],
+                      [door_access_attempts: DoorAccessAttempt.ordered_preloaded]
+                    ])
+    render(conn, "show.html", rfid_token: rfid_token, member: rfid_token.member, door_access_attempts: rfid_token.door_access_attempts)
   end
 
   def edit(conn, %{"company_id" => _company_id, "member_id" => _member_id, "id" => id}) do

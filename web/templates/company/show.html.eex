@@ -36,3 +36,4 @@
   <li><%= link "Add new...", to: company_member_path(@conn, :new, @company) %></li>
 </ul>
 
+<%= Phoenix.View.render Gatekeeper.DoorAccessAttemptView, "access_log.html", access_attempts: @company.door_access_attempts, conn: @conn %>

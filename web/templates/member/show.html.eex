@@ -28,7 +28,7 @@
       </tr>
       <%= for rfid_token <- @member.rfid_tokens do %>
         <tr>
-          <td><%= link rfid_token.identifier, to: company_member_rfid_token_path(@conn, :show, @company, @member, rfid_token) %></td>
+          <td><%= link RfidToken.display_name(rfid_token), to: company_member_rfid_token_path(@conn, :show, @company, @member, rfid_token) %></td>
           <td><%= link "Delete", to: company_member_rfid_token_path(@conn, :delete, @company, @member, rfid_token), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></td>
         </tr>
       <% end %>
@@ -37,7 +37,8 @@
 
   <%= if length(@member.door_groups) > 0 do %>
     <li>
-      <strong>Door Groups:</strong>
+      <p><strong>Door Groups</strong></p>
+      <p>The member has special access to the following Door Groups:</p>
       <ul>
         <%= for door_group <- @member.door_groups do %>
           <li><%= link door_group.name, to: door_group_path(@conn, :show, door_group) %></li>
@@ -45,8 +46,9 @@
       </ul>
     </li>
   <% end%>
-
 </ul>
+
+<%= Phoenix.View.render Gatekeeper.DoorAccessAttemptView, "access_log.html", access_attempts: @member.door_access_attempts, conn: @conn %>
 
 <%= link "Edit", to: company_member_path(@conn, :edit, @company, @member) %>
 |
