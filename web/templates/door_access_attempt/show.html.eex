@@ -20,4 +20,4 @@
 </ul>
 
 <%= link "Edit", to: door_access_attempt_path(@conn, :edit, @door_access_attempt) %>
-<%= link "Back", to: door_access_attempt_path(@conn, :index) %>
+<%= link "Back", to: "javascript:history.back()" %>

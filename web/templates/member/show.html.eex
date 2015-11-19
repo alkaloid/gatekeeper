@@ -37,6 +37,6 @@
 
 <%= link "Edit", to: company_member_path(@conn, :edit, @member.company, @member) %>
 |
-<%= link "Back", to: company_member_path(@conn, :index, @member.company) %>
+<%= link "Back", to: "javascript:history.back()" %>
 |
 <%= link "Deactivate", to: company_member_path(@conn, :delete, @member.company, @member), method: :delete, data: [confirm: "This will revoke this member's access to all doors. Are you sure?"], class: "btn btn-danger btn-xs" %>

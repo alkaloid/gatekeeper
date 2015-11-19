@@ -28,4 +28,4 @@
 
 <%= link "New member", to: company_member_path(@conn, :new, @company) %>
 |
-<%= link "Back", to: company_path(@conn, :show, @company) %>
+<%= link "Back", to: "javascript:history.back()" %>

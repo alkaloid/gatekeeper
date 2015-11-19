@@ -3,4 +3,4 @@
 <%= render "form.html", changeset: @changeset,
                         action: door_path(@conn, :update, @door) %>
 
-<%= link "Back", to: door_path(@conn, :index) %>
+<%= link "Back", to: "javascript:history.back()" %>

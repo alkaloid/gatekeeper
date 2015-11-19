@@ -6,5 +6,4 @@
 
 <%= render "list.html", member: @member, rfid_tokens: @rfid_tokens, conn: @conn %>
 
-<% # TODO: Fix this to a javascript:history(-1) link %>
-<%= #link "Back", to: company_path(@conn, :show, @company) %>
+<%= link "Back", to: "javascript:history.back()" %>

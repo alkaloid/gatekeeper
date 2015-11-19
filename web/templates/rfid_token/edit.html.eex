@@ -4,4 +4,4 @@
                         action: rfid_token_path(@conn, :update, @rfid_token) %>
 
 <% # TODO: history(-1) %>
-<%= link "Back", to: rfid_token_path(@conn, :show, @rfid_token) %>
+<%= link "Back", to: "javascript:history.back()" %>

@@ -2,4 +2,4 @@
 
 <%= render "form.html", Dict.merge(@conn.assigns, action: door_group_path(@conn, :create)) %>
 
-<%= link "Back", to: door_group_path(@conn, :index) %>
+<%= link "Back", to: "javascript:history.back()" %>

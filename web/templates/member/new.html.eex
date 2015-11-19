@@ -5,4 +5,4 @@
                         conn: @conn)
 %>
 
-<%= link "Back", to: company_member_path(@conn, :index, @company) %>
+<%= link "Back", to: "javascript:history.back()" %>

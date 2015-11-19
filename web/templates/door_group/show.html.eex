@@ -20,4 +20,4 @@
 
 
 <%= link "Edit", to: door_group_path(@conn, :edit, @door_group) %>
-<%= link "Back", to: door_group_path(@conn, :index) %>
+<%= link "Back", to: "javascript:history.back()" %>
