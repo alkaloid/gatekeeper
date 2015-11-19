@@ -49,7 +49,6 @@
 </ul>
 
 <%= Phoenix.View.render Gatekeeper.DoorAccessAttemptView, "access_log.html", access_attempts: @member.door_access_attempts, conn: @conn %>
-<h4>Door Access History</h4>
 
 <%= link "Edit", to: company_member_path(@conn, :edit, @company, @member) %>
 |
