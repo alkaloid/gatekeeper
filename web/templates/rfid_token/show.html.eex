@@ -1,9 +1,19 @@
-<h2>RFID Token <%= @rfid_token.identifier %></h2>
+<h2>RFID Token <%= RfidToken.display_name(@rfid_token) %></h2>
 <%= if @member do %>
   <h3>Belonging to <%= link @member.name, to: company_member_path(@conn, :show, @member.company, @member) %> with <%= link @member.company.name, to: company_path(@conn, :show, @member.company) %></h3>
 <% end %>
 
 <ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @rfid_token.name || "Unset" %>
+  </li>
+
+  <li>
+    <strong>Identifier:</strong>
+    <%= @rfid_token.identifier %>
+  </li>
 
   <li>
     <strong>Active:</strong>
