@@ -1,7 +1,6 @@
 <h2>Edit RFID token</h2>
 
-<%= render "form.html", changeset: @changeset,
-                        action: rfid_token_path(@conn, :update, @rfid_token) %>
+<%= render "form.html", Dict.merge(@conn.assigns, conn: @conn, action: rfid_token_path(@conn, :update, @rfid_token)) %>
 
 <% # TODO: history(-1) %>
 <%= link "Back", to: rfid_token_path(@conn, :show, @rfid_token) %>

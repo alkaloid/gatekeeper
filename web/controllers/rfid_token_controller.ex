@@ -22,7 +22,7 @@ defmodule Gatekeeper.RfidTokenController do
   def new(conn, %{"company_id" => _company_id, "member_id" => member_id}) do
     member = Repo.get!(Member, member_id) |> Repo.preload(:company) |> Repo.preload(:rfid_tokens)
     changeset = RfidToken.changeset %RfidToken{}
-    render(conn, "new.html", changeset: changeset, member: member)
+    render(conn, "new.html", changeset: changeset, member: member, members: Member.all_active)
   end
 
   def create(conn, %{"company_id" => _company_id, "member_id" => member_id, "rfid_token" => rfid_token_params}) do
@@ -35,7 +35,7 @@ defmodule Gatekeeper.RfidTokenController do
         |> put_flash(:info, "RFID Token created successfully.")
         |> redirect(to: company_member_path(conn, :show, member.company, member))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset, member: member)
+        render(conn, "new.html", changeset: changeset, member: member, members: Member.all_active)
     end
   end
 
@@ -51,14 +51,16 @@ defmodule Gatekeeper.RfidTokenController do
   def edit(conn, %{"company_id" => _company_id, "member_id" => _member_id, "id" => id}) do
     rfid_token = Repo.get!(RfidToken, id) |> Repo.preload(:member)
     member = Repo.preload(rfid_token.member, :company)
+
     changeset = RfidToken.changeset(rfid_token)
-    render(conn, "edit.html", member: member, rfid_token: rfid_token, changeset: changeset)
+    render(conn, "edit.html", member: member, members: nil, rfid_token: rfid_token, changeset: changeset)
   end
 
   def edit(conn, %{"id" => id}) do
     rfid_token = Repo.get!(RfidToken, id) |> Repo.preload(member: :company)
     changeset = RfidToken.changeset(rfid_token)
-    render(conn, "edit.html", member: nil, rfid_token: rfid_token, changeset: changeset)
+
+    render(conn, "edit.html", member: nil, members: Member.all_active, rfid_token: rfid_token, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "rfid_token" => rfid_token_params}) do
@@ -68,6 +70,9 @@ defmodule Gatekeeper.RfidTokenController do
     else
       member = nil
     end
+
+    # FIXME: Validation, instead of coercion, to ensure the identifier does not change
+    rfid_token_params = Dict.merge(rfid_token_params, %{"identifier" => rfid_token.identifier})
 
     changeset = RfidToken.changeset(rfid_token, rfid_token_params)
 

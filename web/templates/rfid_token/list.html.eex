@@ -34,8 +34,12 @@
       <% end %>
 
       <td class="text-right">
-        <%= link "Edit", to: rfid_token_path(@conn, :edit, rfid_token), class: "btn btn-default btn-xs" %>
-        <%= link "Deactivate", to: rfid_token_path(@conn, :delete, rfid_token), method: :delete, data: [confirm: "This will deactivate this RFID token and prevent it from being used on any door. Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= if rfid_token.member do %>
+          <%= link "Edit", to: rfid_token_path(@conn, :edit, rfid_token), class: "btn btn-default btn-xs" %>
+          <%= link "Deactivate", to: rfid_token_path(@conn, :delete, rfid_token), method: :delete, data: [confirm: "This will deactivate this RFID token and prevent it from being used on any door. Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <% else %>
+          <%= link "Assign Token", to: rfid_token_path(@conn, :edit, rfid_token), class: "btn btn-default btn-xs" %>
+        <% end %>
       </td>
     </tr>
 <% end %>
