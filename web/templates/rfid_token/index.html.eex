@@ -4,50 +4,7 @@
   <% end %>
 </h2>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Identifier</th>
-      <th>Active?</th>
-      <%= unless @member do %>
-        <th>Owner</th>
-      <% end %>
+<%= render "list.html", member: @member, rfid_tokens: @rfid_tokens, conn: @conn %>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for rfid_token <- @rfid_tokens do %>
-    <tr>
-      <td><%= link RfidToken.display_name(rfid_token), to: rfid_token_path(@conn, :show, rfid_token) %></td>
-      <td><%= rfid_token.identifier %></td>
-      <td><%= rfid_token.active %></td>
-      <%= unless @member do %>
-        <td>
-          <%= if rfid_token.member do %>
-            <% member = rfid_token.member %>
-            <%= link member.name, to: company_member_path(@conn, :show, member.company, member) %> (<%= link member.company.name, to: company_path(@conn, :show, member.company) %>)
-          <% else %>
-            Unassigned
-          <% end %>
-        </td>
-      <% end %>
-
-      <td class="text-right">
-        <%= link "Edit", to: rfid_token_path(@conn, :edit, rfid_token), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: rfid_token_path(@conn, :delete, rfid_token), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
-
-<%= if @member do %>
-  <%= link "New RFID Token", to: company_member_rfid_token_path(@conn, :new, @member.company, @member) %>
-<% else %>
-  <%= link "New RFID Token", to: rfid_token_path(@conn, :new) %>
-<% end %>
-|
 <% # TODO: Fix this to a javascript:history(-1) link %>
 <%= #link "Back", to: company_path(@conn, :show, @company) %>

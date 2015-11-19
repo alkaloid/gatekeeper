@@ -1,5 +1,5 @@
 <h2><%= @member.name %></h2>
-<h3>Member with <%= link @company.name, to: company_path(@conn, :show, @company) %></h3>
+<h3>Member with <%= link @member.company.name, to: company_path(@conn, :show, @member.company) %></h3>
 
 <ul>
 
@@ -18,23 +18,6 @@
     <%= @member.active %>
   </li>
 
-  <li>
-    <strong>RFID Tokens:</strong>
-    <%= link "Add new RFID token", to: company_member_rfid_token_path(@conn, :new, @company, @member) %>
-    <table class="table">
-      <tr>
-        <th>Identifier</th>
-        <th></th>
-      </tr>
-      <%= for rfid_token <- @member.rfid_tokens do %>
-        <tr>
-          <td><%= link RfidToken.display_name(rfid_token), to: company_member_rfid_token_path(@conn, :show, @company, @member, rfid_token) %></td>
-          <td><%= link "Delete", to: company_member_rfid_token_path(@conn, :delete, @company, @member, rfid_token), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></td>
-        </tr>
-      <% end %>
-    </table>
-  </li>
-
   <%= if length(@member.door_groups) > 0 do %>
     <li>
       <p><strong>Door Groups</strong></p>
@@ -48,10 +31,12 @@
   <% end%>
 </ul>
 
+<%= Phoenix.View.render Gatekeeper.RfidTokenView, "list.html", member: @member, rfid_tokens: @member.rfid_tokens, conn: @conn %>
+
 <%= Phoenix.View.render Gatekeeper.DoorAccessAttemptView, "access_log.html", access_attempts: @member.door_access_attempts, conn: @conn %>
 
-<%= link "Edit", to: company_member_path(@conn, :edit, @company, @member) %>
+<%= link "Edit", to: company_member_path(@conn, :edit, @member.company, @member) %>
 |
-<%= link "Back", to: company_member_path(@conn, :index, @company) %>
+<%= link "Back", to: company_member_path(@conn, :index, @member.company) %>
 |
-<%= link "Delete", to: company_member_path(@conn, :delete, @company, @member), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+<%= link "Delete", to: company_member_path(@conn, :delete, @member.company, @member), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
