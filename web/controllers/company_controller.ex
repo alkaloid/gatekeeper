@@ -72,7 +72,8 @@ defmodule Gatekeeper.CompanyController do
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Repo.delete!(company)
+    changeset = Company.changeset(company, %{departure_date: :calendar.local_time()})
+    Repo.update!(changeset)
 
     conn
     |> put_flash(:info, "Company deleted successfully.")
