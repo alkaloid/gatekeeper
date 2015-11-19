@@ -39,7 +39,8 @@ defmodule Gatekeeper.CompanyController do
   end
 
   def show(conn, %{"id" => id}) do
-    company = Repo.get!(Company, id) |> Repo.preload([:members, :door_groups])
+    daa_query = Gatekeeper.DoorAccessAttempt.ordered_preloaded
+    company = Repo.get!(Company, id) |> Repo.preload([:members, :door_groups, [door_access_attempts: daa_query]])
     render(conn, "show.html", company: company)
   end
 
