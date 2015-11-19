@@ -19,3 +19,6 @@
   - Search for Door Group by name
 
 * Add Reason field for why door won't open
+
+* Allow button in Web UI to lock/temporary unlock/persistent unlock the doors
+* Admin authentication
