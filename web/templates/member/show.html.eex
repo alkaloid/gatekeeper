@@ -48,25 +48,8 @@
   <% end%>
 </ul>
 
+<%= Phoenix.View.render Gatekeeper.DoorAccessAttemptView, "access_log.html", access_attempts: @member.door_access_attempts, conn: @conn %>
 <h4>Door Access History</h4>
-<%= if length(@member.door_access_attempts) > 0 do %>
-  <table class="table">
-    <tr>
-      <th>Date &amp; Time</th>
-      <th>Door</th>
-      <th>RFID Token</th>
-    </tr>
-    <%= for door_access_attempt <- @member.door_access_attempts do %>
-      <tr>
-        <td><%= door_access_attempt.inserted_at %></td>
-        <td><%= link door_access_attempt.door.name, to: door_path(@conn, :show, door_access_attempt.door) %></td>
-        <td><%= link RfidToken.display_name(door_access_attempt.rfid_token), to: company_member_rfid_token_path(@conn, :show, @company, @member, door_access_attempt.rfid_token) %></td>
-      </tr>
-    <% end %>
-  </table>
-<% else %>
-  <p class="no-associations">No attempts to access a door</p>
-<% end %>
 
 <%= link "Edit", to: company_member_path(@conn, :edit, @company, @member) %>
 |
