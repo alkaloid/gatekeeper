@@ -93,10 +93,10 @@ defmodule Gatekeeper.DoorControllerTest do
     assert html_response(conn, 200) =~ "Edit door"
   end
 
-  test "deletes chosen resource", %{conn: conn} do
+  test "does not delete chosen resource", %{conn: conn} do
     door = Repo.insert! %Door{}
     conn = delete conn, door_path(conn, :delete, door)
     assert redirected_to(conn) == door_path(conn, :index)
-    refute Repo.get(Door, door.id)
+    assert Repo.get(Door, door.id)
   end
 end
