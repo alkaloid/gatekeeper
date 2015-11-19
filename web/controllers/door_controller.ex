@@ -32,9 +32,7 @@ defmodule Gatekeeper.DoorController do
   def show(conn, %{"id" => id}) do
     # I could not find a simpler way to preload all the associations while
     # still providing an order to the access_attempts query
-    access_attempts_query = from access_attempt in DoorAccessAttempt,
-                              order_by: [desc: access_attempt.inserted_at],
-                              preload:  [:door, rfid_token: [member: :company]]
+    access_attempts_query = DoorAccessAttempt.ordered_preloaded
     door_query = from d in Door, preload: [access_attempts: ^access_attempts_query]
     door = Repo.get! door_query, id
     render(conn, "show.html", door: door)

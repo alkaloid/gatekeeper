@@ -25,4 +25,13 @@ defmodule Gatekeeper.DoorAccessAttempt do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  def ordered_preloaded do
+    # I could not find a simpler way to preload all the associations while
+    # still providing an order to the access_attempts query
+    from attempt in Gatekeeper.DoorAccessAttempt,
+      order_by: [desc: attempt.inserted_at],
+      preload:  [:door, rfid_token: [member: :company]]
+  end
+
 end

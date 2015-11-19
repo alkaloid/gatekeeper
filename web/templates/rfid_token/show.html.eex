@@ -10,6 +10,8 @@
 
 </ul>
 
+<%= Phoenix.View.render Gatekeeper.DoorAccessAttemptView, "access_log.html", access_attempts: @door_access_attempts, conn: @conn %>
+
 <%= link "Edit", to: company_member_rfid_token_path(@conn, :edit, @member.company, @member, @rfid_token) %>
 |
 <%= link "Back", to: company_member_path(@conn, :show, @member.company, @member) %>
