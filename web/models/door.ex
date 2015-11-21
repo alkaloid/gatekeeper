@@ -30,12 +30,10 @@ defmodule Gatekeeper.Door do
 
   def member_access_allowed?(door, member) do
     if member.id in Enum.map(members(door), &(&1.id)) do
-      {allowed, reason} = {true, "access_allowed"}
+      {true, "access_allowed"}
     else
-      {allowed, reason} = {false, "no_access_to_door"}
+      {false, "no_access_to_door"}
     end
-    
-    {allowed, reason}
   end
 
   def members(door) do

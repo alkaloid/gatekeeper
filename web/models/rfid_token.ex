@@ -36,12 +36,10 @@ defmodule Gatekeeper.RfidToken do
     rfid_token = Repo.preload(rfid_token, :member)
 
     if rfid_token.active do
-      {allowed, reason} = Member.active?(rfid_token.member)
+      Member.active?(rfid_token.member)
     else
-      {allowed, reason} = {false, "rfid_token_inactive"}
+      {false, "rfid_token_inactive"}
     end
-
-    {allowed, reason}
   end
 
   def display_name(rfid_token) do
