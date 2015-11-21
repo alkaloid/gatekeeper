@@ -96,5 +96,13 @@ defmodule Gatekeeper.RfidTokenControllerTest do
     assert %{active: false} = Repo.get(RfidToken, rfid_token.id)
   end
 
-  ## Tokens NOT associated with Members
+  test "allows changing the member assigned to a given RFID token" do
+    company = create_company
+    member1 = create_member company: company
+    member2 = create_member company: company
+    rfid_token = create_rfid_token member: member1
+    conn = put conn, rfid_token_path(conn, :update, rfid_token), rfid_token: Dict.merge(@valid_attrs, member_id: member2.id, id: rfid_token.id)
+    rfid_token = Repo.get!(RfidToken, rfid_token.id)
+    assert rfid_token.member_id == member2.id
+  end
 end

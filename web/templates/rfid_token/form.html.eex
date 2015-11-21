@@ -19,7 +19,7 @@
   <%= unless @changeset.model.member_id do %>
     <div class="form-group">
       <label for="member" class="control-label">Assign to Member:</label>
-      <select name="rfid_token[member]" class="form-control">
+      <select name="rfid_token[member_id]" class="form-control">
         <%= for member <- @members do %>
           <option value="<%= member.id %>"><%= member.name %> (<%= member.company.name %>)</option>
         <% end %>
