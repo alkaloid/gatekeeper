@@ -10,6 +10,7 @@
     apt:
       pkg: apt-transport-https
       state: installed
+      force: yes
     when: not apt_https_transport.stat.exists
 
 - hosts: all
