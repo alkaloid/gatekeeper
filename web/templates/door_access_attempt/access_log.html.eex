@@ -3,6 +3,7 @@
   <table class="table">
     <tr>
       <th>Allowed</td>
+      <th>Why</th>
       <th>When</th>
       <th>Who</th>
       <th>Where</th>
@@ -17,6 +18,7 @@
             No
           <% end %>
         </td>
+        <td><%= access_attempt.reason %></td>
         <td><%= access_attempt.inserted_at %></td>
         <td>
           <%= if member = access_attempt.rfid_token.member do %>
