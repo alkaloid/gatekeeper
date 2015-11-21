@@ -50,4 +50,17 @@ defmodule Gatekeeper.Member do
       {false, "member_inactive"}
     end
   end
+
+  def active do
+    from member in Gatekeeper.Member,
+      where: member.active == true,
+      preload: :company,
+      order_by: :name
+  end
+
+  def all_active do
+    Repo.all(Company.active)
+    |> Repo.preload(members: active)
+    |> Enum.reduce([], &(&2 ++ &1.members))
+  end
 end

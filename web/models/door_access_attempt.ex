@@ -2,6 +2,7 @@ defmodule Gatekeeper.DoorAccessAttempt do
   use Gatekeeper.Web, :model
 
   alias Gatekeeper.RfidToken
+  alias Gatekeeper.Member
   alias Gatekeeper.Door
 
   schema "door_access_attempts" do
@@ -33,7 +34,7 @@ defmodule Gatekeeper.DoorAccessAttempt do
     # still providing an order to the access_attempts query
     from attempt in Gatekeeper.DoorAccessAttempt,
       order_by: [desc: attempt.inserted_at],
-      preload:  [:door, rfid_token: [member: :company]]
+      preload:  [:door, :rfid_token, [member: :company]]
   end
 
 end

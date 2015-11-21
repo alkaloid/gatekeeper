@@ -30,4 +30,10 @@ defmodule Gatekeeper.Company do
   def active?(company) do
     is_nil company.departure_date
   end
+
+  def active do
+    from company in Gatekeeper.Company,
+      where: is_nil(company.departure_date),
+      order_by: :name
+  end
 end

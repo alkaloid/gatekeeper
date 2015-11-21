@@ -12,11 +12,23 @@
 
   <div class="form-group">
     <%= label f, :identifier, "identifier", class: "control-label" %>
-    <%= text_input f, :identifier, class: "form-control" %>
+    <!-- Identifiers are locked and unchangeable once created -->
+    <%= text_input f, :identifier, class: "form-control", disabled: !!@changeset.model.identifier %>
   </div>
 
+  <%= unless @changeset.model.member_id do %>
+    <div class="form-group">
+      <label for="member" class="control-label">Assign to Member:</label>
+      <select name="rfid_token[member_id]" class="form-control">
+        <%= for member <- @members do %>
+          <option value="<%= member.id %>"><%= member.name %> (<%= member.company.name %>)</option>
+        <% end %>
+      </select>
+    </div>
+  <% end %>
+
   <div class="form-group">
-    <%= label f, :name, "name", class: "control-label" %>
+    <%= label f, :name, "Badge name (optional)", class: "control-label" %>
     <%= text_input f, :name, class: "form-control" %>
   </div>
 

@@ -1,12 +1,14 @@
 <h2>RFID Token <%= RfidToken.display_name(@rfid_token) %></h2>
 <%= if @member do %>
   <h3>Belonging to <%= link @member.name, to: company_member_path(@conn, :show, @member.company, @member) %> with <%= link @member.company.name, to: company_path(@conn, :show, @member.company) %></h3>
+<% else %>
+  <h3>Unassigned <%= link "Assign Token", to: rfid_token_path(@conn, :edit, @rfid_token), class: "btn btn-default btn-xs" %></h3>
 <% end %>
 
 <ul>
 
   <li>
-    <strong>Name:</strong>
+    <strong>RFID Token Name:</strong>
     <%= @rfid_token.name || "Unset" %>
   </li>
 
