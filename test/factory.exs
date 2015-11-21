@@ -92,7 +92,7 @@ defmodule Gatekeeper.Factory do
   end
 
   def create_door_access_attempt(door, rfid_token, params \\ %{}) do
-    params = Dict.merge(%{access_allowed: true, door_id: door.id, rfid_token_id: rfid_token.id}, params)
+    params = Dict.merge(%{access_allowed: true, door_id: door.id, rfid_token_id: rfid_token.id, reason: "access_allowed"}, params)
     changeset = DoorAccessAttempt.changeset(%DoorAccessAttempt{}, params)
     {:ok, door_access_attempt} = Repo.insert(changeset)
     door_access_attempt

@@ -5,7 +5,7 @@ defmodule Gatekeeper.DoorAccessAttemptControllerTest do
 
   alias Gatekeeper.DoorAccessAttempt
 
-  @valid_attrs %{access_allowed: true}
+  @valid_attrs %{access_allowed: true, reason: "access_allowed"}
   @invalid_attrs %{}
 
   setup do

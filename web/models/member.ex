@@ -42,12 +42,12 @@ defmodule Gatekeeper.Member do
 
     if member.active do
       if Company.active?(member.company) do
-        {allowed, reason} = {true, :access_allowed}
+        {allowed, reason} = {true, "access_allowed"}
       else
-        {allowed, reason} = {false, :company_inactive}
+        {allowed, reason} = {false, "company_inactive"}
       end
     else
-      {allowed, reason} = {false, :member_inactive}
+      {allowed, reason} = {false, "member_inactive"}
     end
 
     {allowed, reason}

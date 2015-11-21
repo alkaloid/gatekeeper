@@ -38,7 +38,7 @@ defmodule Gatekeeper.RfidToken do
     if rfid_token.active do
       {allowed, reason} = Member.active?(rfid_token.member)
     else
-      {allowed, reason} = {false, :rfid_token_inactive}
+      {allowed, reason} = {false, "rfid_token_inactive"}
     end
 
     {allowed, reason}
