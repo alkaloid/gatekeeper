@@ -3,8 +3,8 @@ defmodule Gatekeeper.Company do
 
   schema "companies" do
     field :name, :string
-    field :join_date, Ecto.DateTime
-    field :departure_date, Ecto.DateTime
+    field :join_date, Ecto.Date
+    field :departure_date, Ecto.Date
     has_many :members, Gatekeeper.Member, on_delete: :fetch_and_delete
     has_many :door_group_companies, Gatekeeper.DoorGroupCompany, on_delete: :fetch_and_delete
     has_many :door_groups, through: [:door_group_companies, :door_group]
