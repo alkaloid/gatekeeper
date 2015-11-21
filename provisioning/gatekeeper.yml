@@ -1,25 +1,13 @@
 ---
 - hosts: all
-  tasks:
-  - name: Ensure the system can use the HTTPS transport for APT
-    stat:
-      path: /usr/lib/apt/methods/https
-    register: apt_https_transport
-
-  - name: Install HTTPS transport for APT
-    apt:
-      pkg: apt-transport-https
-      state: installed
-      force: yes
-    when: not apt_https_transport.stat.exists
-
-- hosts: all
   roles:
-    - jacoelho.elixir
-  vars:
-    elixir_erlang_version: "18.1"
-    elixir_version: "1.1.1"
   tasks:
+  - name: Add Erlang Solutions repository
+    apt_repository: repo='deb http://packages.erlang-solutions.com/debian wheezy contrib' state=present
+  - name: Add Erlang Solutions packaging key
+    apt_key: url=https://packages.erlang-solutions.com/debian/erlang_solutions.asc state=present
+  - name: Install Erlang Solutions Elixir package
+    apt: name=elixir state=latest
   - name: Install Development Erlang Headers
     apt: name=erlang-dev state=latest
   - name: Install cmake
