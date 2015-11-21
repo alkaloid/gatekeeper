@@ -1,10 +1,11 @@
 ---
 - hosts: all
+  roles:
+    - jacoelho.elixir
+  vars:
+    elixir_erlang_version: "18.1"
+    elixir_version: "1.1.1"
   tasks:
-  - name: Download Erlang Solutions Elixir package
-    get_url: url=http://packages.erlang-solutions.com/site/esl/elixir/FLAVOUR_2_download/elixir_1.0.4-1~raspbian~wheezy_armhf.deb dest=/tmp/elixir_1.0.4-1~raspbian~wheezy_armhf.deb
-  - name: Install Erlang Solutions Elixir package
-    apt: deb=/tmp/elixir_1.0.4-1~raspbian~wheezy_armhf.deb
   - name: Install Development Erlang Headers
     apt: name=erlang-dev state=latest
   - name: Install cmake
