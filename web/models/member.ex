@@ -17,7 +17,7 @@ defmodule Gatekeeper.Member do
     has_many :door_group_members, DoorGroupMember
     has_many :door_groups, through: [:door_group_members, :door_group]
     has_many :doors, through: [:door_groups, :door]
-    has_many :door_access_attempts, through: [:rfid_tokens, :door_access_attempts]
+    has_many :door_access_attempts, DoorAccessAttempt
 
     timestamps
   end
@@ -39,6 +39,15 @@ defmodule Gatekeeper.Member do
 
   def active?(member) do
     member = Repo.preload member, :company
-    Company.active?(member.company) && member.active
+
+    if member.active do
+      if Company.active?(member.company) do
+        {true, "access_allowed"}
+      else
+        {false, "company_inactive"}
+      end
+    else
+      {false, "member_inactive"}
+    end
   end
 end

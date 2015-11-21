@@ -19,21 +19,21 @@ defmodule Gatekeeper.MemberTest do
 
   test "checking an active member with an active company" do
     m = %Member{active: true, company: %Company{departure_date: nil}}
-    assert Member.active?(m)
+    assert {true, _reason} = Member.active?(m)
   end
 
   test "checking an active member with an inactive company" do
     m = %Member{active: true, company: %Company{departure_date: "2015-04-30 00:00:00"}}
-    refute Member.active?(m)
+    assert {false, "company_inactive"} = Member.active?(m)
   end
 
   test "checking an inactive member with an active company" do
     m = %Member{active: false, company: %Company{departure_date: nil}}
-    refute Member.active?(m)
+    assert {false, "member_inactive"} = Member.active?(m)
   end
 
   test "checking an inactive member with an inactive company" do
     m = %Member{active: false, company: %Company{departure_date: "2015-04-30 00:00:00"}}
-    refute Member.active?(m)
+    assert {false, "member_inactive"} = Member.active?(m)
   end
 end
