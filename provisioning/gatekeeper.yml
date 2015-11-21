@@ -19,7 +19,13 @@
     apt: name=postgresql state=latest
   - name: Install python-psycopg2 (required for Ansible)
     apt: name=python-psycopg2 state=latest
-  - name: Stage database provisioning playbook
-    copy: src=database.yml dest=/etc/ansible/database.yml mode=644
-  - name: Provision database as postgres user
-    command: "sudo -u postgres ansible-playbook -c local -e postgresql_password='{{ postgresql_password }}' /etc/ansible/database.yml"
+
+- hosts: all
+  sudo: yes
+  sudo_user: postgres
+  tasks:
+  - name: Create Gatekeeper database role
+    postgresql_user: "name=gatekeeper password={{ postgresql_password }}"
+
+  - name: Create Gatekeeper database
+    postgresql_db: name=gatekeeper owner=gatekeeper template=template0

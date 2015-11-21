@@ -1,7 +1,0 @@
-- hosts: all
-  tasks:
-  - name: Create Gatekeeper database role
-    postgresql_user: "name=gatekeeper password={{ postgresql_password }}"
-
-  - name: Create Gatekeeper database
-    postgresql_db: name=gatekeeper owner=gatekeeper template=template0
