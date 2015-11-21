@@ -1,6 +1,5 @@
 ---
 - hosts: all
-  roles:
   tasks:
   - name: Add Erlang Solutions repository
     apt_repository: repo='deb http://packages.erlang-solutions.com/debian wheezy contrib' state=present
