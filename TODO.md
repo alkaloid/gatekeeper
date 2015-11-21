@@ -1,7 +1,5 @@
 * Allow unassigning/re-assigning RFID tokens
-  - Disable ability to delete RFID token
   - Form changes to unassign/re-assign
-  - Add member ID to `door_access_attempt` because it may change over time
 
 * Use `history(-1)` on RFID token links so they load relatively
 
@@ -17,8 +15,6 @@
   - Search for RFID token by name or identifier
   - Search for Door by name
   - Search for Door Group by name
-
-* Add Reason field for why door won't open
 
 * Allow button in Web UI to lock/temporary unlock/persistent unlock the doors
 * Admin authentication
