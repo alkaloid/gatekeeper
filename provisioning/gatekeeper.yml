@@ -31,7 +31,8 @@
     postgresql_db: name=gatekeeper owner=gatekeeper template=template0
 
 - hosts: all
-  roles: jacoelho.phoenix-app
+  roles:
+    - jacoelho.phoenix-app
   vars:
     phoenix_app_name: gatekeeper
     phoenix_app_user: gatekeeper
