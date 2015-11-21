@@ -17,7 +17,7 @@
 
   <div class="form-group">
     <%= label f, :join_date, "Join date", class: "control-label" %>
-    <%= datetime_select f, :join_date, class: "form-control" %>
+    <%= date_select f, :join_date, class: "form-control" %>
   </div>
 
   <div class="form-group">

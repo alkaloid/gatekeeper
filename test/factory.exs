@@ -12,9 +12,10 @@ defmodule Gatekeeper.Factory do
   alias Gatekeeper.DoorAccessAttempt
 
   def create_company(params \\ %{}) do
+    {date, time} = :calendar.local_time()
     default_params = %{
       name: "Test Company",
-      join_date: :calendar.local_time(),
+      join_date: date,
       departure_date: nil,
     }
     params = Dict.merge(default_params, params)
