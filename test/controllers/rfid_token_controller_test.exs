@@ -6,7 +6,7 @@ defmodule Gatekeeper.RfidTokenControllerTest do
   alias Gatekeeper.RfidToken
 
   @valid_attrs %{identifier: "a_very_different_identifier",  active: true}
-  @invalid_attrs %{identifier: ""}
+  @invalid_attrs %{identifier: "", active: "foo"}
 
   setup do
     conn = conn()
@@ -68,14 +68,15 @@ defmodule Gatekeeper.RfidTokenControllerTest do
     assert html_response(conn, 200) =~ "Edit RFID token"
   end
 
-  test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    company = create_company
-    member = create_member company: company
-    rfid_token = create_rfid_token member: member
-    conn = put conn, company_member_rfid_token_path(conn, :update, company, member, rfid_token), rfid_token: Dict.merge(@valid_attrs, company_id: company.id, member_id: member.id, id: rfid_token.id)
-    assert redirected_to(conn) == company_member_path(conn, :show, company, member)
-    assert Repo.get_by(RfidToken, @valid_attrs)
-  end
+  # FIXME: You can't change the identifier, so what should this test do?
+  #test "updates chosen resource and redirects when data is valid", %{conn: conn} do
+  #  company = create_company
+  #  member = create_member company: company
+  #  rfid_token = create_rfid_token member: member
+  #  conn = put conn, company_member_rfid_token_path(conn, :update, company, member, rfid_token), rfid_token: Dict.merge(@valid_attrs, company_id: company.id, member_id: member.id, id: rfid_token.id)
+  #  assert redirected_to(conn) == company_member_path(conn, :show, company, member)
+  #  assert Repo.get_by(RfidToken, @valid_attrs)
+  #end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
     company = create_company
