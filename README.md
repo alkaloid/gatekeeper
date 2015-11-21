@@ -36,6 +36,12 @@ The provided Ansible playbook can be used to configure a Raspberry Pi to run Gat
     `sudo ansible-playbook -c local -e postgresql_password=SuperSecret provisioning/gatekeeper.yml`
 Make sure to change the PostgreSQL password to something of your choosing
 
+Alternatively, to run Ansible on a remote development machine:
+
+1. Install Ansible (via Pip, Homebrew, apt) 1.9+
+2. Modify `provisioning/hosts` as necessary to deploy to your Pi's remotely.
+3. Run the provisioning script: `ansible-playbook --inventory-file provisioning/hosts --ask-pass --ask-sudo-pass -e postgresql_password=SuperSecret provisioning/gatekeeper.yml`
+
 ## Authentication
 
 The application is built to authenticate via Slack. To set up the OAuth connection with Slack, you will need:

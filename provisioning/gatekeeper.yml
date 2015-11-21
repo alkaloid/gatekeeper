@@ -1,5 +1,7 @@
 ---
 - hosts: all
+  remote_user: pi
+  sudo: yes
   tasks:
   - name: Add Erlang Solutions repository
     apt_repository: repo='deb http://packages.erlang-solutions.com/debian wheezy contrib' state=present
@@ -23,6 +25,7 @@
     apt: name=python-psycopg2 state=latest
 
 - hosts: all
+  remote_user: pi
   sudo: yes
   sudo_user: postgres
   tasks:
@@ -33,6 +36,7 @@
     postgresql_db: name=gatekeeper owner=gatekeeper template=template0
 
 - hosts: all
+  remote_user: pi
   roles:
     - jacoelho.phoenix-app
   vars:
