@@ -29,7 +29,7 @@ To run the tests, use either `mix test` or `mix test.watch`.
 
 The provided Ansible playbook can be used to configure a Raspberry Pi to run Gatekeeper. These instructions assume you are running Raspbian Jesse (Debian 8).
 
-1. Install Ansible: `sudo apt-get install ansible`
+1. Install Ansible: `sudo pip install ansible`
 2. Add `127.0.0.1` to the top of `/etc/ansible/hosts` (works around an old Ansible bug)
 3. Install provisioning dependencies: `sudo ansible-galaxy install -r provisioning/requirements.txt`.
 4. Run the provisioning script:
