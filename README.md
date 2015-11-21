@@ -31,7 +31,8 @@ The provided Ansible playbook can be used to configure a Raspberry Pi to run Gat
 
 1. Install Ansible: `sudo apt-get install ansible`
 2. Add `127.0.0.1` to the top of `/etc/ansible/hosts` (works around an old Ansible bug)
-3. Run the provisioning script:
+3. Install provisioning dependencies: `sudo ansible-galaxy install -r provisioning/requirements.txt`.
+4. Run the provisioning script:
     `sudo ansible-playbook -c local -e postgresql_password=SuperSecret provisioning/gatekeeper.yml`
 Make sure to change the PostgreSQL password to something of your choosing
 
