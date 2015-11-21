@@ -1,1 +1,2 @@
+jacoelho.elixir
 jacoelho.phoenix-app
