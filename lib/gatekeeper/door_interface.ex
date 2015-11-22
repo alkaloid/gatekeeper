@@ -21,7 +21,8 @@ defmodule Gatekeeper.DoorInterface do
   end
 
   def handle_info({:card_read, token}, {_rfid, lock} = state) do
-    if Gatekeeper.RfidToken.access_permitted?(token) do
+    door_id = Application.get_env(:gatekeeper, :doorlock)[:door_id] || 1
+    if Gatekeeper.RfidToken.attempt_access!(token, door_id) do
       Logger.info("Card #{token} requested access. Unlocking the door.")
       Gatekeeper.DoorLock.flipflop(lock)
     else
