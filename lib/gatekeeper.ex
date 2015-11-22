@@ -12,7 +12,7 @@ defmodule Gatekeeper do
       # Start the Ecto repository
       worker(Gatekeeper.Repo, []),
       # Here you could define other workers and supervisors as children
-      worker(Gatekeeper.DoorInterface, []),
+      worker(Gatekeeper.DoorInterface, [Application.get_env(:gatekeeper, :doorlock)[:door_id] || 1]),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

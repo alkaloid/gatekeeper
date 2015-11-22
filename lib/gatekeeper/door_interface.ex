@@ -3,11 +3,19 @@ defmodule Gatekeeper.DoorInterface do
 
   use GenServer
 
-  def start_link(opts \\ []) do
-    GenServer.start_link(__MODULE__, :ok, opts)
+  def start_link(door_id, opts \\ []) do
+    GenServer.start_link(__MODULE__, door_id, opts)
   end
 
-  def init(:ok) do
+  @doc """
+    Provides the state of the lock
+  """
+  @spec state(pid()) :: atom()
+  def state(pid) do
+    GenServer.call(pid, :getstate)
+  end
+
+  def init(door_id) do
     {:ok, rfid} = Gatekeeper.RFIDListener.start_link(
       Application.get_env(:gatekeeper, :rfidreader)[:device]
     )
@@ -17,16 +25,21 @@ defmodule Gatekeeper.DoorInterface do
       doorlock_config[:gpio_port], doorlock_config[:type]
     )
 
-    {:ok, {rfid, lock}}
+    {:ok, {rfid, lock, door_id}}
   end
 
-  def handle_info({:card_read, token}, {_rfid, lock} = state) do
-    door_id = Application.get_env(:gatekeeper, :doorlock)[:door_id] || 1
-    if Gatekeeper.RfidToken.attempt_access!(token, door_id) do
-      Logger.info("Card #{token} requested access. Unlocking the door.")
-      Gatekeeper.DoorLock.flipflop(lock)
-    else
-      Logger.info("Card #{token} requested access. Access was denied.")
+  def handle_call(:getstate, _from, {_rfid, lock, _door_id} = state) do
+    lockstate = Gatekeeper.DoorLock.state(lock)
+    {:reply, lockstate, state}
+  end
+
+  def handle_info({:card_read, token}, {_rfid, lock, door_id} = state) do
+    case Gatekeeper.RfidToken.attempt_access!(token, door_id) do
+      {true, _} ->
+        Logger.info("Card #{token} requested access. Unlocking the door.")
+        Gatekeeper.DoorLock.flipflop(lock)
+      {false, reason} ->
+        Logger.info("Card #{token} requested access. Access was denied because #{reason}.")
     end
     {:noreply, state}
   end
