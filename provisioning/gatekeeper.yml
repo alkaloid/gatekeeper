@@ -13,12 +13,6 @@
     apt: name=erlang-dev state=latest
   - name: Install cmake
     apt: name=cmake state=latest
-  - name: Install NodeJS
-    apt: name=nodejs state=latest
-  - name: Install NodeJS Legacy (needed for brunch)
-    apt: name=nodejs-legacy state=latest
-  - name: Install NPM
-    apt: name=npm state=latest
   - name: Install PostgreSQL
     apt: name=postgresql state=latest
   - name: Install python-psycopg2 (required for Ansible)
@@ -39,6 +33,7 @@
   remote_user: pi
   sudo: yes
   roles:
+    - nodesource.node
     - jacoelho.phoenix-app
   vars:
     phoenix_app_name: gatekeeper
@@ -48,7 +43,7 @@
     phoenix_app_port: 4000
     phoenix_app_mix_env: prod
     phoenix_app_repository: "https://github.com/alkaloid/gatekeeper.git"
-    phoenix_app_version: master
+    phoenix_app_version: feature/deployment
     phoenix_app_run_brunch: true
     phoenix_app_run_migrate: true
     phoenix_app_env: {}
