@@ -37,6 +37,7 @@
 
 - hosts: all
   remote_user: pi
+  sudo: yes
   roles:
     - jacoelho.phoenix-app
   vars:
