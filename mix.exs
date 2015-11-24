@@ -19,7 +19,7 @@ defmodule Gatekeeper.Mixfile do
   def application do
     [mod: {Gatekeeper, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex]]
+                    :phoenix_ecto, :postgrex, :tzdata]]
   end
 
   # Specifies which paths to compile per environment.
@@ -39,6 +39,7 @@ defmodule Gatekeeper.Mixfile do
       {:cowboy, "~> 1.0"},
       {:mix_test_watch, "~> 0.2", only: :dev},
       {:serial, "0.1.1"},
+      {:timex, "~> 1.0.0-rc2"},
       {:elixir_ale, "0.3.0", only: :prod},
     ]
   end
