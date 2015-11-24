@@ -1,6 +1,5 @@
 defmodule Gatekeeper.DoorGroupController do
   use Gatekeeper.Web, :controller
-  import Ecto.Query
 
   alias Gatekeeper.DoorGroup
   alias Gatekeeper.Door

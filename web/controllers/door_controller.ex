@@ -58,7 +58,7 @@ defmodule Gatekeeper.DoorController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"id" => _id}) do
     conn
     |> put_flash(:error, "Doors may not be deleted.")
     |> redirect(to: door_path(conn, :index))
