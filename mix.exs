@@ -40,6 +40,7 @@ defmodule Gatekeeper.Mixfile do
       {:mix_test_watch, "~> 0.2", only: :dev},
       {:serial, "0.1.1"},
       {:timex, "~> 1.0.0-rc2"},
+      {:hackney, "== 1.4.4", override: true}, # Needed to fix issue with hackney, which is a timex dep - no direct app dep on hackney
       {:elixir_ale, "0.3.0", only: :prod},
     ]
   end
