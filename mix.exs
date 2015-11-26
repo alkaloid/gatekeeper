@@ -31,16 +31,16 @@ defmodule Gatekeeper.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:cowboy, "~> 1.0"},
+      {:elixir_ale, "0.3.0", only: :prod},
+      {:mix_test_watch, "~> 0.2", only: :dev},
       {:phoenix, "~> 1.0.3"},
       {:phoenix_ecto, "~> 1.1"},
-      {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.1"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:cowboy, "~> 1.0"},
-      {:mix_test_watch, "~> 0.2", only: :dev},
+      {:postgrex, ">= 0.0.0"},
       {:serial, "0.1.1"},
       {:timex, "~> 1.0.0-rc3"},
-      {:elixir_ale, "0.3.0", only: :prod},
     ]
   end
 
