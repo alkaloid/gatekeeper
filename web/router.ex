@@ -13,6 +13,14 @@ defmodule Gatekeeper.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/auth", Gatekeeper do
+    pipe_through :browser
+
+    get "/:provider", AuthenticationController, :request
+    get "/:provider/callback", AuthenticationController, :callback
+    post "/:provider/callback", AuthenticationController, :callback
+  end
+
   scope "/", Gatekeeper do
     pipe_through :browser # Use the default browser stack
 

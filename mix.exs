@@ -18,8 +18,18 @@ defmodule Gatekeeper.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Gatekeeper, []},
-     applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex, :tzdata]]
+     applications: [
+       :cowboy,
+       :logger,
+       :phoenix,
+       :phoenix_ecto,
+       :postgrex,
+       :phoenix_html,
+       :tzdata,
+       :ueberauth,
+       :ueberauth_slack
+     ]
+   ]
   end
 
   # Specifies which paths to compile per environment.
@@ -41,6 +51,8 @@ defmodule Gatekeeper.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:serial, "0.1.1"},
       {:timex, "~> 1.0.0-rc3"},
+      {:ueberauth, github: "ueberauth/ueberauth", override: true},
+      {:ueberauth_slack, github: "bklang/ueberauth_slack"},
     ]
   end
 
