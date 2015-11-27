@@ -1,0 +1,13 @@
+{
+  "intents": [
+    {
+      "intent": "Door_Unlock",
+      "slots": [
+        {
+          "name": "doorname",
+          "type": "DOORNAME"
+        }
+      ]
+    }
+  ]
+}
