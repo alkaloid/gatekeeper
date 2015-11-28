@@ -11,6 +11,7 @@ defmodule Gatekeeper.Member do
     field :email, :string
     field :phone, :string
     field :active, :boolean, default: true
+    field :role, :string
     belongs_to :company, Company
     has_many :rfid_tokens, RfidToken
 
@@ -22,7 +23,7 @@ defmodule Gatekeeper.Member do
     timestamps
   end
 
-  @required_fields ~w(name email active company_id)
+  @required_fields ~w(name email active company_id role)
   @optional_fields ~w(phone)
 
   @doc """

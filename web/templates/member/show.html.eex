@@ -18,6 +18,11 @@
     <%= @member.active %>
   </li>
 
+  <li>
+    <strong>Role:</strong>
+    <%= @member.role %>
+  </li>
+
   <%= if length(@member.door_groups) > 0 do %>
     <li>
       <p><strong>Door Groups</strong></p>

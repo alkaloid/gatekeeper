@@ -37,6 +37,19 @@ Make sure to change the PostgreSQL password to something of your choosing
 
 You are now ready to run the `app_setup.sh` and boot the app.
 
+## Authentication
+
+The application is built to authenticate via Slack. To set up the OAuth connection with Slack, you will need:
+
+* A `CLIENT_ID` and a `CLIENT_SECRET`, which can be obtained by [registering your app on Slack](https://api.slack.com/applications)
+* Optional: Your `TEAM_ID`, if you want to restrict logins to a specific Slack team - [find your Slack Team ID here](https://api.slack.com/methods/auth.test/test)
+
+Make sure you set these environment variables:
+* `SLACK_CLIENT_ID`
+* `SLACK_CLIENT_SECRET`
+* `SLACK_TEAM_ID` (optional)
+* `GUARDIAN_SECRET_KEY` - Set this to a long random string; it is used to ensure the validity of session tokens
+
 ## The Hardware
 
 The parts listed here are just what I used. Feel free to replace them with equivalents that may be easier or cheaper to acquire.

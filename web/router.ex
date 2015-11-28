@@ -9,14 +9,33 @@ defmodule Gatekeeper.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :requires_auth do
+    plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.LoadResource
+    plug Guardian.Plug.EnsureAuthenticated, on_failure: { Gatekeeper.PageController, :unauthenticated }
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  scope "/auth", Gatekeeper do
+    pipe_through :browser
+
+    get "/:provider", AuthenticationController, :request
+    get "/:provider/callback", AuthenticationController, :callback
+    delete "", AuthenticationController, :delete
   end
 
   scope "/", Gatekeeper do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+  end
+
+  scope "/", Gatekeeper do
+    pipe_through [:browser, :requires_auth]
+
     resources "/companies", CompanyController do
       resources "/members", MemberController do
         resources "/rfid_tokens", RfidTokenController

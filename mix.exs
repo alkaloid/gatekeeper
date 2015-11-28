@@ -18,8 +18,18 @@ defmodule Gatekeeper.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Gatekeeper, []},
-     applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex, :tzdata]]
+     applications: [
+       :cowboy,
+       :logger,
+       :phoenix,
+       :phoenix_ecto,
+       :postgrex,
+       :phoenix_html,
+       :tzdata,
+       :ueberauth,
+       :ueberauth_slack
+     ]
+   ]
   end
 
   # Specifies which paths to compile per environment.
@@ -31,16 +41,19 @@ defmodule Gatekeeper.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:cowboy, "~> 1.0"},
+      {:elixir_ale, "0.3.0", only: :prod},
+      {:guardian, "~> 0.7.0"},
+      {:mix_test_watch, "~> 0.2", only: :dev},
       {:phoenix, "~> 1.0.3"},
       {:phoenix_ecto, "~> 1.1"},
-      {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.1"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:cowboy, "~> 1.0"},
-      {:mix_test_watch, "~> 0.2", only: :dev},
+      {:postgrex, ">= 0.0.0"},
       {:serial, "0.1.1"},
       {:timex, "~> 1.0.0-rc3"},
-      {:elixir_ale, "0.3.0", only: :prod},
+      {:ueberauth, github: "ueberauth/ueberauth", override: true},
+      {:ueberauth_slack, github: "bklang/ueberauth_slack"},
     ]
   end
 

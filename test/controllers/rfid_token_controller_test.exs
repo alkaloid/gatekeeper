@@ -2,6 +2,7 @@ defmodule Gatekeeper.RfidTokenControllerTest do
   use Gatekeeper.ConnCase
 
   import Gatekeeper.Factory
+  import Guardian.TestHelper
 
   alias Gatekeeper.RfidToken
 
@@ -9,8 +10,16 @@ defmodule Gatekeeper.RfidTokenControllerTest do
   @invalid_attrs %{identifier: "", active: "foo"}
 
   setup do
+    admin = create_member role: "admin", email: "admin@example.com", company: create_company
     conn = conn()
+    |> conn_with_fetched_session
+    |> Guardian.Plug.sign_in(admin)
     {:ok, conn: conn}
+  end
+
+  test "redirects unauthenticated requests" do
+    conn = get conn, rfid_token_path(conn, :index)
+    assert redirected_to(conn) == page_path(conn, :index)
   end
 
   ## Tokens associated with Members
@@ -96,11 +105,17 @@ defmodule Gatekeeper.RfidTokenControllerTest do
     assert %{active: false} = Repo.get(RfidToken, rfid_token.id)
   end
 
-  test "allows changing the member assigned to a given RFID token" do
+  test "allows changing the member assigned to a given RFID token", %{conn: conn} do
     company = create_company
     member1 = create_member company: company
     member2 = create_member company: company
+
+    # Ensure proper creation
     rfid_token = create_rfid_token member: member1
+    rfid_token = Repo.get!(RfidToken, rfid_token.id)
+    assert rfid_token.member_id == member1.id
+
+    # Ensure proper re-assignment
     conn = put conn, rfid_token_path(conn, :update, rfid_token), rfid_token: Dict.merge(@valid_attrs, member_id: member2.id, id: rfid_token.id)
     rfid_token = Repo.get!(RfidToken, rfid_token.id)
     assert rfid_token.member_id == member2.id
