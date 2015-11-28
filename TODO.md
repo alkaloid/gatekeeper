@@ -4,7 +4,6 @@
 * Use `history(-1)` on RFID token links so they load relatively
 
 * Check for future-dated Company deactivation dates (so we can schedule deactivations)
-* Fix Company Join Date to be a date only (no time)
 * Add phony-style phone validation & normalization & display formatting
 * Allow time-of-day and day-of-week restrictions on door group access
 * Show inactive items more obviously (strikethrough on name, or perhaps in a separate section)
@@ -17,4 +16,3 @@
   - Search for Door Group by name
 
 * Allow button in Web UI to lock/temporary unlock/persistent unlock the doors
-* Admin authentication
