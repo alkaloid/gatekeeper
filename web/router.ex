@@ -9,7 +9,7 @@ defmodule Gatekeeper.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :browser_session do
+  pipeline :requires_auth do
     plug Guardian.Plug.VerifySession
     plug Guardian.Plug.LoadResource
     plug Guardian.Plug.EnsureAuthenticated, on_failure: { Gatekeeper.PageController, :unauthenticated }
@@ -34,7 +34,7 @@ defmodule Gatekeeper.Router do
   end
 
   scope "/", Gatekeeper do
-    pipe_through [:browser, :browser_session]
+    pipe_through [:browser, :requires_auth]
 
     resources "/companies", CompanyController do
       resources "/members", MemberController do
