@@ -17,6 +17,11 @@ defmodule Gatekeeper.RfidTokenControllerTest do
     {:ok, conn: conn}
   end
 
+  test "redirects unauthenticated requests" do
+    conn = get conn, rfid_token_path(conn, :index)
+    assert redirected_to(conn) == page_path(conn, :index)
+  end
+
   ## Tokens associated with Members
   test "lists all entries on index", %{conn: conn} do
     company = create_company

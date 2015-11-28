@@ -17,6 +17,11 @@ defmodule Gatekeeper.DoorAccessAttemptControllerTest do
     {:ok, conn: conn}
   end
 
+  test "redirects unauthenticated requests" do
+    conn = get conn, door_access_attempt_path(conn, :index)
+    assert redirected_to(conn) == page_path(conn, :index)
+  end
+
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, door_access_attempt_path(conn, :index)
     assert html_response(conn, 200) =~ "Access Log"

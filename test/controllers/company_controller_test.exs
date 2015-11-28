@@ -16,6 +16,11 @@ defmodule Gatekeeper.CompanyControllerTest do
     {:ok, conn: conn}
   end
 
+  test "redirects unauthenticated requests" do
+    conn = get conn, company_path(conn, :index)
+    assert redirected_to(conn) == page_path(conn, :index)
+  end
+
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, company_path(conn, :index)
     assert html_response(conn, 200) =~ "Listing companies"

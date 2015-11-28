@@ -17,6 +17,12 @@ defmodule Gatekeeper.MemberControllerTest do
     {:ok, conn: conn}
   end
 
+  test "redirects unauthenticated requests" do
+    company = create_company
+    conn = get conn, company_member_path(conn, :index, company)
+    assert redirected_to(conn) == page_path(conn, :index)
+  end
+
   test "lists all entries on index", %{conn: conn} do
     company = create_company
     conn = get conn, company_member_path(conn, :index, company)
