@@ -24,7 +24,7 @@ defmodule Gatekeeper.Router do
 
     get "/:provider", AuthenticationController, :request
     get "/:provider/callback", AuthenticationController, :callback
-    post "/:provider/callback", AuthenticationController, :callback
+    delete "", AuthenticationController, :delete
   end
 
   scope "/", Gatekeeper do

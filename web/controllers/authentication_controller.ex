@@ -3,6 +3,8 @@ defmodule Gatekeeper.AuthenticationController do
   plug Ueberauth
 
   alias Ueberauth.Strategy.Helpers
+  alias Gatekeeper.Repo
+  alias Gatekeeper.Member
 
   def request(conn, _params) do
     render(conn, "request.html", callback_url: Helpers.callback_url(conn))
@@ -10,8 +12,8 @@ defmodule Gatekeeper.AuthenticationController do
 
   def delete(conn, _params) do
     conn
-    |> put_flash(:info, "You have been logged out!")
-    |> configure_session(drop: true)
+    |> put_flash(:info, "You have been logged out.")
+    |> Guardian.Plug.sign_out
     |> redirect(to: "/")
   end
 
@@ -23,16 +25,20 @@ defmodule Gatekeeper.AuthenticationController do
 
   def callback(%{ assigns: %{ ueberauth_auth: auth } } = conn, _params) do
 IO.puts "auth: #{inspect auth}"
-    #case UserFromAuth.find_or_create(auth) do
-    #  {:ok, user} ->
+    case Repo.get_by(Member, email: auth.info.email) do
+      %Member{role: "admin"} = member ->
         conn
-        |> put_flash(:info, "Successfully authenticated.")
-    #    |> put_session(:current_user, user)
+        |> put_flash(:info, "Successfully logged in as #{member.name}.")
+        |> Guardian.Plug.sign_in(member)
+        |> redirect(to: door_access_attempt_path(conn, :index))
+      %Member{} = member ->
+        conn
+        |> put_flash(:error, "You must be an admin to continue.")
         |> redirect(to: "/")
-    #  {:error, reason} ->
-    #    conn
-    #    |> put_flash(:error, reason)
-    #    |> redirect(to: "/")
-    #end
+      nil ->
+        conn
+        |> put_flash(:error, "Access Denied.")
+        |> redirect(to: "/")
+    end
   end
 end
