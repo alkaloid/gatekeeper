@@ -41,3 +41,10 @@ config :ueberauth, Ueberauth,
 config :ueberauth, Ueberauth.Strategy.Slack.OAuth,
   client_id: System.get_env("SLACK_CLIENT_ID"),
   client_secret: System.get_env("SLACK_CLIENT_SECRET")
+
+config :guardian, Guardian,
+  issuer: "Gatekeeper",
+  ttl: { 30, :days },
+  verify_issuer: true, # optional
+  secret_key: System.get_env("GUARDIAN_SECRET_KEY"),
+  serializer: Gatekeeper.GuardianSerializer

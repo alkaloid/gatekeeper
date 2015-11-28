@@ -1,3 +1,4 @@
 SLACK_CLIENT_ID=
 SLACK_CLIENT_SECRET=
 SLACK_TEAM_ID= # Optional
+GUARDIAN_SECRET_KEY= # Random string to protect security of session tokens

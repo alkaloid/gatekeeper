@@ -43,6 +43,7 @@ defmodule Gatekeeper.Mixfile do
     [
       {:cowboy, "~> 1.0"},
       {:elixir_ale, "0.3.0", only: :prod},
+      {:guardian, "~> 0.7.0"},
       {:mix_test_watch, "~> 0.2", only: :dev},
       {:phoenix, "~> 1.0.3"},
       {:phoenix_ecto, "~> 1.1"},
