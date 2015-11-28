@@ -24,7 +24,6 @@ defmodule Gatekeeper.AuthenticationController do
   end
 
   def callback(%{ assigns: %{ ueberauth_auth: auth } } = conn, _params) do
-IO.puts "auth: #{inspect auth}"
     case Repo.get_by(Member, email: auth.info.email) do
       %Member{role: "admin"} = member ->
         conn
