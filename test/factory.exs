@@ -35,6 +35,7 @@ defmodule Gatekeeper.Factory do
       name: "Test Member",
       email: "test@example.com",
       active: true,
+      role: "none",
     }
     # :company is a required parameter
     default_params = Dict.merge(default_params, company_id: params[:company].id)

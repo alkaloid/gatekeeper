@@ -2,13 +2,17 @@ defmodule Gatekeeper.CompanyControllerTest do
   use Gatekeeper.ConnCase
 
   import Gatekeeper.Factory
+  import Guardian.TestHelper
 
   alias Gatekeeper.Company
   @valid_attrs %{departure_date: "2010-04-17 14:00:00", join_date: "2010-04-17 14:00:00", name: "some content"}
   @invalid_attrs %{}
 
   setup do
+    admin = create_member role: "admin", email: "admin@example.com", company: create_company
     conn = conn()
+    |> conn_with_fetched_session
+    |> Guardian.Plug.sign_in(admin)
     {:ok, conn: conn}
   end
 

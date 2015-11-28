@@ -2,11 +2,18 @@ defmodule Gatekeeper.DoorGroupControllerTest do
   use Gatekeeper.ConnCase
 
   alias Gatekeeper.DoorGroup
+
+  import Gatekeeper.Factory
+  import Guardian.TestHelper
+
   @valid_attrs %{name: "some content"}
   @invalid_attrs %{}
 
   setup do
+    admin = create_member role: "admin", email: "admin@example.com", company: create_company
     conn = conn()
+    |> conn_with_fetched_session
+    |> Guardian.Plug.sign_in(admin)
     {:ok, conn: conn}
   end
 

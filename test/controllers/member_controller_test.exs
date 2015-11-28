@@ -2,14 +2,18 @@ defmodule Gatekeeper.MemberControllerTest do
   use Gatekeeper.ConnCase
 
   import Gatekeeper.Factory
+  import Guardian.TestHelper
 
   alias Gatekeeper.Member
 
-  @valid_attrs %{name: "Test Person",  email: "tperson@example.com", active: true}
+  @valid_attrs %{name: "Test Person",  email: "tperson@example.com", active: true, role: "none"}
   @invalid_attrs %{name: "", company_id: nil}
 
   setup do
+    admin = create_member role: "admin", email: "admin@example.com", company: create_company
     conn = conn()
+    |> conn_with_fetched_session
+    |> Guardian.Plug.sign_in(admin)
     {:ok, conn: conn}
   end
 
