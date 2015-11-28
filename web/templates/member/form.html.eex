@@ -31,6 +31,11 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :role, "Role", class: "control-label" %>
+    <%= select f, :role, [:none, :admin], class: "form-control" %>
+  </div>
+
+  <div class="form-group">
     <h4>Door Groups</h4>
     <p>Check each door group to which this member should have access</p>
     <p>Note! use this only if this member needs special access. Most members will have access through his/her <%= link "company", to: company_path(@conn, :show, @company) %>.
