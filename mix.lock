@@ -30,5 +30,5 @@
   "timex": {:hex, :timex, "1.0.0-rc3"},
   "tzdata": {:hex, :tzdata, "0.5.5"},
   "ueberauth": {:git, "https://github.com/ueberauth/ueberauth.git", "362831601e2968f2b2eac90d7b939aa2bf4f5222", []},
-  "ueberauth_slack": {:git, "https://github.com/bklang/ueberauth_slack.git", "8b8ec48778aedf45ac8eef55c2b160ec1ba416ba", []},
+  "ueberauth_slack": {:git, "https://github.com/bklang/ueberauth_slack.git", "7101122316a5aa91d74cfb2ab7a79b91473e80b2", []},
   "uuid": {:hex, :uuid, "1.1.1"}}
