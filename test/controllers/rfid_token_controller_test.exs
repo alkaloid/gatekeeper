@@ -95,12 +95,22 @@ defmodule Gatekeeper.RfidTokenControllerTest do
     assert html_response(conn, 200) =~ "Edit RFID token"
   end
 
-  test "deletes chosen resource", %{conn: conn} do
+  test "deletes chosen resource on the full company/member/rfid_token path", %{conn: conn} do
     company = create_company
     member = create_member company: company
     rfid_token = create_rfid_token member: member
     assert %{active: true} = Repo.get(RfidToken, rfid_token.id)
     conn = delete conn, company_member_rfid_token_path(conn, :delete, company, member, rfid_token)
+    assert redirected_to(conn) == company_member_path(conn, :show, company, member)
+    assert %{active: false} = Repo.get(RfidToken, rfid_token.id)
+  end
+
+  test "deletes chosen resource on the short rfid_token path", %{conn: conn} do
+    company = create_company
+    member = create_member company: company
+    rfid_token = create_rfid_token member: member
+    assert %{active: true} = Repo.get(RfidToken, rfid_token.id)
+    conn = delete conn, rfid_token_path(conn, :delete, rfid_token)
     assert redirected_to(conn) == company_member_path(conn, :show, company, member)
     assert %{active: false} = Repo.get(RfidToken, rfid_token.id)
   end
