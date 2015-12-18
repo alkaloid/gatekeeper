@@ -91,10 +91,10 @@ defmodule Gatekeeper.RfidTokenController do
     end
   end
 
-  def delete(conn, %{"company_id" => company_id, "member_id" => member_id, "id" => id}) do
-    company = Repo.get!(Company, company_id)
-    member = Repo.get!(Member, member_id)
-    rfid_token = Repo.get!(RfidToken, id)
+  def delete(conn, %{"id" => id}) do
+    rfid_token = Repo.get!(RfidToken, id) |> Repo.preload(member: :company)
+    member = rfid_token.member
+    company = member.company
 
     # Here we use update! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
