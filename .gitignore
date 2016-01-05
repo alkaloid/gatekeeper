@@ -24,6 +24,9 @@ erl_crash.dump
 /config/prod.secret.exs
 .env
 
+# Ignore ansible role files downloaded as dependencies/requirements
+/provisioning/roles
+
 # Editor swapfiles
 .*.sw*
 .sw*
