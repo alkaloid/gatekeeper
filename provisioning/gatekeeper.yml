@@ -33,10 +33,12 @@
   remote_user: pi
   sudo: yes
   tasks:
-  - name: Download NodeJS
-    get_url: url=http://node-arm.herokuapp.com/node_latest_armhf.deb dest=/tmp/node_latest_armhf.deb
+  - name: Add NodeSource packaging key
+    apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
+  - name: Add NodeSource repository
+    apt_repository: repo='deb https://deb.nodesource.com/node_4.x jessie main' state=present
   - name: Install NodeJS
-    apt: deb=/tmp/node_latest_armhf.deb
+    apt: name=nodejs state=latest
 
 - hosts: all
   remote_user: pi
