@@ -40,7 +40,7 @@ Alternatively, to run Ansible on a remote development machine:
 
 1. Install Ansible (via Pip, Homebrew, apt) 1.9+
 2. Modify `provisioning/hosts` as necessary to deploy to your Pi's remotely.
-3. Install provisioning dependencies: `sudo ansible-galaxy install -r provisioning/requirements.txt`.
+3. Install provisioning dependencies: `ansible-galaxy install -r provisioning/requirements.txt`.
 4. Run the provisioning script: `ansible-playbook -e postgresql_password=SuperSecret provisioning/gatekeeper.yml`
 
 ## Authentication
