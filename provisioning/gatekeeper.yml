@@ -11,6 +11,8 @@
     apt: name=elixir state=latest
   - name: Install Development Erlang Headers
     apt: name=erlang-dev state=latest
+  - name: Install Erlang parse tools (needed for yecc module, which is needed by mimetype_parser)
+    apt: name=erlang-parsetools state=latest
   - name: Install cmake
     apt: name=cmake state=latest
   - name: Install PostgreSQL
