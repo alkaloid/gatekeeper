@@ -3,10 +3,10 @@
   remote_user: pi
   sudo: yes
   tasks:
-  - name: Add Erlang Solutions repository
-    apt_repository: repo='deb http://packages.erlang-solutions.com/debian wheezy contrib' state=present
   - name: Add Erlang Solutions packaging key
     apt_key: url=https://packages.erlang-solutions.com/debian/erlang_solutions.asc state=present
+  - name: Add Erlang Solutions repository
+    apt_repository: repo='deb http://packages.erlang-solutions.com/debian wheezy contrib' state=present
   - name: Install Erlang Solutions Elixir package
     apt: name=elixir state=latest
   - name: Install Development Erlang Headers
@@ -33,6 +33,8 @@
   remote_user: pi
   sudo: yes
   tasks:
+  - name: Enable HTTPS for apt-get
+    apt: name=apt-transport-https state=latest
   - name: Add NodeSource packaging key
     apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
   - name: Add NodeSource repository
