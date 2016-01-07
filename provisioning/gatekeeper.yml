@@ -32,8 +32,16 @@
 - hosts: all
   remote_user: pi
   sudo: yes
+  tasks:
+  - name: Download NodeJS
+    get_url: url=http://node-arm.herokuapp.com/node_latest_armhf.deb dest=/tmp/node_latest_armhf.deb
+  - name: Install NodeJS
+    apt: deb=/tmp/node_latest_armhf.deb
+
+- hosts: all
+  remote_user: pi
+  sudo: yes
   roles:
-    - nodesource.node
     - jacoelho.phoenix-app
   vars:
     phoenix_app_name: gatekeeper
