@@ -47,6 +47,12 @@
 - hosts: all
   remote_user: pi
   sudo: yes
+  tasks:
+  - user: name=gatekeeper home=/var/www groups=gpio,dialout
+
+- hosts: all
+  remote_user: pi
+  sudo: yes
   roles:
     - jacoelho.phoenix-app
   vars:
