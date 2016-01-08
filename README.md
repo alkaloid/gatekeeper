@@ -29,19 +29,12 @@ To run the tests, use either `mix test` or `mix test.watch`.
 
 The provided Ansible playbook can be used to configure a Raspberry Pi to run Gatekeeper. These instructions assume you are running Raspbian Jesse (Debian 8).
 
-1. Install Ansible: `sudo apt-get install libpython-dev && sudo pip install ansible`
-2. Add `127.0.0.1` to the top of `/etc/ansible/hosts` (works around an old Ansible bug)
-3. Install provisioning dependencies: `sudo ansible-galaxy install -r provisioning/requirements.txt`.
-4. Run the provisioning script:
-    `sudo ansible-playbook -c local -e postgresql_password=SuperSecret provisioning/gatekeeper.yml`
-Make sure to change the PostgreSQL password to something of your choosing
-
-Alternatively, to run Ansible on a remote development machine:
-
-1. Install Ansible (via Pip, Homebrew, apt) 1.9+
-2. Modify `provisioning/hosts` as necessary to deploy to your Pi's remotely.
+1. Install Ansible 1.9 (or later) on your workstation - this can be done via Pip, Homebrew, apt, etc.
+2. Modify `provisioning/hosts` as necessary to deploy to your devices remotely.
 3. Install provisioning dependencies: `ansible-galaxy install -r provisioning/requirements.txt`.
-4. Run the provisioning script: `ansible-playbook -e postgresql_password=SuperSecret provisioning/gatekeeper.yml`
+4. Run the provisioning script: `ansible-playbook -e postgresql_password=SuperSecret provisioning/gatekeeper.yml`.
+
+**Make sure to change the PostgreSQL password to something of your choosing**
 
 ## Authentication
 
