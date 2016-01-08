@@ -59,19 +59,6 @@
   remote_user: pi
   sudo: yes
   tasks:
-  - name: Enable HTTPS for apt-get
-    apt: name=apt-transport-https state=latest
-  - name: Add NodeSource packaging key
-    apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
-  - name: Add NodeSource repository
-    apt_repository: repo='deb https://deb.nodesource.com/node_4.x jessie main' state=present
-  - name: Install NodeJS
-    apt: name=nodejs state=latest
-
-- hosts: all
-  remote_user: pi
-  sudo: yes
-  tasks:
   - user: name=gatekeeper home=/var/www groups=gpio,dialout
   - locale_gen: name=en_US.UTF-8 state=present
 
@@ -79,6 +66,7 @@
   remote_user: pi
   sudo: yes
   roles:
+    - nodesource.node
     - jacoelho.phoenix-app
   vars:
     phoenix_app_name: gatekeeper
