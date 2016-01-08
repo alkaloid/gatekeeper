@@ -1,4 +1,28 @@
 ---
+# This assumes that the door is running a Raspberry Pi.
+- hosts: doors
+  remote_user: pi
+  sudo: yes
+  tasks:
+  - shell: /usr/bin/raspi-config --expand-rootfs
+    args:
+      creates: /etc/rootfs-expanded
+    register: rootfs_expanded
+  - shell: /bin/touch /etc/rootfs-expanded
+    args:
+      creates: /etc/rootfs-expanded
+  - name: reboot to get larger rootfs
+    command: shutdown -r now "Ansible triggered - grow root filesystem"
+    async: 0
+    poll: 0
+    ignore_errors: true
+    when: rootfs_expanded is defined
+  - name: waiting for server to come back
+    # Note that the port parameter is required because of https://github.com/ansible/ansible/issues/9983
+    local_action: wait_for host={{ inventory_hostname }} state=started port=22
+    sudo: false
+    when: rootfs_expanded is defined
+
 - hosts: all
   remote_user: pi
   sudo: yes
