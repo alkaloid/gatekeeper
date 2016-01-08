@@ -50,7 +50,7 @@ defmodule Gatekeeper.Mixfile do
       {:phoenix_html, "~> 2.3"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:postgrex, ">= 0.0.0"},
-      {:serial, "0.1.1"},
+      {:serial, "0.1.2"},
       {:scrivener, "~> 1.2"},
       {:scrivener_html, "~> 1.1"},
       {:timex, "~> 2.0"},
