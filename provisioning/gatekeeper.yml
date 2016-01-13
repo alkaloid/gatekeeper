@@ -60,7 +60,6 @@
   sudo: yes
   tasks:
   - user: name=gatekeeper home=/var/www groups=gpio,dialout
-  - locale_gen: name=en_US.UTF-8 state=present
 
 - hosts: all
   remote_user: pi
