@@ -43,17 +43,18 @@ defmodule Gatekeeper.Mixfile do
     [
       {:cowboy, "~> 1.0"},
       {:elixir_ale, "0.3.0", only: :prod},
-      {:guardian, "~> 0.7.0"},
+      {:guardian, "~> 0.10.0"},
       {:mix_test_watch, "~> 0.2", only: :dev},
-      {:phoenix, "~> 1.0.3"},
-      {:phoenix_ecto, "~> 1.1"},
-      {:phoenix_html, "~> 2.1"},
+      {:phoenix, "~> 1.1.1"},
+      {:phoenix_ecto, "~> 2.0"},
+      {:phoenix_html, "~> 2.3"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:postgrex, ">= 0.0.0"},
       {:serial, "0.1.1"},
       {:timex, "~> 1.0.0-rc3"},
-      {:ueberauth, github: "ueberauth/ueberauth", override: true},
-      {:ueberauth_slack, github: "bklang/ueberauth_slack"},
+      {:oauth2, "0.5.0"},
+      {:ueberauth, "~> 0.2"},
+      {:ueberauth_slack, "~> 0.2"},
     ]
   end
 
