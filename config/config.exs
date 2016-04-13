@@ -48,3 +48,6 @@ config :guardian, Guardian,
   verify_issuer: true, # optional
   secret_key: System.get_env("GUARDIAN_SECRET_KEY"),
   serializer: Gatekeeper.GuardianSerializer
+
+config :scrivener_html,
+  routes_helper: Gatekeeper.Router.Helpers

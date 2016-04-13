@@ -38,6 +38,7 @@
       </tr>
     <% end %>
   </table>
+  <%= pagination_links @conn, @page %>
 <% else %>
   <p class="no-associations">No attempts to access a door</p>
 <% end %>
