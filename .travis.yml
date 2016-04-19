@@ -11,3 +11,5 @@ before_script:
   - mix deps.compile
   - mix deps.compile
 script: mix test
+env:
+  - SECRET_KEY_BASE=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
