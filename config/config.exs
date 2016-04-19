@@ -9,7 +9,7 @@ use Mix.Config
 config :gatekeeper, Gatekeeper.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
-  secret_key_base: "dnF75HX8VxTVZJhe19bUwhdqgkTWLxgXT2YbD0O6RXCadho2reGj83sLycjoO7MI",
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
   render_errors: [accepts: ~w(html json)],
   pubsub: [name: Gatekeeper.PubSub,
            adapter: Phoenix.PubSub.PG2]
