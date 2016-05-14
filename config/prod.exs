@@ -60,3 +60,12 @@ config :gatekeeper, :doorlock,
   gpio_port: '2',
   type: Gpio,
   door_id: 1
+
+config :gatekeeper, Gatekeeper.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: System.get_env("DATABASE_USERNAME"),
+  password: System.get_env("DATABASE_PASSWORD"),
+  database: System.get_env("DATABASE_DATABASE"),
+  hostname: System.get_env("DATABASE_HOSTNAME") || "localhost",
+  template: "template0",
+  pool_size: 10
