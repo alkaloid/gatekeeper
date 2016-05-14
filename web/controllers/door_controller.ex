@@ -19,7 +19,7 @@ defmodule Gatekeeper.DoorController do
   def create(conn, %{"door" => door_params}) do
     changeset = Door.changeset(%Door{}, door_params)
 
-    case Repo.insert(changeset) do
+    case WriteRepo.insert(changeset) do
       {:ok, _door} ->
         conn
         |> put_flash(:info, "Door created successfully.")
@@ -48,7 +48,7 @@ defmodule Gatekeeper.DoorController do
     door = Repo.get!(Door, id)
     changeset = Door.changeset(door, door_params)
 
-    case Repo.update(changeset) do
+    case WriteRepo.update(changeset) do
       {:ok, door} ->
         conn
         |> put_flash(:info, "Door updated successfully.")

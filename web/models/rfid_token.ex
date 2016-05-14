@@ -4,6 +4,7 @@ defmodule Gatekeeper.RfidToken do
   alias Gatekeeper.RfidToken
   alias Gatekeeper.Member
   alias Gatekeeper.Repo
+  alias Gatekeeper.WriteRepo
   alias Gatekeeper.Door
   alias Gatekeeper.DoorAccessAttempt
 
@@ -76,11 +77,11 @@ defmodule Gatekeeper.RfidToken do
 
   def autocreate_rfid_token(identifier) do
     change = changeset(%Gatekeeper.RfidToken{}, %{identifier: identifier, active: false})
-    Repo.insert! change
+    WriteRepo.insert! change
   end
 
   def create_access_attempt(rfid_token, door, allowed, reason, member_id) do
     changeset = DoorAccessAttempt.changeset(%DoorAccessAttempt{}, %{rfid_token_id: rfid_token.id, door_id: door.id, access_allowed: allowed, reason: reason, member_id: member_id})
-    Repo.insert! changeset
+    WriteRepo.insert! changeset
   end
 end

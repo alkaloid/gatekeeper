@@ -29,7 +29,7 @@ defmodule Gatekeeper.MemberController do
     door_groups = Repo.all(DoorGroup)
     changeset = Member.changeset(%Member{company_id: String.to_integer(company_id)}, member_params)
 
-    case Repo.insert(changeset) do
+    case WriteRepo.insert(changeset) do
       {:ok, member} ->
         save_door_groups(member, member_params["door_groups"])
         conn
@@ -65,7 +65,7 @@ defmodule Gatekeeper.MemberController do
     door_groups = Repo.all(DoorGroup)
     changeset = Member.changeset(member, member_params)
 
-    case Repo.update(changeset) do
+    case WriteRepo.update(changeset) do
       {:ok, member} ->
         save_door_groups(member, member_params["door_groups"])
         conn
@@ -81,7 +81,7 @@ defmodule Gatekeeper.MemberController do
     member = Repo.get!(Member, id)
 
     changeset = Member.changeset(member, %{active: false})
-    Repo.update!(changeset)
+    WriteRepo.update!(changeset)
 
     conn
     |> put_flash(:info, "Member successfully deactivated")
@@ -90,13 +90,15 @@ defmodule Gatekeeper.MemberController do
 
   def save_door_groups(member, new_door_group_ids) do
     # Remove all existing door <-> door group associations
-    Ecto.Query.from(door_group_member in DoorGroupMember, where: door_group_member.member_id == ^member.id) |> Repo.delete_all
+    # TODO: DRY with similar Company/Door functionality.
+    # TODO: Wrap in a transaction.
+    Ecto.Query.from(door_group_member in DoorGroupMember, where: door_group_member.member_id == ^member.id) |> WriteRepo.delete_all
 
     # Insert new door <-> door group associations based on provided checkboxes
     if new_door_group_ids do # can be nil if no boxes were checked
       for {id, _val} <- new_door_group_ids do
         changeset = DoorGroupMember.changeset(%DoorGroupMember{}, %{member_id: member.id, door_group_id: id})
-        {:ok, _} = Repo.insert(changeset)
+        {:ok, _} = WriteRepo.insert(changeset)
       end
     end
   end

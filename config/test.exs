@@ -21,4 +21,13 @@ config :gatekeeper, Gatekeeper.Repo,
   template: "template0",
   pool: Ecto.Adapters.SQL.Sandbox
 
+config :gatekeeper, Gatekeeper.WriteRepo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "postgres",
+  password: "postgres",
+  database: "gatekeeper_test",
+  hostname: "localhost",
+  template: "template0",
+  pool: Ecto.Adapters.SQL.Sandbox
+
 System.put_env("GUARDIAN_SECRET_KEY", "abcd")

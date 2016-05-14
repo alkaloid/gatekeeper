@@ -69,3 +69,12 @@ config :gatekeeper, Gatekeeper.Repo,
   hostname: System.get_env("DATABASE_HOSTNAME") || "localhost",
   template: "template0",
   pool_size: 10
+
+config :gatekeeper, Gatekeeper.WriteRepo,
+  adapter: Ecto.Adapters.Postgres,
+  username: System.get_env("DATABASE_WRITE_USERNAME"),
+  password: System.get_env("DATABASE_WRITE_PASSWORD"),
+  database: System.get_env("DATABASE_WRITE_DATABASE"),
+  hostname: System.get_env("DATABASE_WRITE_HOSTNAME") || "localhost",
+  template: "template0",
+  pool_size: 10
