@@ -4,7 +4,7 @@ defmodule Gatekeeper.RfidToken do
   alias Gatekeeper.RfidToken
   alias Gatekeeper.Member
   alias Gatekeeper.Repo
-  alias Gatekeeper.WriteRepo
+  use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
   alias Gatekeeper.Door
   alias Gatekeeper.DoorAccessAttempt
 

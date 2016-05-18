@@ -45,7 +45,7 @@ defmodule Gatekeeper.DoorControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    door = Repo.insert! %Door{}
+    door = WriteRepo.insert! %Door{}
     conn = get conn, door_path(conn, :show, door)
     assert html_response(conn, 200) =~ "<h1>#{door.name}</h1>"
   end
@@ -57,13 +57,13 @@ defmodule Gatekeeper.DoorControllerTest do
   end
 
   test "renders form for editing chosen resource", %{conn: conn} do
-    door = Repo.insert! %Door{}
+    door = WriteRepo.insert! %Door{}
     conn = get conn, door_path(conn, :edit, door)
     assert html_response(conn, 200) =~ "Edit door"
   end
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    door = Repo.insert! %Door{}
+    door = WriteRepo.insert! %Door{}
     conn = put conn, door_path(conn, :update, door), door: @valid_attrs
     assert redirected_to(conn) == door_path(conn, :show, door)
     assert Repo.get_by(Door, @valid_attrs)
@@ -87,7 +87,7 @@ defmodule Gatekeeper.DoorControllerTest do
   test "removes unchecked associated door groups from a company", %{conn: conn} do
     door_group = create_door_group
     door = create_door
-    Repo.insert! %Gatekeeper.DoorGroupDoor{door_id: door.id, door_group_id: door_group.id}
+    WriteRepo.insert! %Gatekeeper.DoorGroupDoor{door_id: door.id, door_group_id: door_group.id}
 
     conn = put conn, door_group_path(conn, :update, door_group), door_group: Dict.merge(@valid_attrs, id: door_group.id)
     assert redirected_to(conn) == door_group_path(conn, :show, door_group)
@@ -97,13 +97,13 @@ defmodule Gatekeeper.DoorControllerTest do
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    door = Repo.insert! %Door{}
+    door = WriteRepo.insert! %Door{}
     conn = put conn, door_path(conn, :update, door), door: @invalid_attrs
     assert html_response(conn, 200) =~ "Edit door"
   end
 
   test "does not delete chosen resource", %{conn: conn} do
-    door = Repo.insert! %Door{}
+    door = WriteRepo.insert! %Door{}
     conn = delete conn, door_path(conn, :delete, door)
     assert redirected_to(conn) == door_path(conn, :index)
     assert Repo.get(Door, door.id)

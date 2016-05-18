@@ -98,7 +98,7 @@ defmodule Gatekeeper.MemberControllerTest do
     door_group = create_door_group
     company = create_company
     member = create_member company: company
-    Repo.insert! %Gatekeeper.DoorGroupCompany{company_id: company.id, door_group_id: door_group.id}
+    WriteRepo.insert! %Gatekeeper.DoorGroupCompany{company_id: company.id, door_group_id: door_group.id}
 
     conn = put conn, company_member_path(conn, :update, company, member), member: Dict.merge(@valid_attrs, id: member.id, company_id: company.id)
     assert redirected_to(conn) == company_member_path(conn, :show, company, member)

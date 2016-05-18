@@ -59,7 +59,7 @@ defmodule Gatekeeper.DoorAccessAttemptControllerTest do
   end
 
   test "renders form for editing chosen resource", %{conn: conn} do
-    door_access_attempt = Repo.insert! %DoorAccessAttempt{}
+    door_access_attempt = WriteRepo.insert! %DoorAccessAttempt{}
     conn = get conn, door_access_attempt_path(conn, :edit, door_access_attempt)
     assert html_response(conn, 200) =~ "Edit door access attempt"
   end
@@ -72,13 +72,13 @@ defmodule Gatekeeper.DoorAccessAttemptControllerTest do
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    door_access_attempt = Repo.insert! %DoorAccessAttempt{}
+    door_access_attempt = WriteRepo.insert! %DoorAccessAttempt{}
     conn = put conn, door_access_attempt_path(conn, :update, door_access_attempt), door_access_attempt: @invalid_attrs
     assert html_response(conn, 200) =~ "Edit door access attempt"
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    door_access_attempt = Repo.insert! %DoorAccessAttempt{}
+    door_access_attempt = WriteRepo.insert! %DoorAccessAttempt{}
     conn = delete conn, door_access_attempt_path(conn, :delete, door_access_attempt)
     assert redirected_to(conn) == door_access_attempt_path(conn, :index)
     refute Repo.get(DoorAccessAttempt, door_access_attempt.id)

@@ -21,7 +21,8 @@ defmodule Gatekeeper.ChannelCase do
       use Phoenix.ChannelTest
 
       alias Gatekeeper.Repo
-      import Ecto.Model
+      use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
+      import Ecto.Schema
       import Ecto.Query, only: [from: 2]
 
 

@@ -44,7 +44,7 @@ defmodule Gatekeeper.DoorGroupControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    door_group = Repo.insert! %DoorGroup{name: "Test DG"}
+    door_group = WriteRepo.insert! %DoorGroup{name: "Test DG"}
     conn = get conn, door_group_path(conn, :show, door_group)
     assert html_response(conn, 200) =~ "Door Group: #{door_group.name}"
   end
@@ -56,26 +56,26 @@ defmodule Gatekeeper.DoorGroupControllerTest do
   end
 
   test "renders form for editing chosen resource", %{conn: conn} do
-    door_group = Repo.insert! %DoorGroup{}
+    door_group = WriteRepo.insert! %DoorGroup{}
     conn = get conn, door_group_path(conn, :edit, door_group)
     assert html_response(conn, 200) =~ "Edit door group"
   end
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    door_group = Repo.insert! %DoorGroup{}
+    door_group = WriteRepo.insert! %DoorGroup{}
     conn = put conn, door_group_path(conn, :update, door_group), door_group: @valid_attrs
     assert redirected_to(conn) == door_group_path(conn, :show, door_group)
     assert Repo.get_by(DoorGroup, @valid_attrs)
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    door_group = Repo.insert! %DoorGroup{}
+    door_group = WriteRepo.insert! %DoorGroup{}
     conn = put conn, door_group_path(conn, :update, door_group), door_group: @invalid_attrs
     assert html_response(conn, 200) =~ "Edit door group"
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    door_group = Repo.insert! %DoorGroup{}
+    door_group = WriteRepo.insert! %DoorGroup{}
     conn = delete conn, door_group_path(conn, :delete, door_group)
     assert redirected_to(conn) == door_group_path(conn, :index)
     refute Repo.get(DoorGroup, door_group.id)

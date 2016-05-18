@@ -1,5 +1,6 @@
 defmodule Gatekeeper.DoorTest do
   use Gatekeeper.ModelCase
+  use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
 
   import Gatekeeper.Factory
 
