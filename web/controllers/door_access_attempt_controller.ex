@@ -5,9 +5,9 @@ defmodule Gatekeeper.DoorAccessAttemptController do
 
   plug :scrub_params, "door_access_attempt" when action in [:create, :update]
 
-  def index(conn, _params) do
-    door_access_attempts = Repo.all(DoorAccessAttempt.ordered_preloaded)
-    render(conn, "index.html", door_access_attempts: door_access_attempts)
+  def index(conn, params) do
+    page = DoorAccessAttempt.ordered_preloaded |> Gatekeeper.Repo.paginate(params)
+    render conn, "index.html", page: page
   end
 
   def new(conn, _params) do

@@ -32,4 +32,4 @@
 </ul>
 
 
-<%= Phoenix.View.render Gatekeeper.DoorAccessAttemptView, "access_log.html", access_attempts: @company.door_access_attempts, conn: @conn %>
+<%= Phoenix.View.render Gatekeeper.DoorAccessAttemptView, "access_log.html", page: @door_access_attempts_page, conn: @conn %>

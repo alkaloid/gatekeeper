@@ -4,6 +4,7 @@ defmodule Gatekeeper.CompanyController do
   alias Gatekeeper.Company
   alias Gatekeeper.DoorGroup
   alias Gatekeeper.DoorGroupCompany
+  alias Gatekeeper.DoorAccessAttempt
 
   plug :scrub_params, "company" when action in [:create, :update]
 
@@ -38,10 +39,17 @@ defmodule Gatekeeper.CompanyController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    daa_query = Gatekeeper.DoorAccessAttempt.ordered_preloaded
-    company = Repo.get!(Company, id) |> Repo.preload([:members, :door_groups, [door_access_attempts: daa_query]])
-    render(conn, "show.html", company: company)
+  def show(conn, params = %{"id" => id}) do
+    company = Repo.get!(Company, id) |> Repo.preload([[members: :rfid_tokens], :door_groups])
+    company_rfid_tokens = Enum.reduce company.members, [], fn(member, acc) ->
+      acc ++ Enum.reduce member.rfid_tokens, acc, fn(rfid_token, acc) ->
+        acc ++ [rfid_token.id]
+      end
+    end
+
+    query = from daa in DoorAccessAttempt.ordered_preloaded, where: daa.rfid_token_id in ^company_rfid_tokens
+    page = Repo.paginate(query, params)
+    render(conn, "show.html", company: company, door_access_attempts_page: page)
   end
 
   def edit(conn, %{"id" => id}) do

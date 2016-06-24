@@ -38,7 +38,7 @@
 
 <%= Phoenix.View.render Gatekeeper.RfidTokenView, "list.html", member: @member, rfid_tokens: @member.rfid_tokens, conn: @conn %>
 
-<%= Phoenix.View.render Gatekeeper.DoorAccessAttemptView, "access_log.html", access_attempts: @member.door_access_attempts, conn: @conn %>
+<%= Phoenix.View.render Gatekeeper.DoorAccessAttemptView, "access_log.html", page: @door_access_attempts_page, conn: @conn %>
 
 <%= link "Edit", to: company_member_path(@conn, :edit, @member.company, @member) %>
 |

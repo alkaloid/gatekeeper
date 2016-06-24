@@ -39,13 +39,11 @@ defmodule Gatekeeper.RfidTokenController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    rfid_token = Repo.get!(RfidToken, id)
-                 |> Repo.preload([
-                      [member: :company],
-                      [door_access_attempts: DoorAccessAttempt.ordered_preloaded]
-                    ])
-    render(conn, "show.html", rfid_token: rfid_token, member: rfid_token.member, door_access_attempts: rfid_token.door_access_attempts)
+  def show(conn, params = %{"id" => id}) do
+    rfid_token = Repo.get!(RfidToken, id) |> Repo.preload [member: :company]
+    query = from daa in DoorAccessAttempt.ordered_preloaded, where: daa.rfid_token_id == ^rfid_token.id
+    page = Repo.paginate(query, params)
+    render conn, "show.html", rfid_token: rfid_token, member: rfid_token.member, door_access_attempts_page: page
   end
 
   def edit(conn, %{"company_id" => _company_id, "member_id" => _member_id, "id" => id}) do
