@@ -1,5 +1,5 @@
 <h4>Access Log</h4>
-<%= if length(@access_attempts) > 0 do %>
+<%= if length(@page.entries) > 0 do %>
   <table class="table">
     <tr>
       <th>Allowed</td>
@@ -8,7 +8,7 @@
       <th>Who</th>
       <th>Where</th>
     </tr>
-    <%= for access_attempt <- @access_attempts do %>
+    <%= for access_attempt <- @page.entries do %>
       <tr class="door_access_attempt_allowed_<%= access_attempt.access_allowed %>">
         <td>
           <%= if access_attempt.access_allowed do %>
@@ -38,7 +38,7 @@
       </tr>
     <% end %>
   </table>
-  <%= pagination_links @conn, @page %>
+  <%= pagination_links @page %>
 <% else %>
   <p class="no-associations">No attempts to access a door</p>
 <% end %>

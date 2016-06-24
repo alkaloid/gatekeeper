@@ -40,9 +40,15 @@ defmodule Gatekeeper.MemberController do
     end
   end
 
-  def show(conn, %{"company_id" => _company_id, "id" => id}) do
+  def show(conn, params = %{"company_id" => _company_id, "id" => id}) do
     member = Repo.get!(Member, id) |> Repo.preload([:company, :door_groups, :rfid_tokens, [door_access_attempts: DoorAccessAttempt.ordered_preloaded]])
-    render(conn, "show.html", member: member)
+    member_rfid_tokens = Enum.reduce member.rfid_tokens, [], fn(rfid_token, acc) ->
+      acc ++ [rfid_token.id]
+    end
+
+    query = from daa in DoorAccessAttempt.ordered_preloaded, where: daa.rfid_token_id in ^member_rfid_tokens
+    page = Repo.paginate(query, params)
+    render(conn, "show.html", member: member, door_access_attempts_page: page)
   end
 
   def edit(conn, %{"company_id" => company_id, "id" => id}) do

@@ -7,7 +7,7 @@ defmodule Gatekeeper.DoorAccessAttemptController do
 
   def index(conn, params) do
     page = DoorAccessAttempt.ordered_preloaded |> Gatekeeper.Repo.paginate(params)
-    render conn, "index.html", door_access_attempts: page.entries, page: page
+    render conn, "index.html", page: page
   end
 
   def new(conn, _params) do

@@ -13,6 +13,6 @@
 <br>
 
 
-<%= Phoenix.View.render Gatekeeper.DoorAccessAttemptView, "access_log.html", access_attempts: @door.access_attempts, conn: @conn %>
+<%= Phoenix.View.render Gatekeeper.DoorAccessAttemptView, "access_log.html", page: @door_access_attempts_page, conn: @conn %>
 <%= link "Edit", to: door_path(@conn, :edit, @door) %>
 <%= link "Back", to: door_path(@conn, :index) %>
