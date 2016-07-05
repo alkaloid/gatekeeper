@@ -81,8 +81,8 @@
     phoenix_app_port: 4000
     phoenix_app_mix_env: prod
     phoenix_app_repository: "https://github.com/alkaloid/gatekeeper.git"
-    phoenix_app_version: feature/deployment
+    phoenix_app_version: master
     phoenix_app_run_brunch: true
-    phoenix_app_run_migrate: true
+    phoenix_app_run_migrate: false
     phoenix_app_env: {}
     phoenix_app_configs: []
