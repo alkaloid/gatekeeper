@@ -66,5 +66,18 @@
     phoenix_app_version: master
     phoenix_app_run_brunch: true
     phoenix_app_run_migrate: false
-    phoenix_app_env: {}
+    phoenix_app_env:
+      GATEKEEPER_DOOR_ID: 1
+      GATEKEEPER_DOOR_GPIO: 4
+      SLACK_CLIENT_ID: "{{ slack_client_id }}"
+      SLACK_CLIENT_SECRET: "{{ slack_client_secret }}"
+      SLACK_TEAM_ID: "{{ slack_team_id }}"
+      SECRET_KEY_BASE: "{{ secret_key_base }}"
+      GUARDIAN_SECRET_KEY: "{{ guardian_secret_key }}"
+      DATABASE_READ_USERNAME: gatekeeper
+      DATABASE_READ_PASSWORD: "{{ postgresql_password }}"
+      DATABASE_READ_DATABASE: gatekeeper
+      DATABASE_WRITE_USERNAME: gatekeeper
+      DATABASE_WRITE_PASSWORD: "{{ postgresql_password }}"
+      DATABASE_WRITE_DATABASE: gatekeeper
     phoenix_app_configs: []
