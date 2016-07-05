@@ -32,7 +32,7 @@
   - name: Add Erlang Solutions packaging key
     apt_key: url=https://packages.erlang-solutions.com/debian/erlang_solutions.asc state=present
   - name: Add Erlang Solutions repository
-    apt_repository: repo='deb http://packages.erlang-solutions.com/debian wheezy contrib' state=present
+    apt_repository: repo='deb http://packages.erlang-solutions.com/debian jessie contrib' state=present
   - name: Install Erlang Solutions Elixir package
     apt: name=elixir state=latest
   - name: Install Development Erlang Headers
