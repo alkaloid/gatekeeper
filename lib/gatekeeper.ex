@@ -13,7 +13,7 @@ defmodule Gatekeeper do
       worker(Gatekeeper.Repo, []), # local, read-only
       worker(Gatekeeper.WriteRepo, []), # remote, read-write
       # Here you could define other workers and supervisors as children
-      worker(Gatekeeper.DoorInterface, [Application.get_env(:gatekeeper, :doorlock)[:door_id] || 1]),
+      worker(Gatekeeper.DoorInterface, [Application.get_env(:gatekeeper, :doorlock)[:door_id]]),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
