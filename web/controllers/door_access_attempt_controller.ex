@@ -18,7 +18,7 @@ defmodule Gatekeeper.DoorAccessAttemptController do
   def create(conn, %{"door_access_attempt" => door_access_attempt_params}) do
     changeset = DoorAccessAttempt.changeset(%DoorAccessAttempt{}, door_access_attempt_params)
 
-    case Repo.insert(changeset) do
+    case WriteRepo.insert(changeset) do
       {:ok, _door_access_attempt} ->
         conn
         |> put_flash(:info, "Door access attempt created successfully.")
@@ -43,7 +43,7 @@ defmodule Gatekeeper.DoorAccessAttemptController do
     door_access_attempt = Repo.get!(DoorAccessAttempt, id)
     changeset = DoorAccessAttempt.changeset(door_access_attempt, door_access_attempt_params)
 
-    case Repo.update(changeset) do
+    case WriteRepo.update(changeset) do
       {:ok, door_access_attempt} ->
         conn
         |> put_flash(:info, "Door access attempt updated successfully.")
@@ -58,7 +58,7 @@ defmodule Gatekeeper.DoorAccessAttemptController do
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Repo.delete!(door_access_attempt)
+    WriteRepo.delete!(door_access_attempt)
 
     conn
     |> put_flash(:info, "Door access attempt deleted successfully.")

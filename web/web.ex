@@ -31,6 +31,7 @@ defmodule Gatekeeper.Web do
       use Phoenix.Controller
 
       alias Gatekeeper.Repo
+      use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
       import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
 

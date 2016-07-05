@@ -29,7 +29,7 @@ defmodule Gatekeeper.RfidTokenController do
     member = Repo.get!(Member, member_id) |> Repo.preload(:company) |> Repo.preload(:rfid_tokens)
     changeset = RfidToken.changeset(%RfidToken{member_id: String.to_integer(member_id)}, rfid_token_params)
 
-    case Repo.insert(changeset) do
+    case WriteRepo.insert(changeset) do
       {:ok, _rfid_token} ->
         conn
         |> put_flash(:info, "RFID Token created successfully.")
@@ -74,7 +74,7 @@ defmodule Gatekeeper.RfidTokenController do
 
     changeset = RfidToken.changeset(rfid_token, rfid_token_params)
 
-    case Repo.update(changeset) do
+    case WriteRepo.update(changeset) do
       {:ok, _rfid_token} ->
         if member do
           destination = company_member_path(conn, :show, member.company, member)
@@ -97,7 +97,7 @@ defmodule Gatekeeper.RfidTokenController do
     # Here we use update! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     changeset = RfidToken.changeset(rfid_token, %{active: false})
-    Repo.update!(changeset)
+    WriteRepo.update!(changeset)
 
     conn
     |> put_flash(:info, "RFID Token deactivated successfully.")

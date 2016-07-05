@@ -61,6 +61,20 @@ config :gatekeeper, :doorlock,
   type: Gpio,
   door_id: 1
 
-# Finally import the config/prod.secret.exs
-# which should be versioned separately.
-import_config "prod.secret.exs"
+config :gatekeeper, Gatekeeper.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: System.get_env("DATABASE_USERNAME"),
+  password: System.get_env("DATABASE_PASSWORD"),
+  database: System.get_env("DATABASE_DATABASE"),
+  hostname: System.get_env("DATABASE_HOSTNAME") || "localhost",
+  template: "template0",
+  pool_size: 10
+
+config :gatekeeper, Gatekeeper.WriteRepo,
+  adapter: Ecto.Adapters.Postgres,
+  username: System.get_env("DATABASE_WRITE_USERNAME"),
+  password: System.get_env("DATABASE_WRITE_PASSWORD"),
+  database: System.get_env("DATABASE_WRITE_DATABASE"),
+  hostname: System.get_env("DATABASE_WRITE_HOSTNAME") || "localhost",
+  template: "template0",
+  pool_size: 10

@@ -9,8 +9,9 @@ defmodule Gatekeeper do
     children = [
       # Start the endpoint when the application starts
       supervisor(Gatekeeper.Endpoint, []),
-      # Start the Ecto repository
-      worker(Gatekeeper.Repo, []),
+      # Start the Ecto repositories
+      worker(Gatekeeper.Repo, []), # local, read-only
+      worker(Gatekeeper.WriteRepo, []), # remote, read-write
       # Here you could define other workers and supervisors as children
       worker(Gatekeeper.DoorInterface, [Application.get_env(:gatekeeper, :doorlock)[:door_id] || 1]),
     ]

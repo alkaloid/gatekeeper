@@ -1,5 +1,6 @@
 defmodule Gatekeeper.RfidTokenTest do
   use Gatekeeper.ModelCase
+  use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
   import Gatekeeper.Factory
 
   alias Gatekeeper.RfidToken
@@ -82,7 +83,7 @@ defmodule Gatekeeper.RfidTokenTest do
     member = create_member company: company
     create_rfid_token member: member, identifier: rfid_token_identifier
     changeset = RfidToken.changeset(%RfidToken{member_id: member.id, identifier: rfid_token_identifier})
-    assert {:error, _message} = Repo.insert changeset
+    assert {:error, _message} = WriteRepo.insert changeset
   end
 
   test "that an RfidToken object is auto-created when an unrecognized badge is scanned" do

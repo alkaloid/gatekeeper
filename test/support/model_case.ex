@@ -17,7 +17,8 @@ defmodule Gatekeeper.ModelCase do
   using do
     quote do
       alias Gatekeeper.Repo
-      import Ecto.Model
+      use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
+      import Ecto.Schema
       import Ecto.Query, only: [from: 2]
       import Gatekeeper.ModelCase
     end

@@ -1,5 +1,6 @@
 defmodule Gatekeeper.RfidTokenControllerTest do
   use Gatekeeper.ConnCase
+  use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
 
   import Gatekeeper.Factory
   import Guardian.TestHelper

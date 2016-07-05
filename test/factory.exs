@@ -1,6 +1,7 @@
 defmodule Gatekeeper.Factory do
 
   alias Gatekeeper.Repo
+  use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
   alias Gatekeeper.Company
   alias Gatekeeper.Member
   alias Gatekeeper.RfidToken
@@ -20,11 +21,11 @@ defmodule Gatekeeper.Factory do
     }
     params = Dict.merge(default_params, params)
     changeset = Company.changeset(%Company{}, params)
-    {:ok, company} = Repo.insert(changeset)
+    {:ok, company} = WriteRepo.insert(changeset)
 
     if params[:door_group] do
       changeset = DoorGroupCompany.changeset(%DoorGroupCompany{}, %{company_id: company.id, door_group_id: params.door_group.id})
-      Repo.insert!(changeset)
+      WriteRepo.insert!(changeset)
     end
 
     company
@@ -42,11 +43,11 @@ defmodule Gatekeeper.Factory do
 
     params = Dict.merge(default_params, params)
     changeset = Member.changeset(%Member{}, params)
-    {:ok, member} = Repo.insert(changeset)
+    {:ok, member} = WriteRepo.insert(changeset)
 
     if params[:door_group] do
       changeset = DoorGroupMember.changeset(%DoorGroupMember{}, %{member_id: member.id, door_group_id: params.door_group.id})
-      Repo.insert!(changeset)
+      WriteRepo.insert!(changeset)
     end
 
     member
@@ -63,7 +64,7 @@ defmodule Gatekeeper.Factory do
 
     params = Dict.merge(default_params, params)
     changeset = RfidToken.changeset(%RfidToken{}, params)
-    {:ok, rfid_token} = Repo.insert(changeset)
+    {:ok, rfid_token} = WriteRepo.insert(changeset)
     rfid_token
   end
 
@@ -73,7 +74,7 @@ defmodule Gatekeeper.Factory do
     }
     params = Dict.merge(default_params, params)
     changeset = DoorGroup.changeset(%DoorGroup{}, params)
-    {:ok, door_group} = Repo.insert(changeset)
+    {:ok, door_group} = WriteRepo.insert(changeset)
     door_group
   end
 
@@ -83,11 +84,11 @@ defmodule Gatekeeper.Factory do
     }
     params = Dict.merge(default_params, params)
     changeset = Door.changeset(%Door{}, params)
-    {:ok, door} = Repo.insert(changeset)
+    {:ok, door} = WriteRepo.insert(changeset)
 
     if params[:door_group] do
       changeset = DoorGroupDoor.changeset(%DoorGroupDoor{}, %{door_id: door.id, door_group_id: params.door_group.id})
-      Repo.insert!(changeset)
+      WriteRepo.insert!(changeset)
     end
 
     door
@@ -96,7 +97,7 @@ defmodule Gatekeeper.Factory do
   def create_door_access_attempt(door, rfid_token, params \\ %{}) do
     params = Dict.merge(%{access_allowed: true, door_id: door.id, rfid_token_id: rfid_token.id, reason: "access_allowed"}, params)
     changeset = DoorAccessAttempt.changeset(%DoorAccessAttempt{}, params)
-    {:ok, door_access_attempt} = Repo.insert(changeset)
+    {:ok, door_access_attempt} = WriteRepo.insert(changeset)
     door_access_attempt
   end
 end

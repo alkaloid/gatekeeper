@@ -1,5 +1,6 @@
 defmodule Gatekeeper.CompanyControllerTest do
   use Gatekeeper.ConnCase
+  use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
 
   import Gatekeeper.Factory
   import Guardian.TestHelper
@@ -43,7 +44,7 @@ defmodule Gatekeeper.CompanyControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    company = Repo.insert! %Company{name: "Company XYZ"}
+    company = WriteRepo.insert! %Company{name: "Company XYZ"}
     conn = get conn, company_path(conn, :show, company)
     assert html_response(conn, 200) =~ "<h2>Company XYZ"
   end
@@ -55,13 +56,13 @@ defmodule Gatekeeper.CompanyControllerTest do
   end
 
   test "renders form for editing chosen resource", %{conn: conn} do
-    company = Repo.insert! %Company{}
+    company = WriteRepo.insert! %Company{}
     conn = get conn, company_path(conn, :edit, company)
     assert html_response(conn, 200) =~ "Edit company"
   end
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    company = Repo.insert! %Company{}
+    company = WriteRepo.insert! %Company{}
     conn = put conn, company_path(conn, :update, company), company: @valid_attrs
     assert redirected_to(conn) == company_path(conn, :show, company)
     assert Repo.get_by(Company, @valid_attrs)
@@ -69,7 +70,7 @@ defmodule Gatekeeper.CompanyControllerTest do
 
   test "updates company with associated door groups and redirects when data is valid", %{conn: conn} do
     door_group = create_door_group
-    company = Repo.insert! %Company{}
+    company = WriteRepo.insert! %Company{}
     # We can't dynamically construct a map with a variable without this
     # See: http://stackoverflow.com/questions/29837103/how-to-put-key-value-pair-into-map-with-variable-key-name
     # "Note that variables cannot be used as keys to add items to a map:"
@@ -85,7 +86,7 @@ defmodule Gatekeeper.CompanyControllerTest do
   test "removes unchecked associated door groups from a company", %{conn: conn} do
     door_group = create_door_group
     company = create_company
-    Repo.insert! %Gatekeeper.DoorGroupCompany{company_id: company.id, door_group_id: door_group.id}
+    WriteRepo.insert! %Gatekeeper.DoorGroupCompany{company_id: company.id, door_group_id: door_group.id}
 
     conn = put conn, company_path(conn, :update, company), company: Dict.merge(@valid_attrs, id: company.id)
     assert redirected_to(conn) == company_path(conn, :show, company)
@@ -95,7 +96,7 @@ defmodule Gatekeeper.CompanyControllerTest do
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    company = Repo.insert! %Company{}
+    company = WriteRepo.insert! %Company{}
     conn = put conn, company_path(conn, :update, company), company: @invalid_attrs
     assert html_response(conn, 200) =~ "Edit company"
   end

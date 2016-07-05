@@ -28,7 +28,7 @@ defmodule Gatekeeper.CompanyController do
     door_groups = Repo.all(DoorGroup)
     changeset = Company.changeset(%Company{}, company_params)
 
-    case Repo.insert(changeset) do
+    case WriteRepo.insert(changeset) do
       {:ok, company} ->
         save_door_groups(company, company_params["door_groups"])
         conn
@@ -64,7 +64,7 @@ defmodule Gatekeeper.CompanyController do
     door_groups = Repo.all(DoorGroup)
     changeset = Company.changeset(company, company_params)
 
-    case Repo.update(changeset) do
+    case WriteRepo.update(changeset) do
       {:ok, company} ->
         save_door_groups(company, company_params["door_groups"])
         conn
@@ -78,11 +78,11 @@ defmodule Gatekeeper.CompanyController do
   def delete(conn, %{"id" => id}) do
     company = Repo.get!(Company, id) |> Repo.preload(:members)
 
-    # Here we use delete! (with a bang) because we expect
+    # Here we use update! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     {date, _time} = :calendar.local_time()
     changeset = Company.changeset(company, %{departure_date: date})
-    Repo.update!(changeset)
+    WriteRepo.update!(changeset)
 
     conn
     |> put_flash(:info, "Company deleted successfully.")
@@ -91,13 +91,14 @@ defmodule Gatekeeper.CompanyController do
 
   def save_door_groups(company, new_door_group_ids) do
     # Remove all existing door <-> door group associations
-    Ecto.Query.from(door_group_company in DoorGroupCompany, where: door_group_company.company_id == ^company.id) |> Repo.delete_all
+    # TODO: Make this a transaction
+    Ecto.Query.from(door_group_company in DoorGroupCompany, where: door_group_company.company_id == ^company.id) |> WriteRepo.delete_all
 
     # Insert new door <-> door group associations based on provided checkboxes
     if new_door_group_ids do # can be nil if no boxes were checked
       for {id, _val} <- new_door_group_ids do
         changeset = DoorGroupCompany.changeset(%DoorGroupCompany{}, %{company_id: company.id, door_group_id: id})
-        {:ok, _} = Repo.insert(changeset)
+        {:ok, _} = WriteRepo.insert(changeset)
       end
     end
   end

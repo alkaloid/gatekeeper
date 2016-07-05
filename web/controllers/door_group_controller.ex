@@ -26,7 +26,7 @@ defmodule Gatekeeper.DoorGroupController do
     changeset = DoorGroup.changeset(%DoorGroup{}, door_group_params)
     doors = Repo.all(Door)
 
-    case Repo.insert(changeset) do
+    case WriteRepo.insert(changeset) do
       {:ok, door_group} ->
         save_door_groups door_group, door_group_params
         conn
@@ -54,7 +54,7 @@ defmodule Gatekeeper.DoorGroupController do
     doors = Repo.all(Door)
     changeset = DoorGroup.changeset(door_group, door_group_params)
 
-    case Repo.update(changeset) do
+    case WriteRepo.update(changeset) do
       {:ok, door_group} ->
         save_door_groups door_group, door_group_params
         conn
@@ -70,7 +70,7 @@ defmodule Gatekeeper.DoorGroupController do
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
-    Repo.delete!(door_group)
+    WriteRepo.delete!(door_group)
 
     conn
     |> put_flash(:info, "Door group deleted successfully.")
@@ -79,13 +79,14 @@ defmodule Gatekeeper.DoorGroupController do
 
   def save_door_groups(door_group, new_door_group_params) do
     # Remove all existing door <-> door group associations
-    Ecto.Query.from(door_group_door in DoorGroupDoor, where: door_group_door.door_group_id == ^door_group.id) |> Repo.delete_all
+    # TODO: Make this a transaction
+    Ecto.Query.from(door_group_door in DoorGroupDoor, where: door_group_door.door_group_id == ^door_group.id) |> WriteRepo.delete_all
 
     # Insert new door <-> door group associations based on provided checkboxes
     if new_door_group_params["doors"] do # can be nil if no boxes were checked
       for {id, _door_params} <- new_door_group_params["doors"] do
         changeset = DoorGroupDoor.changeset(%DoorGroupDoor{}, %{door_group_id: door_group.id, door_id: id})
-        {:ok, _} = Repo.insert(changeset)
+        {:ok, _} = WriteRepo.insert(changeset)
       end
     end
   end
