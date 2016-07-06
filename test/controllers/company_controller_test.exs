@@ -46,7 +46,7 @@ defmodule Gatekeeper.CompanyControllerTest do
   test "shows chosen resource", %{conn: conn} do
     company = WriteRepo.insert! %Company{name: "Company XYZ"}
     conn = get conn, company_path(conn, :show, company)
-    assert html_response(conn, 200) =~ "<h2>Company XYZ"
+    assert html_response(conn, 200) =~ "Company XYZ"
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
