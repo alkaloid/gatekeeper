@@ -13,7 +13,8 @@ defmodule Gatekeeper.CompanyController do
   end
 
   def index(conn, _params) do
-    companies = Repo.all(Company) |> Repo.preload(:members)
+    companies = Repo.all(from c in Company, order_by: :name)
+    |> Repo.preload(:members)
     render(conn, "index.html", companies: companies)
   end
 
