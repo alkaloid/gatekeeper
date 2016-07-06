@@ -88,7 +88,7 @@ p.no-associations {
   font-style: italic;
 }
 
-p.inactive-company {
+p.inactive {
   color: red;
   font-style: italic;
 }
