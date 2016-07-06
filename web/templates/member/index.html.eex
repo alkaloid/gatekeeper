@@ -13,7 +13,10 @@
   <tbody>
 <%= for member <- @company.members do %>
     <tr>
-      <td><%= link member.name, to: company_member_path(@conn, :show, @company, member) %></td>
+      <td>
+        <%= link member.name, to: company_member_path(@conn, :show, @company, member) %>
+        <%= unless member.active, do: "(inactive)" %>
+      </td>
       <td><%= member.email %></td>
       <td><%= member.phone %></td>
 

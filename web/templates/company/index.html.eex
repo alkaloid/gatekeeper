@@ -1,5 +1,7 @@
-<h2>Listing companies</h2>
-<%= link "New company", to: company_path(@conn, :new) %>
+<h2>
+  Listing companies
+  <%= link "New company", to: company_path(@conn, :new), class: "btn btn-default btn-xs" %>
+</h2>
 
 <table class="table">
   <thead>
@@ -14,12 +16,16 @@
   <tbody>
 <%= for company <- @companies do %>
     <tr>
-      <td><%= link company.name, to: company_path(@conn, :show, company) %></td>
+      <td>
+        <%= link company.name, to: company_path(@conn, :show, company) %>
+        <%= unless Company.active?(company), do: "(inactive)" %>
+      </td>
       <td><%= company.join_date %></td>
       <td>
         <ul class="member-list">
           <%= for member <- company.members do %>
-            <li><%= link member.name, to: company_member_path(@conn, :show, company, member) %></li>
+            <li><%= link member.name, to: company_member_path(@conn, :show, company, member) %>
+            </li>
           <% end %>
         </ul>
       </td>

@@ -35,8 +35,8 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :gatekeeper, Gatekeeper.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: System.get_env("DATABASE_READ_USERNAME") || "postgres",
-  password: System.get_env("DATABASE_READ_PASSWORD") || "postgres",
+  username: System.get_env("DATABASE_READ_USERNAME") || "gatekeeper",
+  password: System.get_env("DATABASE_READ_PASSWORD") || "gatekeeper",
   database: System.get_env("DATABASE_READ_DATABASE") || "gatekeeper_dev",
   hostname: System.get_env("DATABASE_WRITE_HOSTNAME") || "localhost",
   template: "template0",
@@ -44,9 +44,9 @@ config :gatekeeper, Gatekeeper.Repo,
 
 config :gatekeeper, Gatekeeper.WriteRepo,
   adapter: Ecto.Adapters.Postgres,
-  username: System.get_env("DATABASE_WRITE_USERNAME"),
-  password: System.get_env("DATABASE_WRITE_PASSWORD"),
-  database: System.get_env("DATABASE_WRITE_DATABASE"),
+  username: System.get_env("DATABASE_WRITE_USERNAME" || "gatekeeper"),
+  password: System.get_env("DATABASE_WRITE_PASSWORD" || "gatekeeper"),
+  database: System.get_env("DATABASE_WRITE_DATABASE" || "gatekeeper_dev"),
   hostname: System.get_env("DATABASE_WRITE_HOSTNAME") || "localhost",
   template: "template0",
   pool_size: 10
