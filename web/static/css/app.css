@@ -88,6 +88,11 @@ p.no-associations {
   font-style: italic;
 }
 
+p.inactive-company {
+  color: red;
+  font-style: italic;
+}
+
 .door-group-list {
   margin: 0;
 }
