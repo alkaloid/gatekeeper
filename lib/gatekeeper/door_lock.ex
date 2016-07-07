@@ -40,7 +40,7 @@ defmodule Gatekeeper.DoorLock do
     {:ok, gpio} = type.start_link(door_id, gpio_number, :output)
     type.write(gpio, 0)
 
-    Logger.info "Door Lock process started on GPIO##{gpio_number} with GPIO PID #{inspect gpio}"
+    Logger.info "Door Lock process started for Door##{door_id} on GPIO##{gpio_number} with GPIO PID #{inspect gpio}"
 
     {:ok, {type, gpio, door_id}}
   end
