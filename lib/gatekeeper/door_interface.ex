@@ -36,10 +36,10 @@ defmodule Gatekeeper.DoorInterface do
   def handle_info({:card_read, token}, {_rfid, lock, door_id} = state) do
     case Gatekeeper.RfidToken.attempt_access!(token, door_id) do
       {true, _} ->
-        Logger.info("Card #{token} requested access. Unlocking the door.")
+        Logger.info("Card #{token} granted access to Door##{door_id}. Unlocking the door.")
         Gatekeeper.DoorLock.flipflop(lock)
       {false, reason} ->
-        Logger.info("Card #{token} requested access. Access was denied because #{reason}.")
+        Logger.info("Card #{token} denied access to Door##{door_id}: #{reason}.")
     end
     {:noreply, state}
   end
