@@ -3,8 +3,8 @@ defmodule Gatekeeper.DoorInterface do
 
   use GenServer
 
-  def start_link(door_id, opts \\ []) do
-    GenServer.start_link(__MODULE__, door_id, opts)
+  def start_link(opts \\ []) do
+    GenServer.start_link(__MODULE__, :ok, opts)
   end
 
   @doc """
@@ -15,7 +15,7 @@ defmodule Gatekeeper.DoorInterface do
     GenServer.call(pid, :getstate)
   end
 
-  def init(door_id) do
+  def init(:ok) do
     {:ok, rfid} = Gatekeeper.RFIDListener.start_link(
       Application.get_env(:gatekeeper, :rfidreader)[:device]
     )
@@ -25,7 +25,7 @@ defmodule Gatekeeper.DoorInterface do
       doorlock_config[:gpio_port], doorlock_config[:type]
     )
 
-    {:ok, {rfid, lock, door_id}}
+    {:ok, {rfid, lock, doorlock_config[:door_id]}}
   end
 
   def handle_call(:getstate, _from, {_rfid, lock, _door_id} = state) do
