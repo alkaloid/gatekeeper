@@ -22,7 +22,7 @@ defmodule Gatekeeper.DoorInterface do
 
     doorlock_config = Application.get_env(:gatekeeper, :doorlock)
     {:ok, lock} = Gatekeeper.DoorLock.start_link(
-      doorlock_config[:gpio_port], doorlock_config[:type]
+      doorlock_config[:door_id], doorlock_config[:gpio_port], doorlock_config[:type]
     )
 
     {:ok, {rfid, lock, doorlock_config[:door_id]}}
