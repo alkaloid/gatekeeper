@@ -14,7 +14,7 @@ defmodule Gatekeeper.Company do
   end
 
   @required_fields ~w(name join_date)
-  @optional_fields ~w(departure_date members)
+  @optional_fields ~w(departure_date)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -25,6 +25,7 @@ defmodule Gatekeeper.Company do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> cast_assoc(:members)
   end
 
   def active?(company) do

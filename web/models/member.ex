@@ -23,7 +23,7 @@ defmodule Gatekeeper.Member do
     timestamps
   end
 
-  @required_fields ~w(name email active company_id role)
+  @required_fields ~w(name email active role)
   @optional_fields ~w(phone)
 
   @doc """
@@ -35,7 +35,7 @@ defmodule Gatekeeper.Member do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
-    |> foreign_key_constraint(:company_id)
+    |> assoc_constraint(:company, required: true)
   end
 
   def active?(member) do
