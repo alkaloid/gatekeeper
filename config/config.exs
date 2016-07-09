@@ -28,7 +28,7 @@ config :gatekeeper, :rfidreader,
 
 config :gatekeeper, :doorlock,
   type: Gatekeeper.DoorLock.Dummy,
-  gpio_port: 4,
+  gpio_pin: 4,
   door_id: 1
 
 # Import environment specific config. This must remain at the bottom

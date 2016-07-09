@@ -2,7 +2,7 @@ defmodule Gatekeeper.DoorInterface do
   require Logger
   use GenServer
 
-  def start_link( doorlock_config = [type: type, gpio_port: gpio_port, door_id: door_id], rfidreader_config = [device: device], opts \\ []) do
+  def start_link( doorlock_config = [type: type, gpio_pin: gpio_pin, door_id: door_id], rfidreader_config = [device: device], opts \\ []) do
     GenServer.start_link(__MODULE__, [doorlock_config, rfidreader_config], opts)
   end
 
@@ -19,7 +19,7 @@ defmodule Gatekeeper.DoorInterface do
 
     lock = case Gatekeeper.DoorLock.start_link(
       doorlock_config[:door_id],
-      doorlock_config[:gpio_port],
+      doorlock_config[:gpio_pin],
       doorlock_config[:type]
       ) do
       {:ok, lock} ->
