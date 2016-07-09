@@ -3,10 +3,10 @@ defmodule Gatekeeper.DoorLock do
 
   use GenServer
 
-  def start_link(door_id, gpio_number, type \\ Gatekeeper.DoorLock.Dummy, opts \\ []) do
+  def start_link(type, gpio_pin, door_id \\ Gatekeeper.DoorLock.Dummy, opts \\ []) do
     default_opts = [name: {:global, String.to_atom("door_lock_#{door_id}")}]
     opts = Keyword.merge(default_opts, opts)
-    GenServer.start_link(__MODULE__, [door_id, gpio_number, type], opts)
+    GenServer.start_link(__MODULE__, [door_id, gpio_pin, type], opts)
   end
 
   @doc """
@@ -38,11 +38,11 @@ defmodule Gatekeeper.DoorLock do
     GenServer.call(pid, {:flipflop, duration})
   end
 
-  def init([door_id, gpio_number, type]) do
-    {:ok, gpio} = type.start_link(door_id, gpio_number, :output)
+  def init([door_id, gpio_pin, type]) do
+    {:ok, gpio} = type.start_link(door_id, gpio_pin, :output)
     type.write(gpio, 0)
 
-    Logger.info "Door Lock process started for Door##{door_id} on GPIO##{gpio_number} with GPIO PID #{inspect gpio}"
+    Logger.info "Door Lock process started for Door##{door_id} on GPIO##{gpio_pin} with PID #{inspect gpio}"
 
     {:ok, {type, gpio, door_id}}
   end
@@ -82,7 +82,7 @@ end
 defmodule Gatekeeper.DoorLock.Dummy do
   use GenServer
 
-  def start_link(_door_id, _gpio_number, _type, opts \\ []) do
+  def start_link(_door_id, _gpio_pin, _type, opts \\ []) do
     GenServer.start_link(__MODULE__, :ok, opts)
   end
 

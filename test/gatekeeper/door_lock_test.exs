@@ -2,7 +2,13 @@ defmodule Gatekeeper.DoorLockTest do
   use ExUnit.Case, async: true
 
   setup do
-    {:ok, lock} = Gatekeeper.DoorLock.start_link 2
+    lock = case Gatekeeper.DoorLock.start_link(Gatekeeper.DoorLock.Dummy, 1, 2) do
+      {:ok, lock} ->
+        lock
+      {:error, {:already_started, lock}} ->
+        lock
+    end
+
     {:ok, lock: lock}
   end
 
