@@ -56,19 +56,19 @@ defmodule Gatekeeper.DoorLock do
   end
 
   def handle_call(:lock, _from, {type, gpio, door_id} = state) do
-    Logger.info "Locking the door"
+    Logger.info "Locking door ##{door_id}"
     type.write(gpio, 0)
     {:reply, :ok, state}
   end
 
   def handle_call(:unlock, _from, {type, gpio, door_id} = state) do
-    Logger.info "Unlocking the door"
+    Logger.info "Unlocking door ##{door_id}"
     type.write(gpio, 1)
     {:reply, :ok, state}
   end
 
   def handle_call({:flipflop, duration}, _from, {type, gpio, door_id} = state) do
-    Logger.info "Flipflopping the door"
+    Logger.info "Flipflopping door ##{door_id}"
     server = self()
     type.write(gpio, 1)
     Task.async(fn ->
