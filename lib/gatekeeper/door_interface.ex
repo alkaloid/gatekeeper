@@ -2,8 +2,8 @@ defmodule Gatekeeper.DoorInterface do
   require Logger
   use GenServer
 
-  def start_link( doorlock_config = [type: type, gpio_pin: gpio_pin, door_id: door_id], rfidreader_config = [device: device], opts \\ []) do
-    GenServer.start_link(__MODULE__, [doorlock_config, rfidreader_config], opts)
+  def start_link({_type, _gpio_pin, _door_id, _reader_device} = args, opts \\ []) do
+    GenServer.start_link(__MODULE__, args, opts)
   end
 
   @doc """
@@ -14,21 +14,17 @@ defmodule Gatekeeper.DoorInterface do
     GenServer.call(pid, :getstate)
   end
 
-  def init(doorlock_config, rfidreader_config) do
-    {:ok, rfid} = Gatekeeper.RFIDListener.start_link(rfidreader_config[:device])
+  def init({type, gpio_pin, door_id, reader_device}) do
+    {:ok, rfid} = Gatekeeper.RFIDListener.start_link(reader_device)
 
-    lock = case Gatekeeper.DoorLock.start_link(
-      doorlock_config[:door_id],
-      doorlock_config[:gpio_pin],
-      doorlock_config[:type]
-      ) do
+    lock = case Gatekeeper.DoorLock.start_link(type, gpio_pin, door_id) do
       {:ok, lock} ->
         lock
       {:error, {:already_started, lock}} ->
         lock
     end
 
-    {:ok, {rfid, lock, doorlock_config[:door_id]}}
+    {:ok, {rfid, lock, door_id}}
   end
 
   def handle_call(:getstate, _from, {_rfid, lock, _door_id} = state) do

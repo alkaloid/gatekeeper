@@ -11,9 +11,13 @@ defmodule Gatekeeper.DoorInterfaceTest do
     member = create_member company: company, door_group: door_group
     rfid_token = create_rfid_token member: member
 
-    doorlock_config = [type: Gatekeeper.DoorLock.Dummy, door_id: door.id, gpio_pin: 1]
-    rfidreader_config = Application.get_env(:gatekeeper, :rfidreader)
-    {:ok, door_interface} = Gatekeeper.DoorInterface.start_link(doorlock_config, rfidreader_config)
+    config = {
+      Gatekeeper.DoorLock.Dummy,
+      1, # GPIO PIN
+      door.id,
+      Application.get_env(:gatekeeper, :rfidreader)[:device]
+    }
+    {:ok, door_interface} = Gatekeeper.DoorInterface.start_link(config)
 
     {:ok, door_interface: door_interface, good_token: rfid_token}
   end
