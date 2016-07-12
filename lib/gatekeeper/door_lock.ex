@@ -42,7 +42,8 @@ defmodule Gatekeeper.DoorLock do
     {:ok, gpio} = type.start_link(door_id, gpio_pin, :output)
     type.write(gpio, 0)
 
-    Logger.info "Door Lock process started for Door##{door_id} on GPIO##{gpio_pin} with PID #{inspect gpio}"
+    door = Gatekeeper.Repo.get(Gatekeeper.Door, door_id)
+    Logger.info "Door Lock process started for #{door.name} (##{door_id}) on GPIO##{gpio_pin} with PID #{inspect gpio}"
 
     {:ok, {type, gpio, door_id}}
   end
@@ -56,19 +57,22 @@ defmodule Gatekeeper.DoorLock do
   end
 
   def handle_call(:lock, _from, {type, gpio, door_id} = state) do
-    Logger.info "Locking door ##{door_id}"
+    door = Gatekeeper.Repo.get(Gatekeeper.Door, door_id)
+    Logger.info "Locking door #{door.name} (##{door_id})"
     type.write(gpio, 0)
     {:reply, :ok, state}
   end
 
   def handle_call(:unlock, _from, {type, gpio, door_id} = state) do
-    Logger.info "Unlocking door ##{door_id}"
+    door = Gatekeeper.Repo.get(Gatekeeper.Door, door_id)
+    Logger.info "Unlocking door #{door.name} (##{door_id})"
     type.write(gpio, 1)
     {:reply, :ok, state}
   end
 
   def handle_call({:flipflop, duration}, _from, {type, gpio, door_id} = state) do
-    Logger.info "Unlocking door ##{door_id} for #{duration}ms"
+    door = Gatekeeper.Repo.get(Gatekeeper.Door, door_id)
+    Logger.info "Unlocking door #{door.name} (##{door_id}) for #{duration}ms"
     server = self()
     type.write(gpio, 1)
     Task.async(fn ->
