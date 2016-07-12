@@ -15,6 +15,7 @@ defmodule Gatekeeper.DoorInterfaceTest do
       Gatekeeper.DoorLock.Dummy,
       1, # GPIO PIN
       door.id,
+      5000,
       Application.get_env(:gatekeeper, :rfidreader)[:device]
     }
     {:ok, door_interface} = Gatekeeper.DoorInterface.start_link(config)
