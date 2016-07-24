@@ -4,9 +4,13 @@ defmodule Gatekeeper.DoorLock do
   use GenServer
 
   def start_link(type, gpio_pin, door_id, opts \\ []) do
-    default_opts = [name: {:global, String.to_atom("door_lock_#{door_id}")}]
+    default_opts = [name: {:global, proc_name(door_id)}]
     opts = Keyword.merge(default_opts, opts)
     GenServer.start_link(__MODULE__, [door_id, gpio_pin, type], opts)
+  end
+
+  def proc_name(id) do
+    String.to_atom("door_lock_#{id}")
   end
 
   @doc """

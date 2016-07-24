@@ -3,12 +3,22 @@ defmodule Gatekeeper.DoorController do
 
   alias Gatekeeper.Door
   alias Gatekeeper.DoorAccessAttempt
+  alias Gatekeeper.DoorLock
 
   plug :scrub_params, "door" when action in [:create, :update]
 
   def index(conn, _params) do
     doors = Repo.all(Door)
-    render(conn, "index.html", doors: doors)
+    door_statuses = Enum.reduce(doors, %{}, fn(door, door_statuses) ->
+      door_name = Gatekeeper.DoorLock.proc_name(door.id)
+      Dict.merge(door_statuses, case :global.whereis_name(door_name) do
+        :undefined ->
+          %{door.id => :unknown}
+        pid ->
+          %{door.id => DoorLock.state(pid)}
+      end)
+    end)
+    render(conn, "index.html", doors: doors, door_statuses: door_statuses)
   end
 
   def new(conn, _params) do

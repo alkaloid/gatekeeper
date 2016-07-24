@@ -14,6 +14,15 @@
       <td><%= door.name %></td>
 
       <td class="text-right">
+        <% btn_status = case @door_statuses[door.id] do
+          :unknown ->
+            "warning"
+          :locked ->
+            "success"
+          :unlocked ->
+            "danger"
+        end %>
+        <%= link to_string(@door_statuses[door.id]), to: door_path(@conn, :show, door), class: "btn btn-#{btn_status} btn-xs" %>
         <%= link "Show", to: door_path(@conn, :show, door), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: door_path(@conn, :edit, door), class: "btn btn-default btn-xs" %>
       </td>
