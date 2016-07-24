@@ -74,16 +74,33 @@ defmodule Gatekeeper.DoorController do
   end
 
   def flipflop(conn, %{"door_id" => door_id}) do
-    case DoorLock.pidof(door_id) do
-      :undefined ->
+    member = Guardian.Plug.current_resource(conn) |> Repo.preload(:rfid_tokens)
+    # FIXME: This RFID token ID is a lie! And it can fail if the admin has no token
+    access_attempt_params = %{
+      access_allowed: true,
+      member_id: member.id,
+      rfid_token_id: hd(member.rfid_tokens).id,
+      door_id: door_id,
+      reason: "admin_web_access"
+    }
+    access_attempt = DoorAccessAttempt.changeset(%DoorAccessAttempt{}, access_attempt_params)
+    case WriteRepo.insert(access_attempt) do
+      {:ok, _} ->
+        case DoorLock.pidof(door_id) do
+          :undefined ->
+            conn
+            |> put_flash(:error, "Unable to find a door process for id #{door_id}")
+            |> redirect(to: door_path(conn, :index))
+          pid ->
+            duration = Application.get_env(:gatekeeper, :doorlock)[:duration]
+            DoorLock.flipflop(pid)
+            conn
+            |> put_flash(:info, "Door unlocked for #{duration/1000} seconds")
+            |> redirect(to: door_path(conn, :index))
+        end
+      {:error, changeset} ->
         conn
-        |> put_flash(:error, "Unable to find a door process for id #{door_id}")
-        |> redirect(to: door_path(conn, :index))
-      pid ->
-        duration = Application.get_env(:gatekeeper, :doorlock)[:duration]
-        DoorLock.flipflop(pid)
-        conn
-        |> put_flash(:info, "Door unlocked for #{duration/1000} seconds")
+        |> put_flash(:error, "Unable to log door access attempt")
         |> redirect(to: door_path(conn, :index))
     end
   end
