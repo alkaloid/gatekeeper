@@ -72,4 +72,19 @@ defmodule Gatekeeper.DoorController do
     |> put_flash(:error, "Doors may not be deleted.")
     |> redirect(to: door_path(conn, :index))
   end
+
+  def flipflop(conn, %{"door_id" => door_id}) do
+    case DoorLock.pidof(door_id) do
+      :undefined ->
+        conn
+        |> put_flash(:error, "Unable to find a door process for id #{door_id}")
+        |> redirect(to: door_path(conn, :index))
+      pid ->
+        duration = Application.get_env(:gatekeeper, :doorlock)[:duration]
+        DoorLock.flipflop(pid)
+        conn
+        |> put_flash(:info, "Door unlocked for #{duration/1000} seconds")
+        |> redirect(to: door_path(conn, :index))
+    end
+  end
 end

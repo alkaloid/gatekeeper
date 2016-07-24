@@ -47,7 +47,10 @@ defmodule Gatekeeper.Router do
 
     resources "/rfid_tokens", RfidTokenController
 
-    resources "/doors", DoorController
+    resources "/doors", DoorController do
+      post "/flipflop", DoorController, :flipflop
+      get "/flipflop", DoorController, :flipflop
+    end
     resources "/door_groups", DoorGroupController
     resources "/door_access_attempts", DoorAccessAttemptController
   end
