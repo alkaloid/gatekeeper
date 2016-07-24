@@ -2,7 +2,6 @@ defmodule Gatekeeper.AuthenticationController do
   use Gatekeeper.Web, :controller
   plug Ueberauth
 
-  alias Ueberauth.Strategy.Helpers
   alias Gatekeeper.Repo
   alias Gatekeeper.Member
 
@@ -30,7 +29,7 @@ defmodule Gatekeeper.AuthenticationController do
         |> put_flash(:info, "Successfully logged in as #{member.name}.")
         |> Guardian.Plug.sign_in(member)
         |> redirect(to: door_access_attempt_path(conn, :index))
-      %Member{} = member ->
+      %Member{} ->
         conn
         |> put_flash(:error, "You must be an admin to continue.")
         |> redirect(to: "/")

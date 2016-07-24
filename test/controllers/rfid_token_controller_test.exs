@@ -127,7 +127,7 @@ defmodule Gatekeeper.RfidTokenControllerTest do
     assert rfid_token.member_id == member1.id
 
     # Ensure proper re-assignment
-    conn = put conn, rfid_token_path(conn, :update, rfid_token), rfid_token: Dict.merge(@valid_attrs, member_id: member2.id, id: rfid_token.id)
+    put conn, rfid_token_path(conn, :update, rfid_token), rfid_token: Dict.merge(@valid_attrs, member_id: member2.id, id: rfid_token.id)
     rfid_token = Repo.get!(RfidToken, rfid_token.id)
     assert rfid_token.member_id == member2.id
   end
