@@ -1,7 +1,6 @@
 defmodule Gatekeeper.RfidTokenController do
   use Gatekeeper.Web, :controller
 
-  alias Gatekeeper.Company
   alias Gatekeeper.Member
   alias Gatekeeper.RfidToken
   alias Gatekeeper.DoorAccessAttempt
@@ -40,7 +39,7 @@ defmodule Gatekeeper.RfidTokenController do
   end
 
   def show(conn, params = %{"id" => id}) do
-    rfid_token = Repo.get!(RfidToken, id) |> Repo.preload [member: :company]
+    rfid_token = Repo.get!(RfidToken, id) |> Repo.preload(member: :company)
     query = from daa in DoorAccessAttempt.ordered_preloaded, where: daa.rfid_token_id == ^rfid_token.id
     page = Repo.paginate(query, params)
     render conn, "show.html", rfid_token: rfid_token, member: rfid_token.member, door_access_attempts_page: page
@@ -63,10 +62,10 @@ defmodule Gatekeeper.RfidTokenController do
 
   def update(conn, %{"id" => id, "rfid_token" => rfid_token_params}) do
     rfid_token = Repo.get!(RfidToken, id) |> Repo.preload(:member)
-    if rfid_token.member do
-      member = Repo.preload(rfid_token.member, :company)
+    member = if rfid_token.member do
+      Repo.preload(rfid_token.member, :company)
     else
-      member = nil
+      nil
     end
 
     # FIXME: Validation, instead of coercion, to ensure the identifier does not change
@@ -76,11 +75,12 @@ defmodule Gatekeeper.RfidTokenController do
 
     case WriteRepo.update(changeset) do
       {:ok, _rfid_token} ->
-        if member do
-          destination = company_member_path(conn, :show, member.company, member)
+        destination = if member do
+          company_member_path(conn, :show, member.company, member)
         else
-          destination = rfid_token_path(conn, :show, rfid_token)
+          rfid_token_path(conn, :show, rfid_token)
         end
+
         conn
         |> put_flash(:info, "RFID Token updated successfully.")
         |> redirect(to: destination)

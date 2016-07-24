@@ -1,6 +1,5 @@
 defmodule Gatekeeper.Factory do
 
-  alias Gatekeeper.Repo
   use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
   alias Gatekeeper.Company
   alias Gatekeeper.Member
@@ -13,7 +12,7 @@ defmodule Gatekeeper.Factory do
   alias Gatekeeper.DoorAccessAttempt
 
   def create_company(params \\ %{}) do
-    {date, time} = :calendar.local_time()
+    {date, _time} = :calendar.local_time()
     default_params = %{
       name: "Test Company",
       join_date: date,

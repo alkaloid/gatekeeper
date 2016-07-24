@@ -38,19 +38,19 @@ defmodule Gatekeeper.DoorGroupController do
   end
 
   def show(conn, %{"id" => id}) do
-    door_group = Repo.get!(DoorGroup, id) |> Repo.preload [:doors, :companies]
+    door_group = Repo.get!(DoorGroup, id) |> Repo.preload([:doors, :companies])
     render(conn, "show.html", door_group: door_group)
   end
 
   def edit(conn, %{"id" => id}) do
-    door_group = Repo.get!(DoorGroup, id) |> Repo.preload :doors
+    door_group = Repo.get!(DoorGroup, id) |> Repo.preload(:doors)
     changeset = DoorGroup.changeset(door_group)
     doors = Repo.all(Door)
     render(conn, "edit.html", door_group: door_group, doors: doors, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "door_group" => door_group_params}) do
-    door_group = Repo.get!(DoorGroup, id) |> Repo.preload :doors
+    door_group = Repo.get!(DoorGroup, id) |> Repo.preload(:doors)
     doors = Repo.all(Door)
     changeset = DoorGroup.changeset(door_group, door_group_params)
 

@@ -89,7 +89,7 @@ defmodule Gatekeeper.MemberControllerTest do
     door_group_param = Map.put(%{}, "#{door_group.id}", "on")
     conn = put conn, company_member_path(conn, :update, company, member), member: Dict.merge(@valid_attrs, %{door_groups: door_group_param, company_id: company.id})
     assert redirected_to(conn) == company_member_path(conn, :show, company, member)
-    member = Repo.get(Member, member.id) |> Repo.preload :door_groups
+    member = Repo.get(Member, member.id) |> Repo.preload(:door_groups)
     assert member
     assert [door_group.id] == Enum.map(member.door_groups, &(&1.id))
   end
@@ -102,7 +102,7 @@ defmodule Gatekeeper.MemberControllerTest do
 
     conn = put conn, company_member_path(conn, :update, company, member), member: Dict.merge(@valid_attrs, id: member.id, company_id: company.id)
     assert redirected_to(conn) == company_member_path(conn, :show, company, member)
-    member = Repo.get!(Member, member.id) |> Repo.preload :door_groups
+    member = Repo.get!(Member, member.id) |> Repo.preload(:door_groups)
     assert member
     assert [] == Enum.map(member.door_groups, &(&1.id))
   end

@@ -20,8 +20,8 @@ defmodule Gatekeeper.DoorInterfaceTest do
     assert Gatekeeper.DoorInterface.state(door_interface) == :unlocked
   end
 
-  test "does not open the door to an scan of an unknown card", %{door_interface: door_interface, good_token: good_token} do
-    send(door_interface, {:card_read, "7A0092D11F26"})
+  test "does not open the door to an scan of an unknown card", %{door_interface: door_interface} do
+    send(door_interface, {:card_read, "unknown"})
     assert Gatekeeper.DoorInterface.state(door_interface) == :locked
   end
 end

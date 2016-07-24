@@ -99,7 +99,7 @@ defmodule Gatekeeper.RfidTokenTest do
     door = create_door
     assert {false, ^reason} = RfidToken.attempt_access!(rfid_token_identifier, door.id)
     rfid_token = Repo.get_by(RfidToken, %{identifier: rfid_token_identifier})
-    assert door_access_attempt = Repo.get_by(DoorAccessAttempt, %{rfid_token_id: rfid_token.id, door_id: door.id, reason: reason})
+    door_access_attempt = Repo.get_by(DoorAccessAttempt, %{rfid_token_id: rfid_token.id, door_id: door.id, reason: reason})
     assert door_access_attempt.member_id == nil
   end
 

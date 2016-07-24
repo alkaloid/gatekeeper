@@ -11,7 +11,8 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-import "deps/phoenix_html/web/static/js/phoenix_html"
+import "phoenix_html"
+import {Socket} from "phoenix"
 
 // Import local files
 //
