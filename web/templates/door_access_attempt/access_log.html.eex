@@ -22,8 +22,8 @@
         <td>
           <%=
             {:ok, inserted_at} = Ecto.DateTime.dump access_attempt.inserted_at
-            local_time = Timex.Timezone.convert Timex.Date.from(inserted_at), Timex.Timezone.get("America/New_York")
-            {:ok, time} = Timex.DateFormat.format(local_time, "%a, %b %e @ %l:%M:%S%P", :strftime)
+            local_time = Timex.Timezone.convert Timex.DateTime.from(inserted_at), Timex.Timezone.get("America/New_York")
+            {:ok, time} = Timex.format(local_time, "%a, %b %e @ %l:%M:%S%P", :strftime)
             time
           %>
         </td>
