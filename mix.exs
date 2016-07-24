@@ -56,7 +56,7 @@ defmodule Gatekeeper.Mixfile do
       {:timex, "~> 2.0"},
       {:oauth2, "0.6.0"},
       {:ueberauth, "~> 0.3"},
-      {:ueberauth_slack, "~> 0.3"},
+      {:ueberauth_slack, github: "bklang/ueberauth_slack", branch: "fix/missing_team_info"},
     ]
   end
 

@@ -38,5 +38,5 @@
   "timex": {:hex, :timex, "2.2.1", "0d69012a7fd69f4cbdaa00cc5f2a5f30f1bed56072fb362ed4bddf60db343022", [:mix], [{:gettext, "~> 0.10", [hex: :gettext, optional: false]}, {:combine, "~> 0.7", [hex: :combine, optional: false]}, {:tzdata, "~> 0.1.8 or ~> 0.5", [hex: :tzdata, optional: false]}]},
   "tzdata": {:hex, :tzdata, "0.5.8", "a4ffe564783c6519e4df230a5d0e1cf44b7db7f576bcae76d05540b5da5b6143", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, optional: false]}]},
   "ueberauth": {:hex, :ueberauth, "0.3.0", "d8f8573dc15f2623d22b0c3f360ffbe9db6e2d1e75b79803c3ee7e5964175e58", [:mix], [{:plug, "~> 1.0", [hex: :plug, optional: false]}]},
-  "ueberauth_slack": {:hex, :ueberauth_slack, "0.3.0", "ec8f6c96e1d41a458a00b5d8cd918c1f387998884fe4636e67dd88b1bd06f928", [:mix], [{:ueberauth, "~> 0.2", [hex: :ueberauth, optional: false]}, {:oauth2, "~> 0.5", [hex: :oauth2, optional: false]}]},
+  "ueberauth_slack": {:git, "https://github.com/bklang/ueberauth_slack.git", "b00746a28eba616309236ae6d5bde0bd27b977c8", [branch: "fix/missing_team_info"]},
   "uuid": {:hex, :uuid, "1.1.4", "36c7734e4c8e357f2f67ba57fb61799d60c20a7f817b104896cca64b857e3686", [:mix], []}}
