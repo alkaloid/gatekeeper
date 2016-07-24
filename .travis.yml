@@ -3,9 +3,16 @@ elixir:
   - 1.3.4
 otp_release:
   - 19.0
+services:
+  - postgresql
 before_script:
+  - psql -c 'create database gatekeeper_test;' -U postgres
+  - mix local.rebar --force # for Elixir 1.3.0 and up
+  - mix local.hex --force
+  - mix deps.get
   - mix deps.compile
   - mix deps.compile # second build for bug in `serial`
+  - mix ecto.migrate
 script: mix test
 env:
-  - SECRET_KEY_BASE=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  - SECRET_KEY_BASE=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA MIX_ENV=test
