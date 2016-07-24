@@ -5,10 +5,6 @@ defmodule Gatekeeper.AuthenticationController do
   alias Gatekeeper.Repo
   alias Gatekeeper.Member
 
-  def request(conn, _params) do
-    render(conn, "request.html", callback_url: Helpers.callback_url(conn))
-  end
-
   def delete(conn, _params) do
     conn
     |> put_flash(:info, "You have been logged out.")
