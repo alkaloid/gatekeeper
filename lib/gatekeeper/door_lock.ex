@@ -9,6 +9,10 @@ defmodule Gatekeeper.DoorLock do
     GenServer.start_link(__MODULE__, [door_id, gpio_pin, type], opts)
   end
 
+  def pidof(id) do
+    proc_name(id) |> :global.whereis_name
+  end
+
   def proc_name(id) do
     String.to_atom("door_lock_#{id}")
   end

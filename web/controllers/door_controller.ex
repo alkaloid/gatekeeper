@@ -10,8 +10,7 @@ defmodule Gatekeeper.DoorController do
   def index(conn, _params) do
     doors = Repo.all(Door)
     door_statuses = Enum.reduce(doors, %{}, fn(door, door_statuses) ->
-      door_name = Gatekeeper.DoorLock.proc_name(door.id)
-      Dict.merge(door_statuses, case :global.whereis_name(door_name) do
+      Dict.merge(door_statuses, case DoorLock.pidof(door.id) do
         :undefined ->
           %{door.id => :unknown}
         pid ->
