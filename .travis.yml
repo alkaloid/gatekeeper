@@ -1,6 +1,6 @@
 language: erlang
 otp_release:
-   - 18.1
+   - 19.0
 before_install:
    - git clone --branch v1.1.0 https://github.com/elixir-lang/elixir
    - make -C elixir
