@@ -1,8 +1,13 @@
 defmodule Gatekeeper.DoorLockTest do
   use ExUnit.Case, async: true
 
+  import Gatekeeper.Factory
+
   setup do
-    lock = case Gatekeeper.DoorLock.start_link(Gatekeeper.DoorLock.Dummy, 1, 2) do
+    door_group = create_door_group
+    door = create_door door_group: door_group
+    gpio_pin = 1
+    lock = case Gatekeeper.DoorLock.start_link(Gatekeeper.DoorLock.Dummy, door.id, gpio_pin) do
       {:ok, lock} ->
         lock
       {:error, {:already_started, lock}} ->
