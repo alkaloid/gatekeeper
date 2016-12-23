@@ -5,6 +5,16 @@ defmodule Gatekeeper.AuthenticationController do
   alias Gatekeeper.Repo
   alias Gatekeeper.Member
 
+  if Mix.env == :dev do
+    def automatic(conn, _params) do
+      admin = Repo.all(from member in Member, where: member.role == "admin") |> hd
+      conn
+      |> Guardian.Plug.sign_in(admin)
+      |> put_flash(:info, "Automatically logged in as #{admin.name}")
+      |> redirect(to: door_access_attempt_path(conn, :index))
+    end
+  end
+
   def delete(conn, _params) do
     conn
     |> put_flash(:info, "You have been logged out.")
