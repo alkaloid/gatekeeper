@@ -5,6 +5,7 @@ defmodule Gatekeeper.RfidToken do
   alias Gatekeeper.Member
   alias Gatekeeper.Repo
   use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
+  alias Gatekeeper.WriteRepoWrapper
   alias Gatekeeper.Door
   alias Gatekeeper.DoorAccessAttempt
 
@@ -70,7 +71,9 @@ defmodule Gatekeeper.RfidToken do
     door = Repo.get!(Door, door_id)
 
     {allowed, reason} = access_permitted? rfid_token, door
-    create_access_attempt rfid_token, door, allowed, reason, rfid_token.member_id
+
+    %{rfid_token_id: rfid_token.id, door_id: door.id, access_allowed: allowed, reason: reason, member_id: rfid_token.member_id}
+    |> WriteRepoWrapper.create_access_attempt
 
     {allowed, reason}
   end
@@ -78,10 +81,5 @@ defmodule Gatekeeper.RfidToken do
   def autocreate_rfid_token(identifier) do
     change = changeset(%Gatekeeper.RfidToken{}, %{identifier: identifier, active: false})
     WriteRepo.insert! change
-  end
-
-  def create_access_attempt(rfid_token, door, allowed, reason, member_id) do
-    changeset = DoorAccessAttempt.changeset(%DoorAccessAttempt{}, %{rfid_token_id: rfid_token.id, door_id: door.id, access_allowed: allowed, reason: reason, member_id: member_id})
-    WriteRepo.insert! changeset
   end
 end

@@ -12,6 +12,7 @@ defmodule Gatekeeper do
       # Start the Ecto repositories
       worker(Gatekeeper.Repo, []), # local, read-only
       worker(Gatekeeper.WriteRepo, []), # remote, read-write
+      worker(Gatekeeper.WriteRepoWrapper, []), # wrapper to allow writes to fail
       # Here you could define other workers and supervisors as children
       worker(Gatekeeper.DoorInterface, [Application.get_env(:gatekeeper, :doorlock)[:door_id]]),
     ]
