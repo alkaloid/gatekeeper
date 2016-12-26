@@ -15,16 +15,28 @@ defmodule Gatekeeper.WriteRepoWrapper do
     GenServer.start_link(__MODULE__, [], name: :write_repo)
   end
 
-  def create_access_attempt(attempt_info) do
-    GenServer.cast(:write_repo, {:create_access_attempt, attempt_info})
+  def create_access_attempt(attempt_info, async \\ true) do
+    if async do
+      GenServer.cast(:write_repo, {:create_access_attempt, attempt_info})
+    else
+      GenServer.call(:write_repo, {:create_access_attempt, attempt_info})
+    end
   end
 
   def handle_cast({:create_access_attempt, attempt_info}, _) do
+    save_attempt attempt_info
+    {:noreply, nil}
+  end
+
+  def handle_call({:create_access_attempt, attempt_info}, _, _) do
+    save_attempt attempt_info
+    {:reply, nil, nil}
+  end
+
+  def save_attempt(attempt_info) do
     DoorAccessAttempt.changeset(%DoorAccessAttempt{}, attempt_info)
     |> WriteRepo.insert!
 
     Logger.debug("Door access attempt written to Write Repo")
-
-    {:noreply, nil}
   end
 end

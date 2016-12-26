@@ -72,8 +72,11 @@ defmodule Gatekeeper.RfidToken do
 
     {allowed, reason} = access_permitted? rfid_token, door
 
+    # Write the access attempt synchronously for the test suite
+    async = Mix.env != :test
+
     %{rfid_token_id: rfid_token.id, door_id: door.id, access_allowed: allowed, reason: reason, member_id: rfid_token.member_id}
-    |> WriteRepoWrapper.create_access_attempt
+    |> WriteRepoWrapper.create_access_attempt(async)
 
     {allowed, reason}
   end
