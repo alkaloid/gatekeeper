@@ -22,6 +22,9 @@ defmodule Gatekeeper.Router do
   scope "/auth", Gatekeeper do
     pipe_through :browser
 
+    if Mix.env == :dev do
+      get "/automatic", AuthenticationController, :automatic
+    end
     get "/:provider", AuthenticationController, :request
     get "/:provider/callback", AuthenticationController, :callback
     delete "", AuthenticationController, :delete

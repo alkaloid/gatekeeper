@@ -35,7 +35,14 @@
                 <% # FIXME: We get "undefined function" when calling authentication_path(@conn, :delete) %>
                 <li><%= link "Log Out", to: "/auth", method: :delete, class: "btn btn-danger", style: "padding: 15px 5px" %></li>
               <% else %>
-                <li><%= link "Log In", to: authentication_path(@conn, :request, "slack"), class: "btn btn-default", style: "padding: 15px 5px" %></li>
+                <li><%=
+                  authenticator = if Mix.env == :dev do
+                    :automatic
+                  else
+                    :slack
+                  end
+                  link "Log In", to: authentication_path(@conn, :request, authenticator), class: "btn btn-default", style: "padding: 15px 5px"
+                %></li>
               <% end %>
             </ul>
           </div><!--/.nav-collapse -->
