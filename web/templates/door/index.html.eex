@@ -14,15 +14,18 @@
       <td><%= door.name %></td>
 
       <td class="text-right">
-        <% btn_status = case @door_statuses[door.id] do
+        <% [btn_status, icon] = case @door_statuses[door.id] do
           :unknown ->
-            "warning"
+            ["warning", "star"]
           :locked ->
-            "success"
+            ["info", "leaf"]
           :unlocked ->
-            "danger"
+            ["danger", "question-sign"]
         end %>
-        <%= link(to_string(@door_statuses[door.id]), to: door_door_path(@conn, :flipflop, door), class: "btn btn-#{btn_status} btn-xs") %>
+        <%= link(to: door_door_path(@conn, :flipflop, door), class: "btn btn-#{btn_status} btn-xs") do %>
+          <span class="glyphicon glyphicon-<%= icon %>" aria-hidden="true"></span>
+          <%= to_string(@door_statuses[door.id]) %>
+        <% end %>
         <%= link "Show", to: door_path(@conn, :show, door), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: door_path(@conn, :edit, door), class: "btn btn-default btn-xs" %>
       </td>
