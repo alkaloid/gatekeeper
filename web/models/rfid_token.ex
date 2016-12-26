@@ -54,10 +54,10 @@ defmodule Gatekeeper.RfidToken do
     {allowed, reason} = active?(rfid_token)
 
     if allowed do
-      {allowed, reason} = Door.member_access_allowed?(door, rfid_token.member)
+      Door.member_access_allowed?(door, rfid_token.member)
+    else
+      {allowed, reason}
     end
-
-    {allowed, reason}
   end
 
   def attempt_access!(identifier, door_id) do
