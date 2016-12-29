@@ -3,7 +3,7 @@ defmodule Gatekeeper.DoorLock do
 
   use GenServer
 
-  def start_link(gpio_number, type \\ Gatekeeper.DoorLock.Dummy, opts \\ []) do
+  def start_link(gpio_number, type \\ Gatekeeper.GpioDummy, opts \\ []) do
     GenServer.start_link(__MODULE__, [gpio_number, type], opts)
   end
 
@@ -77,30 +77,3 @@ defmodule Gatekeeper.DoorLock do
   end
 end
 
-defmodule Gatekeeper.DoorLock.Dummy do
-  use GenServer
-
-  def start_link(_gpio_number, _type, opts \\ []) do
-    GenServer.start_link(__MODULE__, :ok, opts)
-  end
-
-  def init(:ok) do
-    {:ok, 1}
-  end
-
-  def write(pid, value) do
-    GenServer.call(pid, {:write, value})
-  end
-
-  def read(pid) do
-    GenServer.call(pid, :read)
-  end
-
-  def handle_call({:write, value}, _from, _state) do
-    {:reply, :ok, value}
-  end
-
-  def handle_call(:read, _from, state) do
-    {:reply, state, state}
-  end
-end
