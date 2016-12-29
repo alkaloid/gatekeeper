@@ -6,6 +6,9 @@ defmodule Gatekeeper do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
+    doorlock_config = Application.get_env(:gatekeeper, :doorlock)
+    doorbell_config = Application.get_env(:gatekeeper, :doorbell)
+
     children = [
       # Start the endpoint when the application starts
       supervisor(Gatekeeper.Endpoint, []),
@@ -14,7 +17,8 @@ defmodule Gatekeeper do
       worker(Gatekeeper.WriteRepo, []), # remote, read-write
       worker(Gatekeeper.WriteRepoWrapper, []), # wrapper to allow writes to fail
       # Here you could define other workers and supervisors as children
-      worker(Gatekeeper.DoorInterface, [Application.get_env(:gatekeeper, :doorlock)[:door_id]]),
+      worker(Gatekeeper.DoorInterface, [doorlock_config[:door_id]]),
+      worker(Gatekeeper.DoorBell, [doorbell_config[:gpio_port], doorbell_config[:type]]),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
@@ -30,3 +34,4 @@ defmodule Gatekeeper do
     :ok
   end
 end
+
