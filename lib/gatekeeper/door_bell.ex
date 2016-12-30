@@ -2,6 +2,7 @@ defmodule Gatekeeper.DoorBell do
   require Logger
 
   use GenServer
+  use Timex
 
   @notify_url "http://10.3.18.99:4000/api/door_bell"
 
@@ -27,7 +28,7 @@ defmodule Gatekeeper.DoorBell do
       nil
     end
 
-    {:ok, %{gpio_number: gpio_number, type: type, gpio_pid: pid}}
+    {:ok, %{gpio_number: gpio_number, type: type, gpio_pid: pid, last_signal: Time.now()}}
   end
 
   def handle_call(request, from, state) do
@@ -40,15 +41,25 @@ defmodule Gatekeeper.DoorBell do
     {:noreply, state}
   end
 
-  def handle_info({:gpio_interrupt, _gpio_port, :falling}, state) do
-    Logger.info "Ding dong! Notifying..."
-    door_id = Application.get_env(:gatekeeper, :door_lock)[:door_id]
-    {:ok, _response} = HTTPoison.post @notify_url, {:multipart, [{"door_id", "#{door_id}"}]}
+  def handle_info({:gpio_interrupt, _gpio_port, :falling}, state = %{last_signal: last_signal}) do
+    {_, seconds, ms} = Time.diff(Time.now, last_signal)
+    if seconds < 2 do
+      Logger.debug "Ignoring bounce on GPIO; last signal was #{seconds}.#{ms} seconds ago"
+    else
+      notify()
+      state = Map.put(state, :last_signal, Time.now)
+    end
     {:noreply, state}
   end
   def handle_info(msg, state) do
     Logger.debug "Received Info msg - #{inspect msg} - state #{inspect state}"
     {:noreply, state}
+  end
+
+  def notify() do
+    Logger.info "Ding dong! Notifying..."
+    door_id = Application.get_env(:gatekeeper, :door_lock)[:door_id]
+    {:ok, _response} = HTTPoison.post @notify_url, {:multipart, [{"door_id", "#{door_id}"}]}
   end
 end
 
