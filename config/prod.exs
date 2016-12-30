@@ -62,7 +62,7 @@ config :gatekeeper, :doorlock,
   door_id: String.to_integer(System.get_env("GATEKEEPER_DOOR_ID") || "1")
 
 config :gatekeeper, :doorbell,
-  gpio_port: String.to_integer(System.get_env("GATEKEEPER_BELL_GPIO") || "17")
+  gpio_port: String.to_integer(System.get_env("GATEKEEPER_BELL_GPIO") || "17"),
   type: Gpio
 
 config :gatekeeper, Gatekeeper.Repo,
