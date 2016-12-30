@@ -24,7 +24,7 @@ config :gatekeeper, :rfidreader,
 
 config :gatekeeper, :doorlock,
   gpio_port: '2',
-  type: Gatekeeper.DoorLock.Dummy
+  type: Gatekeeper.GpioDummy
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

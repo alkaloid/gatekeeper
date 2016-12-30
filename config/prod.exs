@@ -61,6 +61,10 @@ config :gatekeeper, :doorlock,
   type: Gpio,
   door_id: String.to_integer(System.get_env("GATEKEEPER_DOOR_ID") || "1")
 
+config :gatekeeper, :doorbell,
+  gpio_port: String.to_integer(System.get_env("GATEKEEPER_BELL_GPIO") || "17"),
+  type: Gpio
+
 config :gatekeeper, Gatekeeper.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: System.get_env("DATABASE_READ_USERNAME"),
