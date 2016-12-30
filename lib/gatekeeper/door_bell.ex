@@ -58,8 +58,8 @@ defmodule Gatekeeper.DoorBell do
 
   def notify() do
     Logger.info "Ding dong! Notifying..."
-    door_id = Application.get_env(:gatekeeper, :door_lock)[:door_id]
-    {:ok, _response} = HTTPoison.post @notify_url, {:multipart, [{"door_id", "#{door_id}"}]}
+    door_id = Application.get_env(:gatekeeper, :doorlock)[:door_id]
+    {:ok, _response} = HTTPoison.post @notify_url, {:form, [{"door_id", "#{door_id}"}]}
   end
 end
 
