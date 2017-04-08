@@ -43,11 +43,12 @@ defmodule Gatekeeper.DoorBell do
 
   def handle_info({:gpio_interrupt, _gpio_port, :falling}, state = %{last_signal: last_signal}) do
     {_, seconds, ms} = Time.diff(Time.now, last_signal)
-    if seconds < 2 do
+    state = if seconds < 2 do
       Logger.debug "Ignoring bounce on GPIO; last signal was #{seconds}.#{ms} seconds ago"
+      state
     else
       notify()
-      state = Map.put(state, :last_signal, Time.now)
+      Map.put(state, :last_signal, Timex.now)
     end
     {:noreply, state}
   end
