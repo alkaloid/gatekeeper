@@ -22,8 +22,9 @@ defmodule Gatekeeper.ConnCase do
 
       alias Gatekeeper.Repo
       use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
-      import Ecto.Schema
-      import Ecto.Query, only: [from: 2]
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query
 
       import Gatekeeper.Router.Helpers
 
