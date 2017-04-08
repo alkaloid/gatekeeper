@@ -28,7 +28,7 @@ defmodule Gatekeeper.DoorBell do
       nil
     end
 
-    {:ok, %{gpio_number: gpio_number, type: type, gpio_pid: pid, last_signal: Time.now()}}
+    {:ok, %{gpio_number: gpio_number, type: type, gpio_pid: pid, last_signal: Timex.now()}}
   end
 
   def handle_call(request, from, state) do
@@ -42,7 +42,7 @@ defmodule Gatekeeper.DoorBell do
   end
 
   def handle_info({:gpio_interrupt, _gpio_port, :falling}, state = %{last_signal: last_signal}) do
-    {_, seconds, ms} = Time.diff(Time.now, last_signal)
+    {_, seconds, ms} = Timex.diff(Timex.now, last_signal)
     state = if seconds < 2 do
       Logger.debug "Ignoring bounce on GPIO; last signal was #{seconds}.#{ms} seconds ago"
       state
