@@ -15,8 +15,8 @@ defmodule Gatekeeper.DoorAccessAttempt do
     timestamps
   end
 
-  @required_fields ~w(door_id rfid_token_id access_allowed reason)
-  @optional_fields ~w(member_id)
+  @required_fields [:door_id, :rfid_token_id, :access_allowed, :reason]
+  @optional_fields [:member_id]
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -24,9 +24,10 @@ defmodule Gatekeeper.DoorAccessAttempt do
   If no params are provided, an invalid changeset is returned
   with no validation performed.
   """
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 
   def ordered_preloaded do

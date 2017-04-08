@@ -1,8 +1,6 @@
 ExUnit.start
 
-Mix.Task.run "ecto.create", ["--quiet"]
-Mix.Task.run "ecto.migrate", ["--quiet"]
-Ecto.Adapters.SQL.begin_test_transaction(Gatekeeper.Repo)
+Ecto.Adapters.SQL.Sandbox.mode(Gatekeeper.Repo, :manual)
 
 ExUnit.configure(exclude: [skip: true])
 

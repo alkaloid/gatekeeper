@@ -12,13 +12,14 @@ defmodule Gatekeeper.RfidTokenControllerTest do
 
   setup do
     admin = create_member role: "admin", email: "admin@example.com", company: create_company
-    conn = conn()
+    conn = build_conn()
     |> conn_with_fetched_session
     |> Guardian.Plug.sign_in(admin)
     {:ok, conn: conn}
   end
 
   test "redirects unauthenticated requests" do
+    conn = build_conn()
     conn = get conn, rfid_token_path(conn, :index)
     assert redirected_to(conn) == page_path(conn, :index)
   end

@@ -5,6 +5,7 @@ defmodule Gatekeeper.Member do
   alias Gatekeeper.Repo
   alias Gatekeeper.RfidToken
   alias Gatekeeper.DoorGroupMember
+  alias Gatekeeper.DoorAccessAttempt
 
   schema "members" do
     field :name, :string
@@ -23,8 +24,8 @@ defmodule Gatekeeper.Member do
     timestamps
   end
 
-  @required_fields ~w(name email active company_id role)
-  @optional_fields ~w(phone)
+  @required_fields [:name, :email, :active, :company_id, :role]
+  @optional_fields [:phone]
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -32,9 +33,10 @@ defmodule Gatekeeper.Member do
   If no params are provided, an invalid changeset is returned
   with no validation performed.
   """
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> foreign_key_constraint(:company_id)
   end
 
