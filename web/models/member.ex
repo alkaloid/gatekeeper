@@ -5,6 +5,7 @@ defmodule Gatekeeper.Member do
   alias Gatekeeper.Repo
   alias Gatekeeper.RfidToken
   alias Gatekeeper.DoorGroupMember
+  alias Gatekeeper.DoorAccessAttempt
 
   schema "members" do
     field :name, :string
