@@ -50,6 +50,7 @@ defmodule Gatekeeper.Web do
       use Phoenix.HTML
 
       import Gatekeeper.Router.Helpers
+      import Gatekeeper.ErrorHelpers
     end
   end
 
