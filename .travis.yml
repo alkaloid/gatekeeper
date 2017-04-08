@@ -4,9 +4,6 @@ elixir:
 otp_release:
   - 19.0
 before_script:
-  - mix local.rebar --force # for Elixir 1.3.0 and up
-  - mix local.hex --force
-  - mix deps.get
   - mix deps.compile
   - mix deps.compile # second build for bug in `serial`
 script: mix test
