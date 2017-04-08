@@ -11,7 +11,7 @@ defmodule Gatekeeper.MemberControllerTest do
 
   setup do
     admin = create_member role: "admin", email: "admin@example.com", company: create_company
-    conn = conn()
+    conn = build_conn()
     |> conn_with_fetched_session
     |> Guardian.Plug.sign_in(admin)
     {:ok, conn: conn}
@@ -19,6 +19,7 @@ defmodule Gatekeeper.MemberControllerTest do
 
   test "redirects unauthenticated requests" do
     company = create_company
+    conn = build_conn()
     conn = get conn, company_member_path(conn, :index, company)
     assert redirected_to(conn) == page_path(conn, :index)
   end
