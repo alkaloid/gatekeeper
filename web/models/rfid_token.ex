@@ -19,8 +19,8 @@ defmodule Gatekeeper.RfidToken do
     timestamps
   end
 
-  @required_fields ~w(identifier active)
-  @optional_fields ~w(name member_id)
+  @required_fields [:identifier, :active]
+  @optional_fields [:name, :member_id]
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -30,7 +30,8 @@ defmodule Gatekeeper.RfidToken do
   """
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> unique_constraint(:identifier)
   end
 

@@ -8,8 +8,8 @@ defmodule Gatekeeper.DoorGroupCompany do
     timestamps
   end
 
-  @required_fields ~w(door_group_id company_id)
-  @optional_fields ~w()
+  @required_fields [:door_group_id, :company_id]
+  @optional_fields []
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -19,6 +19,7 @@ defmodule Gatekeeper.DoorGroupCompany do
   """
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 end
