@@ -57,8 +57,10 @@ defmodule Gatekeeper.Factory do
       identifier: "abcd1234",
       active: true,
     }
-    if params[:member] do
-      default_params = Dict.merge(default_params, member_id: params[:member].id)
+    default_params = if params[:member] do
+      Dict.merge(default_params, member_id: params[:member].id)
+    else
+      default_params
     end
 
     params = Dict.merge(default_params, params)
