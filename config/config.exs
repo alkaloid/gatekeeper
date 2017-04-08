@@ -5,6 +5,10 @@
 # is restricted to this project.
 use Mix.Config
 
+config :gatekeeper, ecto_repos: [Gatekeeper.Repo, Gatekeeper.WriteRepo]
+
+config :gatekeeper, namespace: Gatekeeper
+
 # Configures the endpoint
 config :gatekeeper, Gatekeeper.Endpoint,
   url: [host: "localhost"],

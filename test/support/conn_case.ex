@@ -33,10 +33,12 @@ defmodule Gatekeeper.ConnCase do
   end
 
   setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Gatekeeper.Repo)
+
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(Gatekeeper.Repo, [])
+      Ecto.Adapters.SQL.Sandbox.mode(Gatekeeper.Repo, {:shared, self()})
     end
 
-    :ok
+    {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

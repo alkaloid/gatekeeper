@@ -22,6 +22,7 @@ defmodule Gatekeeper.Mixfile do
        :cowboy,
        :logger,
        :phoenix,
+       :phoenix_pubsub,
        :phoenix_ecto,
        :postgrex,
        :phoenix_html,
@@ -45,15 +46,16 @@ defmodule Gatekeeper.Mixfile do
       {:elixir_ale, "~> 0.5.0", only: :prod},
       {:guardian, "~> 0.12.0"},
       {:mix_test_watch, "~> 0.2", only: :dev},
-      {:phoenix, "~> 1.1.2"},
-      {:phoenix_ecto, "~> 2.0"},
-      {:phoenix_html, "~> 2.3"},
+      {:phoenix, "~> 1.2.3"},
+      {:phoenix_pubsub, "~> 1.0"},
+      {:phoenix_ecto, "~> 3.0-rc"},
+      {:phoenix_html, "~> 2.6"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:postgrex, ">= 0.0.0"},
       {:serial, "0.1.1"},
-      {:scrivener, "~> 1.2"},
+      {:scrivener, "~> 2.0"},
       {:scrivener_html, "~> 1.1"},
-      {:timex, "~> 2.0"},
+      {:timex, "~> 3.0"},
       {:oauth2, "0.6.0"},
       {:ueberauth, "~> 0.4"},
       {:ueberauth_slack, github: "ueberauth/ueberauth_slack", branch: "master"},
@@ -68,6 +70,8 @@ defmodule Gatekeeper.Mixfile do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-     "ecto.reset": ["ecto.drop", "ecto.setup"]]
+     "ecto.reset": ["ecto.drop", "ecto.setup"],
+     "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+   ]
   end
 end
