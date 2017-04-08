@@ -33,6 +33,7 @@
   "postgrex": {:hex, :postgrex, "0.13.2", "2b88168fc6a5456a27bfb54ccf0ba4025d274841a7a3af5e5deb1b755d95154e", [:mix], [{:connection, "~> 1.0", [hex: :connection, optional: false]}, {:db_connection, "~> 1.1", [hex: :db_connection, optional: false]}, {:decimal, "~> 1.0", [hex: :decimal, optional: false]}]},
   "ranch": {:hex, :ranch, "1.3.2", "e4965a144dc9fbe70e5c077c65e73c57165416a901bd02ea899cfd95aa890986", [:rebar3], []},
   "scrivener": {:hex, :scrivener, "2.3.0", "16b1d744202d47233798205447b35592d96a209241c566304f84ddef63c718b2", [:mix], []},
+  "scrivener_ecto": {:hex, :scrivener_ecto, "1.2.1", "dfa1a1584fed47f2280c0e066531edefe23c14bc66183309dfb1f3ed44629e5c", [:mix], [{:ecto, "~> 2.0", [hex: :ecto, optional: false]}, {:postgrex, "~> 0.11.0 or ~> 0.12.0 or ~> 0.13.0", [hex: :postgrex, optional: true]}, {:scrivener, "~> 2.3", [hex: :scrivener, optional: false]}]},
   "scrivener_html": {:hex, :scrivener_html, "1.6.0", "0f5911e4e1256b2e3a6f6355fa8616fc924ab42ca6a1f55263a874b9165535fb", [:mix], [{:phoenix, "~> 1.0 or ~> 1.2", [hex: :phoenix, optional: true]}, {:phoenix_html, "~> 2.2", [hex: :phoenix_html, optional: false]}, {:plug, "~> 1.1", [hex: :plug, optional: false]}, {:scrivener, "~> 1.2 or ~> 2.0", [hex: :scrivener, optional: false]}]},
   "serial": {:hex, :serial, "0.1.1", "6ed1d8ee34fbcf62a2ce0349be0fe25149dc09002390d6200b2f68760fa3b619", [:mix], []},
   "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.1", "28a4d65b7f59893bc2c7de786dec1e1555bd742d336043fe644ae956c3497fbe", [:make, :rebar], []},

@@ -26,6 +26,7 @@ defmodule Gatekeeper.Mixfile do
        :phoenix_ecto,
        :postgrex,
        :phoenix_html,
+       :scrivener_ecto,
        :tzdata,
        :ueberauth,
        :ueberauth_slack
@@ -54,6 +55,7 @@ defmodule Gatekeeper.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:serial, "0.1.1"},
       {:scrivener, "~> 2.0"},
+      {:scrivener_ecto, "~> 1.0"},
       {:scrivener_html, "~> 1.1"},
       {:timex, "~> 3.0"},
       {:oauth2, "0.6.0"},
