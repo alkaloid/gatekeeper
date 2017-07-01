@@ -26,7 +26,9 @@
         <td>
           <%= if rfid_token.member do %>
             <% member = rfid_token.member %>
-            <%= link member.name, to: company_member_path(@conn, :show, member.company, member) %> (<%= link member.company.name, to: company_path(@conn, :show, member.company) %>)
+            <%= link member.name, to: company_member_path(@conn, :show, member.company, member) %>
+            <br>
+            <small><%= link member.company.name, to: company_path(@conn, :show, member.company) %></small>
           <% else %>
             Unassigned
           <% end %>

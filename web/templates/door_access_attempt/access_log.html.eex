@@ -29,7 +29,9 @@
         </td>
         <td>
           <%= if member = access_attempt.member do %>
-            <%= link member.name, to: company_member_path(@conn, :show, member.company, member) %> (<%= link member.company.name, to: company_path(@conn, :show, member.company) %>)
+            <%= link member.name, to: company_member_path(@conn, :show, member.company, member) %>
+            <br>
+            <small><%= link member.company.name, to: company_path(@conn, :show, member.company) %></small>
           <% else %>
             <%= link "Unassigned Token: #{access_attempt.rfid_token.identifier}", to: rfid_token_path(@conn, :show, access_attempt.rfid_token) %>
           <% end %>
