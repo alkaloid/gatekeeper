@@ -3,6 +3,7 @@
   <%= link "New company", to: company_path(@conn, :new), class: "btn btn-default btn-xs" %>
 </h2>
 
+<%= link "#{if @show_inactive, do: "Hide", else: "Show"} inactive", to: company_path(@conn, :index, show_inactive: (if @show_inactive, do: "false", else: "true")), class: "btn btn-default btn-xs" %>
 <table class="table">
   <thead>
     <tr>
@@ -24,7 +25,9 @@
       <td>
         <ul class="member-list">
           <%= for member <- company.members do %>
-            <li><%= link member.name, to: company_member_path(@conn, :show, company, member) %>
+            <li>
+              <%= link member.name, to: company_member_path(@conn, :show, company, member) %>
+              <%= unless member.active, do: "(inactive)" %>
             </li>
           <% end %>
         </ul>

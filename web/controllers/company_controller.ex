@@ -2,6 +2,7 @@ defmodule Gatekeeper.CompanyController do
   use Gatekeeper.Web, :controller
 
   alias Gatekeeper.Company
+  alias Gatekeeper.Member
   alias Gatekeeper.DoorGroup
   alias Gatekeeper.DoorGroupCompany
   alias Gatekeeper.DoorAccessAttempt
@@ -12,10 +13,15 @@ defmodule Gatekeeper.CompanyController do
     %Company{} |> Repo.preload([:members, :door_groups])
   end
 
-  def index(conn, _params) do
+  def index(conn, _params = %{"show_inactive" => "true"}) do
     companies = Repo.all(from c in Company, order_by: :name)
     |> Repo.preload(:members)
-    render(conn, "index.html", companies: companies)
+    render(conn, "index.html", companies: companies, show_inactive: true)
+  end
+  def index(conn, _params) do
+    companies = Repo.all(from c in Company, order_by: :name, where: is_nil(c.departure_date))
+    |> Repo.preload(members: from(m in Member, where: m.active == true))
+    render(conn, "index.html", companies: companies, show_inactive: false)
   end
 
   def new(conn, _params) do
