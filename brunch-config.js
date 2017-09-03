@@ -57,7 +57,9 @@ exports.config = {
       "fonts": ["node_modules/bootstrap-sass/assets/fonts/bootstrap"] // copy node_modules/bootstrap-sass/assets/fonts/bootstrap/* to priv/static/fonts/
     },
     sass: {
-      includePaths: ["node_modules/bootstrap-sass/assets/stylesheets"], // tell sass-brunch where to look for files to @import
+      options: {
+        includePaths: ['node_modules/bootstrap-sass/assets/stylesheets'] // tell sass-brunch where to look for files to @import
+      },
       precision: 8 // minimum precision required by bootstrap-sass
     }
   },
@@ -76,7 +78,8 @@ exports.config = {
     whitelist: ["phoenix", "phoenix_html", "jquery", "bootstrap-sass"],  // pull jquery and bootstrap-sass in as front-end assets
     globals: { // bootstrap-sass' JavaScript requires both '$' and 'jQuery' in global scope
       $: 'jquery',
-      jQuery: 'jquery'
+      jQuery: 'jquery',
+      bootstrap: 'bootstrap-sass'
     }
   }
 };
