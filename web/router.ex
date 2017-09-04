@@ -15,6 +15,10 @@ defmodule Gatekeeper.Router do
     plug Guardian.Plug.EnsureAuthenticated, on_failure: { Gatekeeper.PageController, :unauthenticated }
   end
 
+  pipeline :application do
+    plug Gatekeeper.DoorLockStatusPlug
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -37,7 +41,7 @@ defmodule Gatekeeper.Router do
   end
 
   scope "/", Gatekeeper do
-    pipe_through [:browser, :requires_auth]
+    pipe_through [:browser, :requires_auth, :application]
 
     resources "/companies", CompanyController do
       resources "/members", MemberController do

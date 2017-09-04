@@ -8,16 +8,8 @@ defmodule Gatekeeper.DoorController do
   plug :scrub_params, "door" when action in [:create, :update]
 
   def index(conn, _params) do
-    doors = Repo.all(Door)
-    door_statuses = Enum.reduce(doors, %{}, fn(door, door_statuses) ->
-      Dict.merge(door_statuses, case DoorLock.pidof(door.id) do
-        :undefined ->
-          %{door.id => :unknown}
-        pid ->
-          %{door.id => DoorLock.state(pid)}
-      end)
-    end)
-    render(conn, "index.html", doors: doors, door_statuses: door_statuses)
+    # doors and door_statuses provided globally via plug
+    render(conn, "index.html")
   end
 
   def new(conn, _params) do

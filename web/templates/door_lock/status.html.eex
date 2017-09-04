@@ -1,0 +1,7 @@
+<%= for door <- @doors do %>
+  <% [btn_status, icon] = Gatekeeper.DoorLockStatusPlug.color_and_icon(@door_statuses[door.id]) %>
+  <%= link(to: door_door_path(@conn, :flipflop, door), class: "btn btn-#{btn_status} btn-xs") do %>
+    <i class="fa fa-<%= icon %>" aria-hidden="true"></i>
+    <%= to_string(door.name) %>
+  <% end %>
+<% end %>
