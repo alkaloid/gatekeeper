@@ -52,7 +52,9 @@
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
-      <%= render Gatekeeper.DoorLockView, "status.html", assigns %>
+      <%= if Guardian.Plug.current_resource(@conn) do %>
+        <%= render Gatekeeper.DoorLockView, "status.html", assigns %>
+      <% end %>
 
       <%= render @view_module, @view_template, assigns %>
 
