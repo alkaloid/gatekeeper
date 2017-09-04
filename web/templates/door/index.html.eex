@@ -23,7 +23,7 @@
             ["danger", "question-sign"]
         end %>
         <%= link(to: door_door_path(@conn, :flipflop, door), class: "btn btn-#{btn_status} btn-xs") do %>
-          <span class="glyphicon glyphicon-<%= icon %>" aria-hidden="true"></span>
+          <i class="fa fa-<%= icon %>" aria-hidden="true"></i>
           <%= to_string(@door_statuses[door.id]) %>
         <% end %>
         <%= link "Show", to: door_path(@conn, :show, door), class: "btn btn-default btn-xs" %>

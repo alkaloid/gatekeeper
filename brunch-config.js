@@ -54,11 +54,19 @@ exports.config = {
       ignore: [/web\/static\/vendor/]
     },
     copycat: {
-      "fonts": ["node_modules/bootstrap-sass/assets/fonts/bootstrap"] // copy node_modules/bootstrap-sass/assets/fonts/bootstrap/* to priv/static/fonts/
+      // Copy fonts to priv/static/fonts/
+      "fonts": [
+        "node_modules/bootstrap-sass/assets/fonts/bootstrap",
+        "node_modules/font-awesome/fonts"
+      ]
     },
     sass: {
       options: {
-        includePaths: ['node_modules/bootstrap-sass/assets/stylesheets'] // tell sass-brunch where to look for files to @import
+        // tell sass-brunch where to look for files to @import
+        includePaths: [
+          'node_modules/bootstrap-sass/assets/stylesheets',
+          'node_modules/font-awesome/scss'
+        ]
       },
       precision: 8 // minimum precision required by bootstrap-sass
     }
