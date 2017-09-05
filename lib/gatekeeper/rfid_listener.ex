@@ -30,7 +30,7 @@ defmodule Gatekeeper.RFIDListener do
         IO.write(buffer, rest)
       <<rest :: binary-size(leading), 3>> ->
         IO.write(buffer, rest)
-        id = buffer |> StringIO.flush |> String.rstrip
+        id = buffer |> StringIO.flush |> String.trim_trailing
         Logger.info "RFID card presented with ID #{id}"
         send(handler, {:card_read, id})
       _other -> IO.write(buffer, data)
