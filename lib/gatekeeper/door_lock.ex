@@ -89,7 +89,7 @@ defmodule Gatekeeper.DoorLock do
     Gatekeeper.Endpoint.broadcast! "door_lock:#{door_id}", "status_change", %{status: :unlocked}
     server = self()
     type.write(gpio, 1)
-    Task.async(fn ->
+    Task.start_link(fn ->
       :timer.sleep(duration)
       Gatekeeper.DoorLock.lock(server)
     end)
