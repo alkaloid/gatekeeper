@@ -21,16 +21,5 @@ defmodule Gatekeeper.DoorLockStatusPlug do
     |> assign(:doors, doors)
     |> assign(:door_statuses, door_statuses)
   end
-
-  def color_and_icon(status) do
-    case status do
-      :unknown ->
-        ["warning", "question-circle"]
-      :locked ->
-        ["info", "lock"]
-      :unlocked ->
-        ["danger", "unlock"]
-    end
-  end
 end
 

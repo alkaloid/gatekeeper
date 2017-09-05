@@ -53,10 +53,15 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 
 socket.connect()
 
-// Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("topic:subtopic", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+$.each(door_ids, (i, door_id) => {
+  let channel = socket.channel("door_lock:" + door_id)
+  channel.join()
+    .receive("ok", resp => { console.log("Listening for status on door " + door_id, resp) })
+    .receive("error", resp => { console.log("Unable to listen for status on door " + door_id, resp) })
+  channel.on("status_change", payload => {
+    console.log("status change on door", door_id, payload)
+    door_lock_status_update(door_id, payload['status'])
+  })
+})
 
 export default socket

@@ -19,3 +19,11 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 import socket from "./socket"
+
+// Make each door lock status icon clickable to unlock that door
+$.each(door_ids, (i, door_id) => {
+  $('.door_lock_'+door_id+'_status').on('click', (ev) => {
+    $.get($(ev.currentTarget).attr('href'))
+    return false
+  })
+})

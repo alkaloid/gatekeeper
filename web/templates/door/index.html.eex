@@ -11,14 +11,14 @@
   <tbody>
 <%= for door <- @doors do %>
     <tr>
-      <td><%= door.name %></td>
+      <td>
+        <%= link(to: door_door_path(@conn, :flipflop, door), class: "btn btn-warning btn-xs door_lock_#{door.id}_status") do %>
+          <i class="fa fa-question-circle" aria-hidden="true"></i>
+        <% end %>
+        <%= door.name %>
+      </td>
 
       <td class="text-right">
-        <% [btn_status, icon] = Gatekeeper.DoorLockStatusPlug.color_and_icon(@door_statuses[door.id]) %>
-        <%= link(to: door_door_path(@conn, :flipflop, door), class: "btn btn-#{btn_status} btn-xs") do %>
-          <i class="fa fa-<%= icon %>" aria-hidden="true"></i>
-          <%= to_string(@door_statuses[door.id]) %>
-        <% end %>
         <%= link "Show", to: door_path(@conn, :show, door), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: door_path(@conn, :edit, door), class: "btn btn-default btn-xs" %>
       </td>

@@ -72,18 +72,21 @@ defmodule Gatekeeper.DoorLock do
 
   def handle_call(:lock, _from, {type, gpio, door_id, door} = state) do
     Logger.info "Locking door #{door.name} (##{door_id})"
+    Gatekeeper.Endpoint.broadcast! "door_lock:#{door_id}", "status_change", %{status: :locked}
     type.write(gpio, 0)
     {:reply, :ok, state}
   end
 
   def handle_call(:unlock, _from, {type, gpio, door_id, door} = state) do
     Logger.info "Unlocking door #{door.name} (##{door_id})"
+    Gatekeeper.Endpoint.broadcast! "door_lock:#{door_id}", "status_change", %{status: :unlocked}
     type.write(gpio, 1)
     {:reply, :ok, state}
   end
 
   def handle_call({:flipflop, duration}, _from, {type, gpio, door_id, door} = state) do
     Logger.info "Unlocking door #{door.name} (##{door_id}) for #{duration}ms"
+    Gatekeeper.Endpoint.broadcast! "door_lock:#{door_id}", "status_change", %{status: :unlocked}
     server = self()
     type.write(gpio, 1)
     Task.async(fn ->
