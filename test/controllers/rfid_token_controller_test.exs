@@ -11,7 +11,7 @@ defmodule Gatekeeper.RfidTokenControllerTest do
   @invalid_attrs %{identifier: "", active: "foo"}
 
   setup do
-    admin = create_member role: "admin", email: "admin@example.com", company: create_company
+    admin = create_member role: "admin", email: "admin@example.com", company: create_company()
     conn = build_conn()
     |> conn_with_fetched_session
     |> Guardian.Plug.sign_in(admin)
@@ -26,7 +26,7 @@ defmodule Gatekeeper.RfidTokenControllerTest do
 
   ## Tokens associated with Members
   test "lists all entries on index", %{conn: conn} do
-    company = create_company
+    company = create_company()
     member = create_member company: company
     rfid_token = create_rfid_token member: member
     conn = get conn, company_member_rfid_token_path(conn, :index, company, member)
@@ -34,14 +34,14 @@ defmodule Gatekeeper.RfidTokenControllerTest do
   end
 
   test "renders form for new resources", %{conn: conn} do
-    company = create_company
+    company = create_company()
     member = create_member company: company
     conn = get conn, company_member_rfid_token_path(conn, :new, company, member)
     assert html_response(conn, 200) =~ "New RFID Token"
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
-    company = create_company
+    company = create_company()
     member = create_member company: company
     conn = post conn, company_member_rfid_token_path(conn, :create, company, member), rfid_token: @valid_attrs
     assert redirected_to(conn) == company_member_path(conn, :show, company, member)
@@ -49,14 +49,14 @@ defmodule Gatekeeper.RfidTokenControllerTest do
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    company = create_company
+    company = create_company()
     member = create_member company: company
     conn = post conn, company_member_rfid_token_path(conn, :create, company, member), rfid_token: @invalid_attrs
     assert html_response(conn, 200) =~ "Oops, something went wrong!"
   end
 
   test "shows chosen resource", %{conn: conn} do
-    company = create_company
+    company = create_company()
     member = create_member company: company
     rfid_token = create_rfid_token member: member
     conn = get conn, company_member_rfid_token_path(conn, :show, company, member, rfid_token)
@@ -64,7 +64,7 @@ defmodule Gatekeeper.RfidTokenControllerTest do
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
-    company = create_company
+    company = create_company()
     member = create_member company: company
     assert_raise Ecto.NoResultsError, fn ->
       get conn, company_member_rfid_token_path(conn, :show, company, member, -1)
@@ -72,7 +72,7 @@ defmodule Gatekeeper.RfidTokenControllerTest do
   end
 
   test "renders form for editing chosen resource", %{conn: conn} do
-    company = create_company
+    company = create_company()
     member = create_member company: company
     rfid_token = create_rfid_token member: member
     conn = get conn, company_member_rfid_token_path(conn, :edit, company, member, rfid_token)
@@ -90,7 +90,7 @@ defmodule Gatekeeper.RfidTokenControllerTest do
   #end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    company = create_company
+    company = create_company()
     member = create_member company: company
     rfid_token = create_rfid_token member: member
     conn = put conn, company_member_rfid_token_path(conn, :update, company, member, rfid_token), rfid_token: @invalid_attrs
@@ -98,7 +98,7 @@ defmodule Gatekeeper.RfidTokenControllerTest do
   end
 
   test "deletes chosen resource on the full company/member/rfid_token path", %{conn: conn} do
-    company = create_company
+    company = create_company()
     member = create_member company: company
     rfid_token = create_rfid_token member: member
     assert %{active: true} = Repo.get(RfidToken, rfid_token.id)
@@ -108,7 +108,7 @@ defmodule Gatekeeper.RfidTokenControllerTest do
   end
 
   test "deletes chosen resource on the short rfid_token path", %{conn: conn} do
-    company = create_company
+    company = create_company()
     member = create_member company: company
     rfid_token = create_rfid_token member: member
     assert %{active: true} = Repo.get(RfidToken, rfid_token.id)
@@ -118,7 +118,7 @@ defmodule Gatekeeper.RfidTokenControllerTest do
   end
 
   test "allows changing the member assigned to a given RFID token", %{conn: conn} do
-    company = create_company
+    company = create_company()
     member1 = create_member company: company
     member2 = create_member company: company
 

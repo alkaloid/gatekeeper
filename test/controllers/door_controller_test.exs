@@ -11,7 +11,7 @@ defmodule Gatekeeper.DoorControllerTest do
   @invalid_attrs %{}
 
   setup do
-    admin = create_member role: "admin", email: "admin@example.com", company: create_company
+    admin = create_member role: "admin", email: "admin@example.com", company: create_company()
     conn = build_conn()
     |> conn_with_fetched_session
     |> Guardian.Plug.sign_in(admin)
@@ -71,8 +71,8 @@ defmodule Gatekeeper.DoorControllerTest do
   end
 
   test "updates door group with associated doors and redirects when data is valid", %{conn: conn} do
-    door_group = create_door_group
-    door = create_door
+    door_group = create_door_group()
+    door = create_door()
     # We can't dynamically construct a map with a variable without this
     # See: http://stackoverflow.com/questions/29837103/how-to-put-key-value-pair-into-map-with-variable-key-name
     # "Note that variables cannot be used as keys to add items to a map:"
@@ -86,8 +86,8 @@ defmodule Gatekeeper.DoorControllerTest do
   end
 
   test "removes unchecked associated door groups from a company", %{conn: conn} do
-    door_group = create_door_group
-    door = create_door
+    door_group = create_door_group()
+    door = create_door()
     WriteRepo.insert! %Gatekeeper.DoorGroupDoor{door_id: door.id, door_group_id: door_group.id}
 
     conn = put conn, door_group_path(conn, :update, door_group), door_group: Map.merge(@valid_attrs, %{id: door_group.id})

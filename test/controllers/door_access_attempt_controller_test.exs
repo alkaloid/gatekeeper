@@ -10,7 +10,7 @@ defmodule Gatekeeper.DoorAccessAttemptControllerTest do
   @invalid_attrs %{}
 
   setup do
-    admin = create_member role: "admin", email: "admin@example.com", company: create_company
+    admin = create_member role: "admin", email: "admin@example.com", company: create_company()
     conn = build_conn()
     |> conn_with_fetched_session
     |> Guardian.Plug.sign_in(admin)
@@ -36,6 +36,7 @@ defmodule Gatekeeper.DoorAccessAttemptControllerTest do
   test "creates resource and redirects when data is valid", %{conn: conn} do
     rfid_token = create_rfid_token()
     door = create_door()
+    attrs = Map.merge(@valid_attrs, %{rfid_token_id: rfid_token.id, door_id: door.id})
     conn = post conn, door_access_attempt_path(conn, :create), door_access_attempt: attrs
     assert redirected_to(conn) == door_access_attempt_path(conn, :index)
     assert Repo.get_by(DoorAccessAttempt, attrs)
@@ -47,7 +48,7 @@ defmodule Gatekeeper.DoorAccessAttemptControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    door_access_attempt = create_door_access_attempt create_door, create_rfid_token
+    door_access_attempt = create_door_access_attempt create_door(), create_rfid_token()
     conn = get conn, door_access_attempt_path(conn, :show, door_access_attempt)
     assert html_response(conn, 200) =~ "Show door access attempt"
   end
@@ -65,7 +66,7 @@ defmodule Gatekeeper.DoorAccessAttemptControllerTest do
   end
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    door_access_attempt = create_door_access_attempt create_door, create_rfid_token
+    door_access_attempt = create_door_access_attempt create_door(), create_rfid_token()
     conn = put conn, door_access_attempt_path(conn, :update, door_access_attempt), door_access_attempt: @valid_attrs
     assert redirected_to(conn) == door_access_attempt_path(conn, :show, door_access_attempt)
     assert Repo.get_by(DoorAccessAttempt, @valid_attrs)

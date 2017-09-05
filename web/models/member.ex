@@ -21,7 +21,7 @@ defmodule Gatekeeper.Member do
     has_many :doors, through: [:door_groups, :door]
     has_many :door_access_attempts, DoorAccessAttempt
 
-    timestamps
+    timestamps()
   end
 
   @required_fields [:name, :email, :active, :company_id, :role]
@@ -63,7 +63,7 @@ defmodule Gatekeeper.Member do
 
   def all_active do
     Repo.all(Company.active)
-    |> Repo.preload(members: active)
+    |> Repo.preload(members: active())
     |> Enum.reduce([], &(&2 ++ &1.members))
   end
 end

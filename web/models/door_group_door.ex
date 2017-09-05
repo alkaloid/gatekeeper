@@ -5,7 +5,7 @@ defmodule Gatekeeper.DoorGroupDoor do
     belongs_to :door_group, Gatekeeper.DoorGroup
     belongs_to :door, Gatekeeper.Door
 
-    timestamps
+    timestamps()
   end
 
   @required_fields [:door_group_id, :door_id]

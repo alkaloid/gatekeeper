@@ -10,7 +10,7 @@ defmodule Gatekeeper.CompanyControllerTest do
   @invalid_attrs %{}
 
   setup do
-    admin = create_member role: "admin", email: "admin@example.com", company: create_company
+    admin = create_member role: "admin", email: "admin@example.com", company: create_company()
     conn = build_conn()
     |> conn_with_fetched_session
     |> Guardian.Plug.sign_in(admin)
@@ -70,7 +70,7 @@ defmodule Gatekeeper.CompanyControllerTest do
   end
 
   test "updates company with associated door groups and redirects when data is valid", %{conn: conn} do
-    door_group = create_door_group
+    door_group = create_door_group()
     company = WriteRepo.insert! %Company{}
     # We can't dynamically construct a map with a variable without this
     # See: http://stackoverflow.com/questions/29837103/how-to-put-key-value-pair-into-map-with-variable-key-name
@@ -85,8 +85,8 @@ defmodule Gatekeeper.CompanyControllerTest do
   end
 
   test "removes unchecked associated door groups from a company", %{conn: conn} do
-    door_group = create_door_group
-    company = create_company
+    door_group = create_door_group()
+    company = create_company()
     WriteRepo.insert! %Gatekeeper.DoorGroupCompany{company_id: company.id, door_group_id: door_group.id}
 
     conn = put conn, company_path(conn, :update, company), company: Map.merge(@valid_attrs, %{id: company.id})
@@ -103,7 +103,7 @@ defmodule Gatekeeper.CompanyControllerTest do
   end
 
   test "deactivates chosen resource", %{conn: conn} do
-    company = create_company
+    company = create_company()
     refute company.departure_date
     conn = delete conn, company_path(conn, :delete, company)
     assert redirected_to(conn) == company_path(conn, :index)

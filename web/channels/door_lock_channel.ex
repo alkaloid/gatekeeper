@@ -7,7 +7,7 @@ defmodule Gatekeeper.DoorLockChannel do
   alias Gatekeeper.Repo
 
   def join("door_lock:" <> door_id, _message, socket) do
-    send(self, :after_join)
+    send(self(), :after_join)
     socket = assign(socket, :door_id, door_id)
     {:ok, socket}
   end

@@ -11,7 +11,7 @@ defmodule Gatekeeper.Door do
     has_many :door_groups, through: [:door_group_doors, :door_group]
     has_many :access_attempts, DoorAccessAttempt
 
-    timestamps
+    timestamps()
   end
 
   @required_fields [:name]

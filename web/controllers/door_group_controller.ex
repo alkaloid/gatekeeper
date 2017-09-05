@@ -17,9 +17,9 @@ defmodule Gatekeeper.DoorGroupController do
   end
 
   def new(conn, _params) do
-    changeset = DoorGroup.changeset(blank_door_group)
+    changeset = DoorGroup.changeset(blank_door_group())
     doors = Repo.all(Door)
-    render(conn, "new.html", doors: doors, door_group: blank_door_group, changeset: changeset)
+    render(conn, "new.html", doors: doors, door_group: blank_door_group(), changeset: changeset)
   end
 
   def create(conn, %{"door_group" => door_group_params}) do
@@ -33,7 +33,7 @@ defmodule Gatekeeper.DoorGroupController do
         |> put_flash(:info, "Door group created successfully.")
         |> redirect(to: door_group_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", doors: doors, door_group: blank_door_group, changeset: changeset)
+        render(conn, "new.html", doors: doors, door_group: blank_door_group(), changeset: changeset)
     end
   end
 

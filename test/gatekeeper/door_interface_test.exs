@@ -5,9 +5,9 @@ defmodule Gatekeeper.DoorInterfaceTest do
   import Gatekeeper.Factory
 
   setup do
-    door_group = create_door_group
+    door_group = create_door_group()
     door = create_door door_group: door_group
-    company = create_company
+    company = create_company()
     member = create_member company: company, door_group: door_group
     rfid_token = create_rfid_token member: member
 

@@ -16,7 +16,7 @@ defmodule Gatekeeper.RfidToken do
     belongs_to :member, Member
     has_many :door_access_attempts, DoorAccessAttempt
 
-    timestamps
+    timestamps()
   end
 
   @required_fields [:identifier, :active]
