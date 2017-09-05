@@ -1,5 +1,5 @@
 <h2>New company</h2>
 
-<%= render "form.html", Dict.merge(@conn.assigns, action: company_path(@conn, :create)) %>
+<%= render "form.html", Map.merge(@conn.assigns, %{action: company_path(@conn, :create)}) %>
 
 <%= link "Back", to: company_path(@conn, :index) %>

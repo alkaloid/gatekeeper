@@ -34,9 +34,8 @@ defmodule Gatekeeper.DoorAccessAttemptControllerTest do
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
-    rfid_token = create_rfid_token
-    door = create_door
-    attrs = Dict.merge(@valid_attrs, %{rfid_token_id: rfid_token.id, door_id: door.id})
+    rfid_token = create_rfid_token()
+    door = create_door()
     conn = post conn, door_access_attempt_path(conn, :create), door_access_attempt: attrs
     assert redirected_to(conn) == door_access_attempt_path(conn, :index)
     assert Repo.get_by(DoorAccessAttempt, attrs)

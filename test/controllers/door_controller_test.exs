@@ -78,7 +78,7 @@ defmodule Gatekeeper.DoorControllerTest do
     # "Note that variables cannot be used as keys to add items to a map:"
     # See: http://elixir-lang.org/getting-started/maps-and-dicts.html#maps
     doors_param = Map.put(%{}, "#{door.id}", "on")
-    conn = put conn, door_group_path(conn, :update, door_group), door_group: Dict.merge(@valid_attrs, %{doors: doors_param })
+    conn = put conn, door_group_path(conn, :update, door_group), door_group: Map.merge(@valid_attrs, %{doors: doors_param })
     assert redirected_to(conn) == door_group_path(conn, :show, door_group)
     door_group = Repo.get_by(DoorGroup, @valid_attrs) |> Repo.preload(:doors)
     assert door_group
@@ -90,7 +90,7 @@ defmodule Gatekeeper.DoorControllerTest do
     door = create_door
     WriteRepo.insert! %Gatekeeper.DoorGroupDoor{door_id: door.id, door_group_id: door_group.id}
 
-    conn = put conn, door_group_path(conn, :update, door_group), door_group: Dict.merge(@valid_attrs, id: door_group.id)
+    conn = put conn, door_group_path(conn, :update, door_group), door_group: Map.merge(@valid_attrs, %{id: door_group.id})
     assert redirected_to(conn) == door_group_path(conn, :show, door_group)
     door_group = Repo.get!(DoorGroup, door_group.id) |> Repo.preload(:doors)
     assert door_group

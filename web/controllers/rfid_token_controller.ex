@@ -69,7 +69,7 @@ defmodule Gatekeeper.RfidTokenController do
     end
 
     # FIXME: Validation, instead of coercion, to ensure the identifier does not change
-    rfid_token_params = Dict.merge(rfid_token_params, %{"identifier" => rfid_token.identifier})
+    rfid_token_params = Map.merge(rfid_token_params, %{"identifier" => rfid_token.identifier})
 
     changeset = RfidToken.changeset(rfid_token, rfid_token_params)
 

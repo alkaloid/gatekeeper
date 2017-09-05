@@ -77,7 +77,7 @@ defmodule Gatekeeper.CompanyControllerTest do
     # "Note that variables cannot be used as keys to add items to a map:"
     # See: http://elixir-lang.org/getting-started/maps-and-dicts.html#maps
     door_group_param = Map.put(%{}, "#{door_group.id}", "on")
-    conn = put conn, company_path(conn, :update, company), company: Dict.merge(@valid_attrs, %{door_groups: door_group_param })
+    conn = put conn, company_path(conn, :update, company), company: Map.merge(@valid_attrs, %{door_groups: door_group_param })
     assert redirected_to(conn) == company_path(conn, :show, company)
     company = Repo.get_by(Company, @valid_attrs) |> Repo.preload(:door_groups)
     assert company
@@ -89,7 +89,7 @@ defmodule Gatekeeper.CompanyControllerTest do
     company = create_company
     WriteRepo.insert! %Gatekeeper.DoorGroupCompany{company_id: company.id, door_group_id: door_group.id}
 
-    conn = put conn, company_path(conn, :update, company), company: Dict.merge(@valid_attrs, id: company.id)
+    conn = put conn, company_path(conn, :update, company), company: Map.merge(@valid_attrs, %{id: company.id})
     assert redirected_to(conn) == company_path(conn, :show, company)
     company = Repo.get!(Company, company.id) |> Repo.preload(:door_groups)
     assert company

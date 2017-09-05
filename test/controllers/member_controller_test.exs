@@ -73,7 +73,7 @@ defmodule Gatekeeper.MemberControllerTest do
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
     company = create_company
     member = create_member company: company
-    conn = put conn, company_member_path(conn, :update, company, member), member: Dict.merge(@valid_attrs, company_id: company.id)
+    conn = put conn, company_member_path(conn, :update, company, member), member: Map.merge(@valid_attrs, %{company_id: company.id})
     assert redirected_to(conn) == company_member_path(conn, :show, company, member)
     assert Repo.get_by(Member, @valid_attrs)
   end
@@ -88,7 +88,7 @@ defmodule Gatekeeper.MemberControllerTest do
     # "Note that variables cannot be used as keys to add items to a map:"
     # See: http://elixir-lang.org/getting-started/maps-and-dicts.html#maps
     door_group_param = Map.put(%{}, "#{door_group.id}", "on")
-    conn = put conn, company_member_path(conn, :update, company, member), member: Dict.merge(@valid_attrs, %{door_groups: door_group_param, company_id: company.id})
+    conn = put conn, company_member_path(conn, :update, company, member), member: Map.merge(@valid_attrs, %{door_groups: door_group_param, company_id: company.id})
     assert redirected_to(conn) == company_member_path(conn, :show, company, member)
     member = Repo.get(Member, member.id) |> Repo.preload(:door_groups)
     assert member
@@ -101,7 +101,7 @@ defmodule Gatekeeper.MemberControllerTest do
     member = create_member company: company
     WriteRepo.insert! %Gatekeeper.DoorGroupCompany{company_id: company.id, door_group_id: door_group.id}
 
-    conn = put conn, company_member_path(conn, :update, company, member), member: Dict.merge(@valid_attrs, id: member.id, company_id: company.id)
+    conn = put conn, company_member_path(conn, :update, company, member), member: Map.merge(@valid_attrs, %{id: member.id, company_id: company.id})
     assert redirected_to(conn) == company_member_path(conn, :show, company, member)
     member = Repo.get!(Member, member.id) |> Repo.preload(:door_groups)
     assert member

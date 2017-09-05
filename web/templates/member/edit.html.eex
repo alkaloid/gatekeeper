@@ -1,5 +1,5 @@
 <h2>Edit member</h2>
 
-<%= render "form.html", Dict.merge(@conn.assigns, action: company_member_path(@conn, :update, @company, @member), conn: @conn) %>
+<%= render "form.html", Map.merge(@conn.assigns, %{action: company_member_path(@conn, :update, @company, @member), conn: @conn}) %>
 
 <%= link "Back", to: company_path(@conn, :index) %>

@@ -10,7 +10,7 @@ defmodule Gatekeeper.DoorLockStatusPlug do
   def call(conn, _opts) do
     doors = Repo.all(Door)
     door_statuses = Enum.reduce(doors, %{}, fn(door, door_statuses) ->
-      Dict.merge(door_statuses, case DoorLock.pidof(door.id) do
+      Map.merge(door_statuses, case DoorLock.pidof(door.id) do
         :undefined ->
           %{door.id => :unknown}
         pid ->
