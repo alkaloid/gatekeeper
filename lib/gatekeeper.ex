@@ -24,7 +24,7 @@ defmodule Gatekeeper do
           doorlock_config[:gpio_pin],
           doorlock_config[:door_id],
           doorlock_config[:duration],
-          Application.get_env(:gatekeeper, :rfidreader)[:device]
+          rfidreader_config[:device]
         }]),
     ]
 

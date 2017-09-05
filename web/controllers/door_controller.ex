@@ -84,12 +84,11 @@ defmodule Gatekeeper.DoorController do
             conn
             |> redirect(to: door_path(conn, :index))
           pid ->
-            duration = Application.get_env(:gatekeeper, :doorlock)[:duration]
             DoorLock.flipflop(pid)
             conn
             |> redirect(to: door_path(conn, :index))
         end
-      {:error, changeset} ->
+      {:error, _changeset} ->
         conn
         |> put_flash(:error, "Unable to log door access attempt")
         |> redirect(to: door_path(conn, :index))
