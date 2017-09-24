@@ -47,7 +47,7 @@ defmodule Gatekeeper.Mixfile do
       {:elixir_ale, "~> 0.5.0", only: :prod},
       {:guardian, "~> 0.14.2"},
       {:mix_test_watch, "~> 0.2", only: :dev},
-      {:phoenix, "~> 1.2.3"},
+      {:phoenix, "~> 1.3.0"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.0-rc"},
       {:phoenix_html, "~> 2.6"},
