@@ -18,10 +18,6 @@ defmodule Gatekeeper.DoorLockTest do
     {:ok, lock: lock}
   end
 
-  test "the lock starts locked", %{lock: lock} do
-    assert Gatekeeper.DoorLock.state(lock) == :locked
-  end
-
   test "can be unlocked", %{lock: lock} do
     Gatekeeper.DoorLock.unlock(lock)
     assert Gatekeeper.DoorLock.state(lock) == :unlocked
