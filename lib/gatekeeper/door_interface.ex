@@ -1,10 +1,9 @@
 defmodule Gatekeeper.DoorInterface do
   require Logger
-
   use GenServer
 
-  def start_link(door_id, opts \\ []) do
-    GenServer.start_link(__MODULE__, door_id, opts)
+  def start_link({_type, _gpio_pin, _door_id, _duration, _reader_device} = args, opts \\ []) do
+    GenServer.start_link(__MODULE__, args, opts)
   end
 
   @doc """
@@ -15,31 +14,31 @@ defmodule Gatekeeper.DoorInterface do
     GenServer.call(pid, :getstate)
   end
 
-  def init(door_id) do
-    {:ok, rfid} = Gatekeeper.RFIDListener.start_link(
-      Application.get_env(:gatekeeper, :rfidreader)[:device]
-    )
+  def init({type, gpio_pin, door_id, duration, reader_device}) do
+    {:ok, rfid} = Gatekeeper.RFIDListener.start_link(reader_device)
 
-    doorlock_config = Application.get_env(:gatekeeper, :doorlock)
-    {:ok, lock} = Gatekeeper.DoorLock.start_link(
-      doorlock_config[:gpio_port], doorlock_config[:type]
-    )
+    lock = case Gatekeeper.DoorLock.start_link(type, gpio_pin, door_id) do
+      {:ok, lock} ->
+        lock
+      {:error, {:already_started, lock}} ->
+        lock
+    end
 
-    {:ok, {rfid, lock, door_id}}
+    {:ok, {rfid, lock, duration, door_id}}
   end
 
-  def handle_call(:getstate, _from, {_rfid, lock, _door_id} = state) do
+  def handle_call(:getstate, _from, {_rfid, lock, _duration, _door_id} = state) do
     lockstate = Gatekeeper.DoorLock.state(lock)
     {:reply, lockstate, state}
   end
 
-  def handle_info({:card_read, token}, {_rfid, lock, door_id} = state) do
+  def handle_info({:card_read, token}, {_rfid, lock, duration, door_id} = state) do
     case Gatekeeper.RfidToken.attempt_access!(token, door_id) do
       {true, _} ->
-        Logger.info("Card #{token} requested access. Unlocking the door.")
-        Gatekeeper.DoorLock.flipflop(lock)
+        Logger.info("Card #{token} granted access to Door##{door_id}. Unlocking the door.")
+        Gatekeeper.DoorLock.flipflop(lock, duration)
       {false, reason} ->
-        Logger.info("Card #{token} requested access. Access was denied because #{reason}.")
+        Logger.info("Card #{token} denied access to Door##{door_id}: #{reason}.")
     end
     {:noreply, state}
   end

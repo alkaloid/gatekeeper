@@ -10,7 +10,7 @@ defmodule Gatekeeper.Company do
     has_many :door_groups, through: [:door_group_companies, :door_group]
     has_many :door_access_attempts, through: [:members, :door_access_attempts]
 
-    timestamps
+    timestamps()
   end
 
   @required_fields [:name, :join_date]

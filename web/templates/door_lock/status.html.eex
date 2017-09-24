@@ -1,0 +1,38 @@
+<%= for door <- @doors do %>
+  <%= link(to: door_door_path(@conn, :flipflop, door), class: "btn btn-warning btn-xs door_lock_#{door.id}_status") do %>
+    <i class="fa fa-question-circle" aria-hidden="true"></i>
+    <%= to_string(door.name) %>
+  <% end %>
+<% end %>
+<script>
+// List of door IDs to which we should listen for activity
+let door_ids = [<%= Enum.map(@doors, fn(door) -> door.id end) |> Enum.join(",")  %>]
+
+function door_lock_status_info(door_status) {
+  var ret
+  switch(door_status) {
+  case 'unknown':
+    return ["warning", "question-circle"]
+    break;
+  case 'locked':
+    return ["info", "lock"]
+    break;
+  case 'unlocked':
+    return ["danger", "unlock"]
+    break;
+  default:
+    console.log("Unknown door status", door_status)
+  }
+}
+
+function door_lock_status_update(door_id, door_status) {
+  el = $('.door_lock_' + door_id + '_status')
+  el.removeClass('btn-warning btn-info btn-danger')
+  var info = door_lock_status_info(door_status)
+  color = info[0]
+  icon = info[1]
+  console.log(info)
+  el.addClass('btn-' + color)
+  el.find('i').attr('class', 'fa fa-' + icon)
+}
+</script>

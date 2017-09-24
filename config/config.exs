@@ -27,8 +27,10 @@ config :gatekeeper, :rfidreader,
   device: "/dev/ttyUSB0"
 
 config :gatekeeper, :doorlock,
-  gpio_port: '2',
-  type: Gatekeeper.GpioDummy
+  type: Gatekeeper.DoorLock.Dummy,
+  gpio_pin: 4,
+  duration: 3000, # ms
+  door_id: 1
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

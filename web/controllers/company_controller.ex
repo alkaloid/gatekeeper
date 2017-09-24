@@ -25,7 +25,7 @@ defmodule Gatekeeper.CompanyController do
   end
 
   def new(conn, _params) do
-    company = blank_company
+    company = blank_company()
     changeset = Company.changeset(company)
     door_groups = Repo.all(DoorGroup)
     render(conn, "new.html", company: company, changeset: changeset, door_groups: door_groups)
@@ -42,7 +42,7 @@ defmodule Gatekeeper.CompanyController do
         |> put_flash(:info, "Company created successfully.")
         |> redirect(to: company_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", company: blank_company, changeset: changeset, door_groups: door_groups)
+        render(conn, "new.html", company: blank_company(), changeset: changeset, door_groups: door_groups)
     end
   end
 

@@ -7,7 +7,7 @@ defmodule Gatekeeper.DoorBell do
   @notify_url "http://10.3.18.99:4000/api/door_bell"
 
   def start_link(gpio_number, type \\ Gatekeeper.GpioDummy, opts \\ []) do
-    opts = Dict.merge(opts, name: __MODULE__)
+    opts = Keyword.merge(opts, name: __MODULE__)
     GenServer.start_link(__MODULE__, [gpio_number, type], opts)
   end
 

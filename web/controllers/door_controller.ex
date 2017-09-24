@@ -3,12 +3,13 @@ defmodule Gatekeeper.DoorController do
 
   alias Gatekeeper.Door
   alias Gatekeeper.DoorAccessAttempt
+  alias Gatekeeper.DoorLock
 
   plug :scrub_params, "door" when action in [:create, :update]
 
   def index(conn, _params) do
-    doors = Repo.all(Door)
-    render(conn, "index.html", doors: doors)
+    # doors and door_statuses provided globally via plug
+    render(conn, "index.html")
   end
 
   def new(conn, _params) do
@@ -62,5 +63,35 @@ defmodule Gatekeeper.DoorController do
     conn
     |> put_flash(:error, "Doors may not be deleted.")
     |> redirect(to: door_path(conn, :index))
+  end
+
+  def flipflop(conn, %{"door_id" => door_id}) do
+    member = Guardian.Plug.current_resource(conn) |> Repo.preload(:rfid_tokens)
+    # FIXME: This RFID token ID is a lie! And it can fail if the admin has no token
+    access_attempt_params = %{
+      access_allowed: true,
+      member_id: member.id,
+      rfid_token_id: hd(member.rfid_tokens).id,
+      door_id: door_id,
+      reason: "admin_web_access"
+    }
+    access_attempt = DoorAccessAttempt.changeset(%DoorAccessAttempt{}, access_attempt_params)
+    case WriteRepo.insert(access_attempt) do
+      {:ok, _} ->
+        case DoorLock.pidof(door_id) do
+          :undefined ->
+            # Unable to find a door process
+            conn
+            |> redirect(to: door_path(conn, :index))
+          pid ->
+            DoorLock.flipflop(pid)
+            conn
+            |> redirect(to: door_path(conn, :index))
+        end
+      {:error, _changeset} ->
+        conn
+        |> put_flash(:error, "Unable to log door access attempt")
+        |> redirect(to: door_path(conn, :index))
+    end
   end
 end

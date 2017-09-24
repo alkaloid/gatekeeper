@@ -26,11 +26,11 @@ defmodule Gatekeeper.RFIDListener do
     leading = byte_size(data) - 1
     case data do
       <<2, rest :: binary>> ->
-        Logger.info "Began receiving an RFID"
+        Logger.debug "Began receiving an RFID"
         IO.write(buffer, rest)
       <<rest :: binary-size(leading), 3>> ->
         IO.write(buffer, rest)
-        id = buffer |> StringIO.flush |> String.rstrip
+        id = buffer |> StringIO.flush |> String.trim_trailing
         Logger.info "RFID card presented with ID #{id}"
         send(handler, {:card_read, id})
       _other -> IO.write(buffer, data)

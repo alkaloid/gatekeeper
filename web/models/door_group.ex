@@ -12,7 +12,7 @@ defmodule Gatekeeper.DoorGroup do
     has_many :door_group_members, Gatekeeper.DoorGroupMember
     has_many :members, through: [:door_group_members, :member]
 
-    timestamps
+    timestamps()
   end
 
   @required_fields [:name]

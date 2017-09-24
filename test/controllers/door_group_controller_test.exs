@@ -10,7 +10,7 @@ defmodule Gatekeeper.DoorGroupControllerTest do
   @invalid_attrs %{}
 
   setup do
-    admin = create_member role: "admin", email: "admin@example.com", company: create_company
+    admin = create_member role: "admin", email: "admin@example.com", company: create_company()
     conn = build_conn()
     |> conn_with_fetched_session
     |> Guardian.Plug.sign_in(admin)

@@ -12,7 +12,7 @@ defmodule Gatekeeper.DoorAccessAttempt do
     field :access_allowed, :boolean, default: false
     field :reason, :string
 
-    timestamps
+    timestamps()
   end
 
   @required_fields [:door_id, :rfid_token_id, :access_allowed, :reason]

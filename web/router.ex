@@ -15,6 +15,10 @@ defmodule Gatekeeper.Router do
     plug Guardian.Plug.EnsureAuthenticated, on_failure: { Gatekeeper.PageController, :unauthenticated }
   end
 
+  pipeline :application do
+    plug Gatekeeper.DoorLockStatusPlug
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -27,7 +31,7 @@ defmodule Gatekeeper.Router do
     end
     get "/:provider", AuthenticationController, :request
     get "/:provider/callback", AuthenticationController, :callback
-    delete "", AuthenticationController, :delete
+    delete "/", AuthenticationController, :delete
   end
 
   scope "/", Gatekeeper do
@@ -37,7 +41,7 @@ defmodule Gatekeeper.Router do
   end
 
   scope "/", Gatekeeper do
-    pipe_through [:browser, :requires_auth]
+    pipe_through [:browser, :requires_auth, :application]
 
     resources "/companies", CompanyController do
       resources "/members", MemberController do
@@ -47,7 +51,10 @@ defmodule Gatekeeper.Router do
 
     resources "/rfid_tokens", RfidTokenController
 
-    resources "/doors", DoorController
+    resources "/doors", DoorController do
+      post "/flipflop", DoorController, :flipflop
+      get "/flipflop", DoorController, :flipflop
+    end
     resources "/door_groups", DoorGroupController
     resources "/door_access_attempts", DoorAccessAttemptController
   end

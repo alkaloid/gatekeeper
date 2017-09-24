@@ -52,17 +52,41 @@ exports.config = {
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/web\/static\/vendor/]
+    },
+    copycat: {
+      // Copy fonts to priv/static/fonts/
+      "fonts": [
+        "node_modules/bootstrap-sass/assets/fonts/bootstrap",
+        "node_modules/font-awesome/fonts"
+      ]
+    },
+    sass: {
+      options: {
+        // tell sass-brunch where to look for files to @import
+        includePaths: [
+          'node_modules/bootstrap-sass/assets/stylesheets',
+          'node_modules/font-awesome/scss'
+        ]
+      },
+      precision: 8 // minimum precision required by bootstrap-sass
     }
   },
 
   modules: {
     autoRequire: {
-      "js/app.js": ["web/static/js/app"]
+      "js/app.js": [
+        "bootstrap-sass", // require bootstrap-sass' JavaScript globally
+        "web/static/js/app"
+      ]
     }
   },
 
   npm: {
     enabled: true,
-    whitelist: ["phoenix", "phoenix_html"]
+    globals: { // bootstrap-sass' JavaScript requires both '$' and 'jQuery' in global scope
+      $: 'jquery',
+      jQuery: 'jquery',
+      bootstrap: 'bootstrap-sass'
+    }
   }
 };

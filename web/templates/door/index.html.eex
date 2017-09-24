@@ -11,7 +11,12 @@
   <tbody>
 <%= for door <- @doors do %>
     <tr>
-      <td><%= door.name %></td>
+      <td>
+        <%= link(to: door_door_path(@conn, :flipflop, door), class: "btn btn-warning btn-xs door_lock_#{door.id}_status") do %>
+          <i class="fa fa-question-circle" aria-hidden="true"></i>
+        <% end %>
+        <%= door.name %>
+      </td>
 
       <td class="text-right">
         <%= link "Show", to: door_path(@conn, :show, door), class: "btn btn-default btn-xs" %>

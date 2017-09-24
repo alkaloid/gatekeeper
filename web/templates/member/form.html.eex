@@ -46,7 +46,7 @@
           <td><input name="member[door_groups][<%= door_group.id %>]" type="checkbox" <%= (door_group.id in door_group_ids) && "checked" %>></td>
           <td><%= door_group.name %></td>
         </tr>
-      <%= end %>
+      <% end %>
     </table>
   </div>
 
