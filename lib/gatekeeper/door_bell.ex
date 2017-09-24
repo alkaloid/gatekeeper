@@ -6,7 +6,7 @@ defmodule Gatekeeper.DoorBell do
 
   @notify_url "http://10.3.18.99:4000/api/door_bell"
 
-  def start_link(gpio_number, type \\ Gatekeeper.GpioDummy, opts \\ []) do
+  def start_link(gpio_number, type \\ Gatekeeper.GPIODummy, opts \\ []) do
     opts = Keyword.merge(opts, name: __MODULE__)
     GenServer.start_link(__MODULE__, [gpio_number, type], opts)
   end
@@ -18,11 +18,11 @@ defmodule Gatekeeper.DoorBell do
 
   def init([gpio_number, type]) do
     Logger.info "Starting door bell watcher on GPIO pin #{gpio_number}"
-    pid = if type == Gpio do
+    pid = if type == GPIO do
       System.cmd("/usr/bin/gpio", ["-g", "mode", "#{gpio_number}", "in"])
       System.cmd("/usr/bin/gpio", ["-g", "mode", "#{gpio_number}", "up"])
-      {:ok, pid} = Gpio.start_link(gpio_number, :input)
-      Gpio.set_int(pid, :rising)
+      {:ok, pid} = GPIO.start_link(gpio_number, :input)
+      GPIO.set_int(pid, :rising)
       pid
     else
       nil

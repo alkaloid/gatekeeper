@@ -1,4 +1,4 @@
-defmodule Gatekeeper.GpioDummy do
+defmodule Gatekeeper.GPIODummy do
   use GenServer
 
   def start_link(_gpio_number, _type, opts \\ []) do

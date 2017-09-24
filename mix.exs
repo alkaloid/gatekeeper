@@ -44,7 +44,7 @@ defmodule Gatekeeper.Mixfile do
   defp deps do
     [
       {:cowboy, "~> 1.0"},
-      {:elixir_ale, "~> 0.5.0", only: :prod},
+      {:elixir_ale, "~> 1.0.0", only: :prod},
       {:guardian, "~> 0.14.2"},
       {:mix_test_watch, "~> 0.2", only: :dev},
       {:phoenix, "~> 1.3.0"},
