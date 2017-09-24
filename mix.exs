@@ -6,7 +6,7 @@ defmodule Gatekeeper.Mixfile do
      version: "0.0.1",
      elixir: "~> 1.0",
      elixirc_paths: elixirc_paths(Mix.env),
-     compilers: [:phoenix] ++ Mix.compilers,
+     compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
@@ -17,9 +17,10 @@ defmodule Gatekeeper.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {Gatekeeper, []},
+    [mod: {Gatekeeper.Application, []},
      applications: [
        :cowboy,
+       :gettext,
        :logger,
        :phoenix,
        :phoenix_pubsub,
@@ -35,8 +36,8 @@ defmodule Gatekeeper.Mixfile do
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
-  defp elixirc_paths(_),     do: ["lib", "web"]
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_),     do: ["lib"]
 
   # Specifies your project dependencies.
   #
@@ -45,8 +46,10 @@ defmodule Gatekeeper.Mixfile do
     [
       {:cowboy, "~> 1.0"},
       {:elixir_ale, "~> 1.0.0", only: :prod},
+      {:gettext, "~> 0.9"},
       {:guardian, "~> 0.14.2"},
       {:mix_test_watch, "~> 0.2", only: :dev},
+      {:oauth2, "0.6.0"},
       {:phoenix, "~> 1.3.0"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.0-rc"},
@@ -58,7 +61,6 @@ defmodule Gatekeeper.Mixfile do
       {:scrivener_ecto, "~> 1.0"},
       {:scrivener_html, "~> 1.1"},
       {:timex, "~> 3.0"},
-      {:oauth2, "0.6.0"},
       {:ueberauth, "~> 0.4"},
       {:ueberauth_slack, "~> 0.4"},
     ]

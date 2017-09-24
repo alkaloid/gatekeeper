@@ -1,5 +1,5 @@
 defmodule Gatekeeper.DoorControllerTest do
-  use Gatekeeper.ConnCase
+  use GatekeeperWeb.ConnCase
 
   import Gatekeeper.Factory
   import Guardian.TestHelper

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Alkaloid Gatekeeper</title>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+  </head>
+
+  <body>
+    <div class="container-fluid" role="main">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="logo" href="/"><h1></h1></a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <%= if Guardian.Plug.current_resource(@conn) do %>
+                <li><%= link "Companies", to: company_path(@conn, :index) %></li>
+                <li><%= link "Door Groups", to: door_group_path(@conn, :index) %></li>
+                <li><%= link "Doors", to: door_path(@conn, :index) %></li>
+                <li><%= link "RFID Tokens", to: rfid_token_path(@conn, :index) %></li>
+                <li><%= link "Access Log", to: door_access_attempt_path(@conn, :index) %></li>
+                <% # FIXME: We get "undefined function" when calling authentication_path(@conn, :delete) %>
+                <li><%= link "Log Out", to: "/auth", method: :delete, class: "btn btn-danger", style: "padding: 15px 5px" %></li>
+              <% else %>
+                <li><%=
+                  authenticator = if Mix.env == :dev do
+                    :automatic
+                  else
+                    :slack
+                  end
+                  link "Log In", to: authentication_path(@conn, :request, authenticator), class: "btn btn-default", style: "padding: 15px 5px"
+                %></li>
+              <% end %>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+
+      <%= if Guardian.Plug.current_resource(@conn) do %>
+        <%= render GatekeeperWeb.DoorLockView, "status.html", assigns %>
+      <% end %>
+
+      <%= render @view_module, @view_template, assigns %>
+
+    </div> <!-- /container -->
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>

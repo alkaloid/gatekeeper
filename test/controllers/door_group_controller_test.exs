@@ -1,5 +1,5 @@
 defmodule Gatekeeper.DoorGroupControllerTest do
-  use Gatekeeper.ConnCase
+  use GatekeeperWeb.ConnCase
 
   alias Gatekeeper.DoorGroup
 

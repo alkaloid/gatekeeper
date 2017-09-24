@@ -1,3 +1,3 @@
-defmodule Gatekeeper.LayoutViewTest do
-  use Gatekeeper.ConnCase, async: true
+defmodule GatekeeperWeb.LayoutViewTest do
+  use GatekeeperWeb.ConnCase, async: true
 end

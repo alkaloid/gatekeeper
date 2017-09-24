@@ -1,5 +1,5 @@
-defmodule Gatekeeper.PageControllerTest do
-  use Gatekeeper.ConnCase
+defmodule GatekeeperWeb.PageControllerTest do
+  use GatekeeperWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

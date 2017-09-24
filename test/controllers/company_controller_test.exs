@@ -1,5 +1,5 @@
 defmodule Gatekeeper.CompanyControllerTest do
-  use Gatekeeper.ConnCase
+  use GatekeeperWeb.ConnCase
   use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
 
   import Gatekeeper.Factory

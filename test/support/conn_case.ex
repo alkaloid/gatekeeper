@@ -1,4 +1,4 @@
-defmodule Gatekeeper.ConnCase do
+defmodule GatekeeperWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -26,10 +26,10 @@ defmodule Gatekeeper.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import Gatekeeper.Router.Helpers
+      import GatekeeperWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Gatekeeper.Endpoint
+      @endpoint GatekeeperWeb.Endpoint
     end
   end
 
