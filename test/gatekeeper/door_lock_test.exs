@@ -1,5 +1,6 @@
 defmodule Gatekeeper.DoorLockTest do
   use ExUnit.Case, async: true
+  use Gatekeeper.ModelCase
 
   import Gatekeeper.Factory
 
