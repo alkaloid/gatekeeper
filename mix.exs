@@ -60,7 +60,7 @@ defmodule Gatekeeper.Mixfile do
       {:timex, "~> 3.0"},
       {:oauth2, "0.6.0"},
       {:ueberauth, "~> 0.4"},
-      {:ueberauth_slack, github: "ueberauth/ueberauth_slack", branch: "master"},
+      {:ueberauth_slack, "~> 0.4"},
     ]
   end
 
