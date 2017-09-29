@@ -3,7 +3,7 @@ defmodule GatekeeperWeb.UserSocket do
 
   ## Channels
   # channel "rooms:*", Gatekeeper.RoomChannel
-  channel "door_lock:*", Gatekeeper.DoorLockChannel
+  channel "door_lock:*", GatekeeperWeb.DoorLockChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
