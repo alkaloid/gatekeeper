@@ -1,0 +1,18 @@
+<h2><%= @door.name %></h2>
+<h4>Door Groups</h4>
+<p>This door belongs to the following door groups, and will open for anyone who has access to these groups:</p>
+<ul>
+  <%= if length(@door.door_groups) > 0 do %>
+    <%= for door_group <- @door.door_groups do %>
+      <li><%= link door_group.name, to: door_group_path(@conn, :show, door_group) %></li>
+    <% end %>
+  <% else %>
+    <p class="no-associations">Not a member of any door group</p>
+  <% end %>
+</ul>
+<br>
+
+
+<%= Phoenix.View.render GatekeeperWeb.DoorAccessAttemptView, "access_log.html", page: @door_access_attempts_page, conn: @conn %>
+<%= link "Edit", to: door_path(@conn, :edit, @door) %>
+<%= link "Back", to: door_path(@conn, :index) %>

@@ -10,11 +10,11 @@ config :gatekeeper, ecto_repos: [Gatekeeper.Repo, Gatekeeper.WriteRepo]
 config :gatekeeper, namespace: Gatekeeper
 
 # Configures the endpoint
-config :gatekeeper, Gatekeeper.Endpoint,
+config :gatekeeper, GatekeeperWeb.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: System.get_env("SECRET_KEY_BASE"),
-  render_errors: [accepts: ~w(html json)],
+  render_errors: [view: GatekeeperWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Gatekeeper.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
@@ -56,4 +56,4 @@ config :guardian, Guardian,
   serializer: Gatekeeper.GuardianSerializer
 
 config :scrivener_html,
-  routes_helper: Gatekeeper.Router.Helpers
+  routes_helper: GatekeeperWeb.Router.Helpers

@@ -1,0 +1,37 @@
+<h2>RFID Token <%= RfidToken.display_name(@rfid_token) %></h2>
+<%= if @member do %>
+  <h3>Belonging to <%= link @member.name, to: company_member_path(@conn, :show, @member.company, @member) %> with <%= link @member.company.name, to: company_path(@conn, :show, @member.company) %></h3>
+<% else %>
+  <h3>Unassigned <%= link "Assign Token", to: rfid_token_path(@conn, :edit, @rfid_token), class: "btn btn-default btn-xs" %></h3>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>RFID Token Name:</strong>
+    <%= @rfid_token.name || "Unset" %>
+  </li>
+
+  <li>
+    <strong>Identifier:</strong>
+    <%= @rfid_token.identifier %>
+  </li>
+
+  <li>
+    <strong>Active:</strong>
+    <%= @rfid_token.active %>
+  </li>
+
+</ul>
+
+<%= Phoenix.View.render GatekeeperWeb.DoorAccessAttemptView, "access_log.html", page: @door_access_attempts_page, conn: @conn %>
+
+<%= link "Edit", to: rfid_token_path(@conn, :edit, @rfid_token) %>
+|
+<%= if @member do %>
+  <%= link "Back", to: company_member_path(@conn, :show, @member.company, @member) %>
+<% else %>
+  <%= link "Back", to: rfid_token_path(@conn, :index) %>
+<% end %>
+|
+<%= link "Deactivate", to: rfid_token_path(@conn, :delete, @rfid_token), method: :delete, data: [confirm: "This will deactivate this RFID token and prevent it from being used on any door. Are you sure?"], class: "btn btn-danger btn-xs" %>

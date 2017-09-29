@@ -1,8 +1,10 @@
 language: elixir
 elixir:
-  - 1.3.4
+  - 1.5.1
+  - 1.4.4
 otp_release:
-  - 19.0
+  - 20.0
+  - 19.2
 services:
   - postgresql
 before_script:
@@ -16,3 +18,8 @@ before_script:
 script: mix test
 env:
   - SECRET_KEY_BASE=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA MIX_ENV=test
+matrix:
+  allow_failures:
+    # This particular combination results in a 403 while fetching the Elixir package from hex.pm
+    - otp_release: 20.0
+      elixir: 1.4.4
