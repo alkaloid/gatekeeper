@@ -49,5 +49,5 @@ release :gatekeeper do
   set applications: [
     :runtime_tools
   ]
+  plugin Conform.ReleasePlugin
 end
-

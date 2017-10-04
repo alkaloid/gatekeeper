@@ -44,6 +44,7 @@ defmodule Gatekeeper.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:conform, "~> 2.2"},
       {:cowboy, "~> 1.0"},
       {:distillery, "~> 1.5", runtime: false},
       {:elixir_ale, "~> 1.0.0", only: :prod},
