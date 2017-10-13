@@ -129,6 +129,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       default: "gatekeeper",
       doc: "Database username for the READ ONLY connection",
       hidden: false,
+      env_var: "DATABASE_READ_USERNAME",
       to: "gatekeeper.Elixir.Gatekeeper.Repo.username"
     ],
     "gatekeeper.Elixir.Gatekeeper.Repo.password": [
@@ -137,14 +138,16 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       default: "gatekeeper",
       doc: "Database password for the READ ONLY connection",
       hidden: false,
+      env_var: "DATABASE_READ_PASSWORD",
       to: "gatekeeper.Elixir.Gatekeeper.Repo.password"
     ],
     "gatekeeper.Elixir.Gatekeeper.Repo.database": [
       commented: false,
       datatype: :binary,
-      default: "gatekeeper",
+      default: "gatekeeper_dev",
       doc: "Database name for the READ ONLY connection",
       hidden: false,
+      env_var: "DATABASE_READ_DATABASE",
       to: "gatekeeper.Elixir.Gatekeeper.Repo.database"
     ],
     "gatekeeper.Elixir.Gatekeeper.Repo.hostname": [
@@ -153,6 +156,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       default: "localhost",
       doc: "Database hostname for the READ ONLY connection",
       hidden: false,
+      env_var: "DATABASE_READ_HOSTNAME",
       to: "gatekeeper.Elixir.Gatekeeper.Repo.hostname"
     ],
     "gatekeeper.Elixir.Gatekeeper.Repo.template": [
@@ -173,23 +177,29 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     ],
     "gatekeeper.Elixir.Gatekeeper.WriteRepo.username": [
       commented: false,
-      datatype: :atom,
+      datatype: :binary,
+      default: "gatekeeper",
       doc: "Database username for the WRITABLE connection",
       hidden: false,
+      env_var: "DATABASE_WRITE_USERNAME",
       to: "gatekeeper.Elixir.Gatekeeper.WriteRepo.username"
     ],
     "gatekeeper.Elixir.Gatekeeper.WriteRepo.password": [
       commented: false,
-      datatype: :atom,
+      datatype: :binary,
+      default: "gatekeeper",
       doc: "Database password for the WRITABLE connection",
       hidden: false,
+      env_var: "DATABASE_WRITE_PASSWORD",
       to: "gatekeeper.Elixir.Gatekeeper.WriteRepo.password"
     ],
     "gatekeeper.Elixir.Gatekeeper.WriteRepo.database": [
       commented: false,
-      datatype: :atom,
+      datatype: :binary,
+      default: "gatekeeper_dev",
       doc: "Database name for the WRITABLE connection",
       hidden: false,
+      env_var: "DATABASE_WRITE_DATABASE",
       to: "gatekeeper.Elixir.Gatekeeper.WriteRepo.database"
     ],
     "gatekeeper.Elixir.Gatekeeper.WriteRepo.hostname": [
@@ -198,6 +208,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       default: "localhost",
       doc: "Database hostname for the WRITABLE connection",
       hidden: false,
+      env_var: "DATABASE_WRITE_HOSTNAME",
       to: "gatekeeper.Elixir.Gatekeeper.WriteRepo.hostname"
     ],
     "gatekeeper.Elixir.Gatekeeper.WriteRepo.template": [
@@ -222,20 +233,25 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       default: {Ueberauth.Strategy.Slack, [team: nil]},
       doc: "Team ID for Slack authentication",
       hidden: false,
+      env_var: "SLACK_TEAM_ID",
       to: "ueberauth.Elixir.Ueberauth.providers.slack"
     ],
     "ueberauth.Elixir.Ueberauth.Strategy.Slack.OAuth.client_id": [
       commented: false,
-      datatype: :atom,
+      datatype: :binary,
+      default: "",
       doc: "Slack OAuth Client ID",
       hidden: false,
+      env_var: "SLACK_CLIENT_ID",
       to: "ueberauth.Elixir.Ueberauth.Strategy.Slack.OAuth.client_id"
     ],
     "ueberauth.Elixir.Ueberauth.Strategy.Slack.OAuth.client_secret": [
       commented: false,
-      datatype: :atom,
+      datatype: :binary,
+      default: "",
       doc: "Slack OAuth Client Secret",
       hidden: false,
+      env_var: "SLACK_CLIENT_SECRET",
       to: "ueberauth.Elixir.Ueberauth.Strategy.Slack.OAuth.client_secret"
     ],
     "guardian.Elixir.Guardian.ttl": [
@@ -248,9 +264,11 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     ],
     "guardian.Elixir.Guardian.secret_key": [
       commented: false,
-      datatype: :atom,
-      doc: "Provide documentation for guardian.Elixir.Guardian.secret_key here.",
+      datatype: :binary,
+      default: "",
+      doc: "Secret key to sign/secure session cookies",
       hidden: false,
+      env_var: "GUARDIAN_SECRET_KEY",
       to: "guardian.Elixir.Guardian.secret_key"
     ],
   ],
