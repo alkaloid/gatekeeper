@@ -1,6 +1,7 @@
 defmodule GatekeeperWeb.DoorGroupController do
   use GatekeeperWeb, :controller
 
+  alias Gatekeeper.Company
   alias Gatekeeper.DoorGroup
   alias Gatekeeper.Door
   alias Gatekeeper.DoorGroupDoor
@@ -38,7 +39,7 @@ defmodule GatekeeperWeb.DoorGroupController do
   end
 
   def show(conn, %{"id" => id}) do
-    door_group = Repo.get!(DoorGroup, id) |> Repo.preload([:doors, :companies])
+    door_group = Repo.get!(DoorGroup, id) |> Repo.preload([:doors, companies: from(c in Company, where: is_nil(c.departure_date))])
     render(conn, "show.html", door_group: door_group)
   end
 
