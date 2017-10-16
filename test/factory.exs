@@ -8,6 +8,7 @@ defmodule Gatekeeper.Factory do
   alias Gatekeeper.DoorGroup
   alias Gatekeeper.DoorGroupDoor
   alias Gatekeeper.DoorGroupCompany
+  alias Gatekeeper.DoorGroupSchedule
   alias Gatekeeper.DoorAccessAttempt
 
   def create_company(params = [door_group: door_group]) do
@@ -74,7 +75,30 @@ defmodule Gatekeeper.Factory do
     params = Keyword.merge(default_params, params)
     changeset = DoorGroup.changeset(%DoorGroup{}, Enum.into(params, %{}))
     {:ok, door_group} = WriteRepo.insert(changeset)
+
+    unless params[:skip_default_schedule] do
+      DoorGroupSchedule.create_default_schedule!(door_group)
+    end
+
     door_group
+  end
+
+  def create_door_group_schedule(params \\ []) do
+    default_params = [
+      day_of_week: "Monday",
+      start_time: "00:00:00.000000",
+      end_time: "23:59:59.999999"
+    ]
+    default_params = if params[:door] do
+      Keyword.merge(default_params, door_id: params[:door].id)
+    else
+      default_params
+    end
+
+    params = Keyword.merge(default_params, params)
+    changeset = DoorGroupSchedule.changeset(%DoorGroupSchedule{}, Enum.into(params, %{}))
+    {:ok, door_group_schedule} = WriteRepo.insert(changeset)
+    door_group_schedule
   end
 
   def create_door(params \\ []) do
