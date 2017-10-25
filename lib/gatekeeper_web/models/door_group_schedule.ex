@@ -24,8 +24,9 @@ defmodule Gatekeeper.DoorGroupSchedule do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:day_of_week, :start_time, :end_time])
-    |> validate_required([:day_of_week, :start_time, :end_time])
+    |> cast(params, ~w(door_group_id day_of_week start_time end_time)a)
+    |> validate_required(~w(day_of_week start_time end_time)a)
+    |> assoc_constraint(:door_group)
   end
 
   def open_at(query, datetime) do
@@ -33,9 +34,9 @@ defmodule Gatekeeper.DoorGroupSchedule do
     {:ok, time_of_day} = Timex.format(datetime, "%H:%M:%S", :strftime)
 
     query
-    |> where(day_of_week: ^day_of_week)
-    |> where([dgs], dgs.start_time < ^time_of_day)
-    |> where([dgs], dgs.end_time > ^time_of_day)
+    |> where([..., dgs], dgs.day_of_week == ^day_of_week)
+    |> where([..., dgs], dgs.start_time < ^time_of_day)
+    |> where([..., dgs], dgs.end_time > ^time_of_day)
   end
 
   def create_default_schedule!(door_group) do

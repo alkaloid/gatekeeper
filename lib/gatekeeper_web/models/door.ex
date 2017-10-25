@@ -2,9 +2,12 @@ defmodule Gatekeeper.Door do
   use GatekeeperWeb, :model
 
   alias Gatekeeper.Repo
+  alias Gatekeeper.Door
   alias Gatekeeper.DoorGroupDoor
   alias Gatekeeper.DoorGroupSchedule
   alias Gatekeeper.DoorAccessAttempt
+
+  import Ecto.Query
 
   schema "doors" do
     field :name, :string
@@ -30,7 +33,45 @@ defmodule Gatekeeper.Door do
     |> validate_required(@required_fields)
   end
 
-  def member_access_allowed?(door, member, now \\ Timex.now) do
+  def member_access_allowed?(door, member, at \\ Timex.now) do
+    query = Door 
+            |> where([door], door.id == ^door.id) 
+            |> join(:inner, [door], door_group in assoc(door, :door_groups)) 
+            |> join(:inner, [..., door_group], company in assoc(door_group, :companies)) 
+            |> join(:inner, [..., company], member in assoc(company, :members)) 
+            |> where([..., member], member.id == ^member.id) 
+            |> select([..., member], %{"member_id" => member.id, "member_name" => member.name})
+
+#    direct_members_query = door_query
+#                           |> join(:inner, [_, door_group], member in assoc(door_group, :members))
+#                           |> where([_, _, member], member.id == ^member.id)
+#                           |> select([_, _, member], %{"id" => member.id, "name" => member.name})
+#
+#    direct_members = Repo.all(direct_members_query)
+#    if (length(direct_members) > 0) do
+#      schedule_query = door_query
+#                       |> join(:inner, [_, door_group, _], door_group_schedule in assoc(door_group, :door_group_schedules))
+#                       |> DoorGroupSchedule.open_at(at)
+#                       |> select([..., door_group_schedule], %{"start_time": door_group_schedule.start_time})
+#    end
+
+    count = Repo.aggregate(query, :count, :id)
+    if (count > 0) do
+      schedule_query = door_query
+                       |> join(:inner, [_, door_group, _, _], door_group_schedule in assoc(door_group, :door_group_schedules))
+                       |> DoorGroupSchedule.open_at(at)
+      count = Repo.aggregate(query, :count, :id)
+
+      if (count > 0) do
+        {true, "access_allowed"}
+      else
+        {false, "outside_hours"}
+      end
+    else
+      {false, "no_access_to_door"}
+    end
+ 
+    
     if member.id in Enum.map(members_with_access(door, now), &(&1.id)) do
       {true, "access_allowed"}
     else
@@ -45,7 +86,8 @@ defmodule Gatekeeper.Door do
   are resolved through DoorGroups.
   """
   def members_with_access(door, now) do
-    schedule_query = DoorGroupSchedule
+    schedule_query = DoorGroup
+    |> join(:inner, [door_group], dgs in assoc(door_group, :door_group_schedules))
     |> DoorGroupSchedule.open_at(now)
 
     door = Repo.preload(door, [door_groups: {schedule_query, [companies: :members]}])
