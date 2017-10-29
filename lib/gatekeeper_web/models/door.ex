@@ -41,13 +41,13 @@ defmodule Gatekeeper.Door do
             |> join(:inner, [..., door_group], company in assoc(door_group, :companies)) 
             |> join(:inner, [..., company], member in assoc(company, :members)) 
             |> where([..., member], member.id == ^member.id) 
-            |> select([..., member], %{"member_id" => member.id, "member_name" => member.name})
 
     count = Repo.aggregate(query, :count, :id)
     if (count > 0) do
       query = query
               |> join(:inner, [_, door_group, ...], door_group_schedule in assoc(door_group, :door_group_schedules))
-      query =        DoorGroupSchedule.open_at(query, at)
+              |> DoorGroupSchedule.open_at(at)
+
       count = Repo.aggregate(query, :count, :id)
 
       if (count > 0) do

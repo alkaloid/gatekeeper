@@ -20,10 +20,9 @@ defmodule Gatekeeper.DoorTest do
   end
 
   test "member is disallowed access if he does not have any association with a door group containing the door" do
-    door_group = create_door_group()
-    door = create_door door_group: door_group
-    company = create_company()
-    member = create_member company: company
+    door = create_door door_group: create_door_group()
+    company = create_company(door_group: create_door_group())
+    member = create_member(company: company)
 
     assert {false, "no_access_to_door"} = Door.member_access_allowed? door, member
   end
@@ -34,7 +33,7 @@ defmodule Gatekeeper.DoorTest do
     company = create_company door_group: door_group
     member = create_member company: company
 
-    assert {true, _reason} = Door.member_access_allowed? door, member
+    assert {true, "access_allowed"} = Door.member_access_allowed? door, member
   end
 
   test "member is disallowed access to the door if the door group has no schedule" do
@@ -43,13 +42,57 @@ defmodule Gatekeeper.DoorTest do
     company = create_company door_group: door_group
     member = create_member company: company
 
-    # TODO Check reason references no active schedule
-    assert {false, _reason} = Door.member_access_allowed? door, member
+    assert {false, "outside_hours"} = Door.member_access_allowed? door, member
   end
 
-  test "member is disallowed access to the door group if not in a scheduled period"
+  test "member is disallowed access to the door group if not in a scheduled period" do
+    {:ok, test_time} = Timex.parse("2017-04-13T12:30:00-04:00", "{ISO:Extended}")
 
-  test "member is not allowed access via another's door group schedule"
+    door_group = create_door_group(skip_default_schedule: true)
 
-  test "member is allowed if the time is within the door group schedule"
+    {:ok, day_of_week} = Timex.format(test_time, "%A", :strftime)
+    start_time = ~T[00:00:00.000000]
+    end_time = ~T[12:00:00.000000]
+    create_door_group_schedule(door_group: door_group, day_of_week: day_of_week, start_time: start_time, end_time: end_time)
+
+    start_time = ~T[13:00:00.000000]
+    end_time = ~T[23:59:59.999999]
+    create_door_group_schedule(door_group: door_group, day_of_week: day_of_week, start_time: start_time, end_time: end_time)
+
+    door = create_door door_group: door_group
+    company = create_company door_group: door_group
+    member = create_member company: company
+
+    assert {false, "outside_hours"} = Door.member_access_allowed? door, member, test_time
+  end
+
+  test "member is not allowed access via another's door group schedule" do
+    {:ok, test_time} = Timex.parse("2017-04-13T12:30:00-04:00", "{ISO:Extended}")
+
+    _door_group1 = create_door_group()
+    door_group2 = create_door_group(skip_default_schedule: true)
+
+    door = create_door door_group: door_group2
+    company = create_company door_group: door_group2
+    member = create_member company: company
+
+    assert {false, "outside_hours"} = Door.member_access_allowed? door, member, test_time
+  end
+
+  test "member is allowed if the time is within the door group schedule" do
+    {:ok, test_time} = Timex.parse("2017-04-13T12:30:00-04:00", "{ISO:Extended}")
+
+    door_group = create_door_group(skip_default_schedule: true)
+
+    {:ok, day_of_week} = Timex.format(test_time, "%A", :strftime)
+    start_time = ~T[12:00:00.000000]
+    end_time = ~T[13:59:59.999999]
+    create_door_group_schedule(door_group: door_group, day_of_week: day_of_week, start_time: start_time, end_time: end_time)
+
+    door = create_door door_group: door_group
+    company = create_company door_group: door_group
+    member = create_member company: company
+
+    assert {true, "access_allowed"} = Door.member_access_allowed? door, member, test_time
+  end
 end
