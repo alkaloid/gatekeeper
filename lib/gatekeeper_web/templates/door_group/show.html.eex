@@ -1,4 +1,7 @@
-<h2>Door Group: <%= @door_group.name %></h2>
+<h2>
+  Door Group: <%= @door_group.name %>
+  <%= link "Edit", to: door_group_path(@conn, :edit, @door_group), class: "btn btn-default btn-sm", role: "button" %>
+</h2>
 
 <h4>Associated Doors</h4>
 <ul>
@@ -19,5 +22,3 @@
 <% end %>
 
 
-<%= link "Edit", to: door_group_path(@conn, :edit, @door_group) %>
-<%= link "Back", to: door_group_path(@conn, :index) %>
