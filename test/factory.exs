@@ -11,6 +11,15 @@ defmodule Gatekeeper.Factory do
   alias Gatekeeper.DoorGroupCompany
   alias Gatekeeper.DoorAccessAttempt
 
+  def create_company(params = [door_group: door_group]) do
+    company = Keyword.delete(params, :door_group)
+              |> create_company()
+
+    changeset = DoorGroupCompany.changeset(%DoorGroupCompany{}, %{company_id: company.id, door_group_id: door_group.id})
+    {:ok, _} = WriteRepo.insert(changeset)
+
+    company
+  end
   def create_company(params \\ []) do
     {date, _time} = :calendar.local_time()
     default_params = [
@@ -21,11 +30,6 @@ defmodule Gatekeeper.Factory do
     params = Keyword.merge(default_params, params)
     changeset = Company.changeset(%Company{}, Enum.into(params, %{}))
     {:ok, company} = WriteRepo.insert(changeset)
-
-    if params[:door_group] do
-      changeset = DoorGroupCompany.changeset(%DoorGroupCompany{}, %{company_id: company.id, door_group_id: params[:door_group].id})
-      WriteRepo.insert!(changeset)
-    end
 
     company
   end
