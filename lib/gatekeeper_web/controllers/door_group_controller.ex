@@ -44,15 +44,17 @@ defmodule GatekeeperWeb.DoorGroupController do
   end
 
   def edit(conn, %{"id" => id}) do
-    door_group = Repo.get!(DoorGroup, id) |> Repo.preload(:doors)
+    door_group = Repo.get!(DoorGroup, id) |> Repo.preload([:doors, :door_group_schedules])
     changeset = DoorGroup.changeset(door_group)
     doors = Repo.all(Door)
     render(conn, "edit.html", door_group: door_group, doors: doors, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "door_group" => door_group_params}) do
-    door_group = Repo.get!(DoorGroup, id) |> Repo.preload(:doors)
+    door_group = Repo.get!(DoorGroup, id) |> Repo.preload([:doors, :door_group_schedules])
     doors = Repo.all(Door)
+
+    door_group_params = format_times(door_group_params)
     changeset = DoorGroup.changeset(door_group, door_group_params)
 
     case WriteRepo.update(changeset) do
@@ -90,5 +92,18 @@ defmodule GatekeeperWeb.DoorGroupController do
         {:ok, _} = WriteRepo.insert(changeset)
       end
     end
+  end
+
+  """
+  Adds seconds to each schedule start/end time, since the browser only provides HH:MM
+  """
+  def format_times(params) do
+    schedules = Enum.map(params["door_group_schedules"], fn({i, schedule}) ->
+      schedule = Map.put(schedule, "start_time", "#{schedule["start_time"]}:00")
+      schedule = Map.put(schedule, "end_time", "#{schedule["end_time"]}:00")
+      {i, schedule}
+    end)
+    |> Map.new
+    Map.put(params, "door_group_schedules", schedules)
   end
 end
