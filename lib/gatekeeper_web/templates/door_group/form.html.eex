@@ -99,12 +99,10 @@ $('button#add_schedule').click(function(ev) {
 
 $(document).ready(function() {
   <%= Enum.map(@door_group.door_group_schedules, fn(schedule) ->
-    [start_hour | [ start_min | _ ] ]  = Time.to_erl(schedule.start_time) |> Tuple.to_list
-    [end_hour | [ end_min | _ ] ] = Time.to_erl(schedule.end_time) |> Tuple.to_list
-    start_min = start_min |> to_string |> String.pad_leading(2, "0")
-    end_min = end_min |> to_string |> String.pad_leading(2, "0")
+    start_time = Timex.format!(schedule.start_time, "%H:%M", :strftime)
+    end_time = Timex.format!(schedule.end_time, "%H:%M", :strftime)
     """
-    addScheduleRow("#{schedule.day_of_week}", "#{start_hour}:#{start_min}", "#{end_hour}:#{end_min}")
+    addScheduleRow("#{schedule.day_of_week}", "#{start_time}", "#{end_time}")
     """
     |> raw()
   end) %>
