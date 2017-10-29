@@ -3,14 +3,11 @@ defmodule Gatekeeper.DoorGroupScheduleTest do
   use Gatekeeper.WriteRepo # allow for hacky override of WriteRepo for tests
 
   import Gatekeeper.Factory
-  import Ecto.Query
 
-  alias Gatekeeper.Door
-  alias Gatekeeper.DoorGroup
   alias Gatekeeper.DoorGroupSchedule
 
   test "finds schedules that are active for a given time" do
-    door_group = create_door_group(door: create_door(), skip_default_schedule: true)
+    create_door_group(door: create_door(), skip_default_schedule: true)
 
     create_door_group_schedule(day_of_week: "Monday")
     current_schedule = create_door_group_schedule(day_of_week: "Tuesday")

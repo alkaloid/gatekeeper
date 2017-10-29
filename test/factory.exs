@@ -11,6 +11,7 @@ defmodule Gatekeeper.Factory do
   alias Gatekeeper.DoorGroupSchedule
   alias Gatekeeper.DoorAccessAttempt
 
+  def create_company(params \\ [])
   def create_company(params = [door_group: door_group]) do
     company = Keyword.delete(params, :door_group)
               |> create_company()
@@ -20,7 +21,7 @@ defmodule Gatekeeper.Factory do
 
     company
   end
-  def create_company(params \\ []) do
+  def create_company(params) do
     {date, _time} = :calendar.local_time()
     default_params = [
       name: "Test Company",
@@ -89,8 +90,8 @@ defmodule Gatekeeper.Factory do
       start_time: "00:00:00.000000",
       end_time: "23:59:59.999999"
     ]
-    default_params = if params[:door] do
-      Keyword.merge(default_params, door_id: params[:door].id)
+    default_params = if params[:door_group] do
+      Keyword.merge(default_params, door_group_id: params[:door_group].id)
     else
       default_params
     end
