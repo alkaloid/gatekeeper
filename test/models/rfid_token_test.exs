@@ -41,10 +41,10 @@ defmodule Gatekeeper.RfidTokenTest do
   end
 
   test "checking that the door should be allowed to open" do
-    company = create_company()
     door_group = create_door_group()
+    company = create_company(door_group: door_group)
     door = create_door door_group: door_group
-    member = create_member company: company, door_group: door_group
+    member = create_member company: company
     rfid_token = create_rfid_token member: member
     assert {true, _reason} = RfidToken.access_permitted?(rfid_token, door)
   end

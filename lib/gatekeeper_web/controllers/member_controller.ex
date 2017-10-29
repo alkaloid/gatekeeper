@@ -4,7 +4,6 @@ defmodule GatekeeperWeb.MemberController do
   alias Gatekeeper.Company
   alias Gatekeeper.Member
   alias Gatekeeper.DoorGroup
-  alias Gatekeeper.DoorGroupMember
   alias Gatekeeper.DoorAccessAttempt
 
   plug :scrub_params, "member" when action in [:create, :update]
@@ -16,32 +15,29 @@ defmodule GatekeeperWeb.MemberController do
 
   def new(conn, %{"company_id" => company_id}) do
     company = Repo.get!(Company, company_id)
-    member = %Member{} |> Repo.preload([:door_groups])
-    door_groups = Repo.all(DoorGroup)
+    member = %Member{}
     changeset = Member.changeset member
 
-    render(conn, "new.html", changeset: changeset, company: company, member: member, door_groups: door_groups)
+    render(conn, "new.html", changeset: changeset, company: company, member: member)
   end
 
   def create(conn, %{"company_id" => company_id, "member" => member_params}) do
     company = Repo.get!(Company, company_id)
-    member = %Member{} |> Repo.preload([:door_groups])
-    door_groups = Repo.all(DoorGroup)
+    member = %Member{}
     changeset = Member.changeset(%Member{company_id: String.to_integer(company_id)}, member_params)
 
     case WriteRepo.insert(changeset) do
       {:ok, member} ->
-        save_door_groups(member, member_params["door_groups"])
         conn
         |> put_flash(:info, "Member created successfully.")
         |> redirect(to: company_path(conn, :show, company))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset, company: company, member: member, door_groups: door_groups)
+        render(conn, "new.html", changeset: changeset, company: company, member: member)
     end
   end
 
   def show(conn, params = %{"company_id" => _company_id, "id" => id}) do
-    member = Repo.get!(Member, id) |> Repo.preload([:company, :door_groups, :rfid_tokens, [door_access_attempts: DoorAccessAttempt.ordered_preloaded]])
+    member = Repo.get!(Member, id) |> Repo.preload([:company, :rfid_tokens, [door_access_attempts: DoorAccessAttempt.ordered_preloaded]])
     member_rfid_tokens = Enum.reduce member.rfid_tokens, [], fn(rfid_token, acc) ->
       acc ++ [rfid_token.id]
     end
@@ -53,26 +49,23 @@ defmodule GatekeeperWeb.MemberController do
 
   def edit(conn, %{"company_id" => company_id, "id" => id}) do
     company = Repo.get!(Company, company_id)
-    member = Repo.get!(Member, id) |> Repo.preload([:door_groups])
-    door_groups = Repo.all(DoorGroup)
+    member = Repo.get!(Member, id)
     changeset = Member.changeset(member)
-    render(conn, "edit.html", company: company, member: member, changeset: changeset, door_groups: door_groups)
+    render(conn, "edit.html", company: company, member: member, changeset: changeset)
   end
 
   def update(conn, %{"company_id" => company_id, "id" => id, "member" => member_params}) do
     company = Repo.get!(Company, company_id)
-    member = Repo.get!(Member, id) |> Repo.preload(:door_groups)
-    door_groups = Repo.all(DoorGroup)
+    member = Repo.get!(Member, id)
     changeset = Member.changeset(member, member_params)
 
     case WriteRepo.update(changeset) do
       {:ok, member} ->
-        save_door_groups(member, member_params["door_groups"])
         conn
         |> put_flash(:info, "Member updated successfully.")
         |> redirect(to: company_member_path(conn, :show, company, member))
       {:error, changeset} ->
-        render(conn, "edit.html", company: company, member: member, changeset: changeset, door_groups: door_groups)
+        render(conn, "edit.html", company: company, member: member, changeset: changeset)
     end
   end
 
@@ -86,21 +79,6 @@ defmodule GatekeeperWeb.MemberController do
     conn
     |> put_flash(:info, "Member successfully deactivated")
     |> redirect(to: company_path(conn, :show, company))
-  end
-
-  def save_door_groups(member, new_door_group_ids) do
-    # Remove all existing door <-> door group associations
-    # TODO: DRY with similar Company/Door functionality.
-    # TODO: Wrap in a transaction.
-    Ecto.Query.from(door_group_member in DoorGroupMember, where: door_group_member.member_id == ^member.id) |> WriteRepo.delete_all
-
-    # Insert new door <-> door group associations based on provided checkboxes
-    if new_door_group_ids do # can be nil if no boxes were checked
-      for {id, _val} <- new_door_group_ids do
-        changeset = DoorGroupMember.changeset(%DoorGroupMember{}, %{member_id: member.id, door_group_id: id})
-        {:ok, _} = WriteRepo.insert(changeset)
-      end
-    end
   end
 end
 

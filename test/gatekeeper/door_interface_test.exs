@@ -7,8 +7,8 @@ defmodule Gatekeeper.DoorInterfaceTest do
   setup do
     door_group = create_door_group()
     door = create_door door_group: door_group
-    company = create_company()
-    member = create_member company: company, door_group: door_group
+    company = create_company(door_group: door_group)
+    member = create_member company: company
     rfid_token = create_rfid_token member: member
 
     config = {

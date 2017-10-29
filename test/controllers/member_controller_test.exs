@@ -78,36 +78,6 @@ defmodule Gatekeeper.MemberControllerTest do
     assert Repo.get_by(Member, @valid_attrs)
   end
 
-  test "updates member with associated door groups and redirects when data is valid", %{conn: conn} do
-    door_group = create_door_group()
-    company = create_company()
-    member = create_member company: company
-
-    # We can't dynamically construct a map with a variable without this
-    # See: http://stackoverflow.com/questions/29837103/how-to-put-key-value-pair-into-map-with-variable-key-name
-    # "Note that variables cannot be used as keys to add items to a map:"
-    # See: http://elixir-lang.org/getting-started/maps-and-dicts.html#maps
-    door_group_param = Map.put(%{}, "#{door_group.id}", "on")
-    conn = put conn, company_member_path(conn, :update, company, member), member: Map.merge(@valid_attrs, %{door_groups: door_group_param, company_id: company.id})
-    assert redirected_to(conn) == company_member_path(conn, :show, company, member)
-    member = Repo.get(Member, member.id) |> Repo.preload(:door_groups)
-    assert member
-    assert [door_group.id] == Enum.map(member.door_groups, &(&1.id))
-  end
-
-  test "removes unchecked associated door groups from a member", %{conn: conn} do
-    door_group = create_door_group()
-    company = create_company()
-    member = create_member company: company
-    WriteRepo.insert! %Gatekeeper.DoorGroupCompany{company_id: company.id, door_group_id: door_group.id}
-
-    conn = put conn, company_member_path(conn, :update, company, member), member: Map.merge(@valid_attrs, %{id: member.id, company_id: company.id})
-    assert redirected_to(conn) == company_member_path(conn, :show, company, member)
-    member = Repo.get!(Member, member.id) |> Repo.preload(:door_groups)
-    assert member
-    assert [] == Enum.map(member.door_groups, &(&1.id))
-  end
-
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
     company = create_company()
     member = create_member company: company
