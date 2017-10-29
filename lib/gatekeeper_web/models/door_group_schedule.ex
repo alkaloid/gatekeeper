@@ -30,8 +30,8 @@ defmodule Gatekeeper.DoorGroupSchedule do
   end
 
   def open_at(query, datetime) do
-    {:ok, day_of_week} = Timex.format(datetime, "%A", :strftime)
-    {:ok, time_of_day} = Timex.format(datetime, "%H:%M:%S", :strftime)
+    {:ok, day_of_week} = Timex.local(datetime) |> Timex.format("%A", :strftime)
+    {:ok, time_of_day} = Timex.local(datetime) |> Timex.format("%H:%M:%S", :strftime)
 
     query
     |> where([..., dgs], dgs.day_of_week == ^day_of_week)
