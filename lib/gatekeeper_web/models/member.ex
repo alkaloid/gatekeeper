@@ -4,7 +4,6 @@ defmodule Gatekeeper.Member do
   alias Gatekeeper.Company
   alias Gatekeeper.Repo
   alias Gatekeeper.RfidToken
-  alias Gatekeeper.DoorGroupMember
   alias Gatekeeper.DoorAccessAttempt
 
   schema "members" do
@@ -16,9 +15,6 @@ defmodule Gatekeeper.Member do
     belongs_to :company, Company
     has_many :rfid_tokens, RfidToken
 
-    has_many :door_group_members, DoorGroupMember
-    has_many :door_groups, through: [:door_group_members, :door_group]
-    has_many :doors, through: [:door_groups, :door]
     has_many :door_access_attempts, DoorAccessAttempt
 
     timestamps()

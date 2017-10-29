@@ -7,7 +7,6 @@ defmodule Gatekeeper.Factory do
   alias Gatekeeper.Door
   alias Gatekeeper.DoorGroup
   alias Gatekeeper.DoorGroupDoor
-  alias Gatekeeper.DoorGroupMember
   alias Gatekeeper.DoorGroupCompany
   alias Gatekeeper.DoorAccessAttempt
 
@@ -47,11 +46,6 @@ defmodule Gatekeeper.Factory do
     params = Keyword.merge(default_params, params)
     changeset = Member.changeset(%Member{}, Enum.into(params, %{}))
     {:ok, member} = WriteRepo.insert(changeset)
-
-    if params[:door_group] do
-      changeset = DoorGroupMember.changeset(%DoorGroupMember{}, %{member_id: member.id, door_group_id: params[:door_group].id})
-      WriteRepo.insert!(changeset)
-    end
 
     member
   end
