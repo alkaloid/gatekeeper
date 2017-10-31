@@ -3,22 +3,37 @@
   <%= link "Edit", to: door_group_path(@conn, :edit, @door_group), class: "btn btn-default btn-sm", role: "button" %>
 </h2>
 
-<h4>Associated Doors</h4>
-<ul>
-  <%= for door <- @door_group.doors do %>
-    <li><%= link door.name, to: door_path(@conn, :show, door) %></li>
-  <% end %>
-</ul>
+<div class="row">
+  <div class="col-md-6">
+    <h4>Associated Doors</h4>
+    <ul>
+      <%= for door <- @door_group.doors do %>
+        <li><%= link door.name, to: door_path(@conn, :show, door) %></li>
+      <% end %>
+    </ul>
+  </div>
 
-<h4>Companies with access to this group</h4>
-<%= if length(@door_group.companies) > 0 do %>
-  <ul>
-    <%= for company <- @door_group.companies do %>
-      <li><%= link company.name, to: company_path(@conn, :show, company) %></li>
+  <div class="col-md-6">
+    <h4>Schedule</h4>
+    <ul>
+      <%= for schedule <- @door_group.door_group_schedules do %>
+        <li><%= schedule.day_of_week %> <%= Timex.format!(schedule.start_time, "%-H:%M", :strftime) |> raw() %> - <%= Timex.format!(schedule.end_time, "%-H:%M", :strftime) |> raw() %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <h4>Companies with access to this group</h4>
+    <%= if length(@door_group.companies) > 0 do %>
+      <ul>
+        <%= for company <- @door_group.companies do %>
+          <li><%= link company.name, to: company_path(@conn, :show, company) %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="no-associations">No companies</p>
     <% end %>
-  </ul>
-<% else %>
-  <p class="no-associations">No companies</p>
-<% end %>
-
-
+  </div>
+</div>

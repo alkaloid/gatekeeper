@@ -39,7 +39,7 @@ defmodule GatekeeperWeb.DoorGroupController do
   end
 
   def show(conn, %{"id" => id}) do
-    door_group = Repo.get!(DoorGroup, id) |> Repo.preload([:doors, companies: from(c in Company, where: is_nil(c.departure_date))])
+    door_group = Repo.get!(DoorGroup, id) |> Repo.preload([:doors, :door_group_schedules, companies: from(c in Company, where: is_nil(c.departure_date))])
     render(conn, "show.html", door_group: door_group)
   end
 
