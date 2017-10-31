@@ -30,7 +30,13 @@ defmodule Gatekeeper.Mixfile do
        :scrivener_ecto,
        :tzdata,
        :ueberauth,
-       :ueberauth_slack
+       :ueberauth_slack,
+       :conform,
+       :elixir_ale,
+       :guardian,
+       :scrivener_html,
+       :serial,
+       :timex,
      ]
    ]
   end
