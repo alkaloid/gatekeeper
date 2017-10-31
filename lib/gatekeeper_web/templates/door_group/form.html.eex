@@ -33,7 +33,7 @@
     <table class="table">
       <tr id="schedule_input_template" style="display: none">
         <td>
-          <span onclick="deleteScheduleRow(this)">&times;</span>
+          <span class="remove" onclick="deleteScheduleRow(this)">&times;</span>
           <select name="day_of_week">
             <option>Sunday</option>
             <option>Monday</option>
