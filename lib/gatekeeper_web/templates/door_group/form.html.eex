@@ -62,6 +62,17 @@
 
 <script>
 var scheduleRows = <%= length @door_group.door_group_schedules %>;
+var preScheduledRows = [
+  <%= Enum.map(@door_group.door_group_schedules, fn(schedule) ->
+    start_time = Timex.format!(schedule.start_time, "%H:%M", :strftime)
+    end_time = Timex.format!(schedule.end_time, "%H:%M", :strftime)
+    """
+    ["#{schedule.day_of_week}", "#{start_time}", "#{end_time}"]
+    """
+  end) |> Enum.join(",") |> raw()
+  %>
+]
+
 function addScheduleRow(day_of_week, start_time, end_time) {
   template = $('#schedule_input_template').clone(true)
 
@@ -92,20 +103,4 @@ function addScheduleRow(day_of_week, start_time, end_time) {
   return template
 }
 
-$('button#add_schedule').click(function(ev) {
-  addScheduleRow()
-  ev.preventDefault()
-})
-
-$(document).ready(function() {
-  <%= Enum.map(@door_group.door_group_schedules, fn(schedule) ->
-    start_time = Timex.format!(schedule.start_time, "%H:%M", :strftime)
-    end_time = Timex.format!(schedule.end_time, "%H:%M", :strftime)
-    """
-    addScheduleRow("#{schedule.day_of_week}", "#{start_time}", "#{end_time}")
-    """
-    |> raw()
-  end) %>
-
-})
 </script>

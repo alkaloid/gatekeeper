@@ -27,3 +27,11 @@ $.each(door_ids, (i, door_id) => {
     return false
   })
 })
+
+$.each(preScheduledRows, (i, preScheduledRow) => {
+  addScheduleRow(...preScheduledRow)
+})
+$('button#add_schedule').click(function(ev) {
+  addScheduleRow()
+  ev.preventDefault()
+})
