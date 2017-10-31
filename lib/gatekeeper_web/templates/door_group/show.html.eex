@@ -15,11 +15,15 @@
 
   <div class="col-md-6">
     <h4>Schedule</h4>
-    <ul>
-      <%= for schedule <- @door_group.door_group_schedules do %>
-        <li><%= schedule.day_of_week %> <%= Timex.format!(schedule.start_time, "%-H:%M", :strftime) |> raw() %> - <%= Timex.format!(schedule.end_time, "%-H:%M", :strftime) |> raw() %></li>
-      <% end %>
-    </ul>
+    <%= if length(@door_group.door_group_schedules) > 0 do %>
+      <ul>
+        <%= for schedule <- @door_group.door_group_schedules do %>
+          <li><%= schedule.day_of_week %> <%= Timex.format!(schedule.start_time, "%-H:%M", :strftime) |> raw() %> - <%= Timex.format!(schedule.end_time, "%-H:%M", :strftime) |> raw() %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <h5 class="text-danger">No active schedules!</h5>
+    <% end %>
   </div>
 </div>
 
