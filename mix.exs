@@ -62,7 +62,7 @@ defmodule Gatekeeper.Mixfile do
       {:scrivener, "~> 2.0"},
       {:scrivener_ecto, "~> 1.0"},
       {:scrivener_html, "~> 1.1"},
-      {:timex, "3.1.21"}, # Workaround bug in 3.1.24: https://github.com/bitwalker/timex/issues/358
+      {:timex, git: "https://github.com/bitwalker/timex.git", branch: "master"},
       {:ueberauth, "~> 0.4"},
       {:ueberauth_slack, "~> 0.4"},
     ]
