@@ -1,10 +1,10 @@
 # Gatekeeper
 
 ## Prereqs
-* Elixir 1.0
+* Elixir 1.5 & Erlang/OTP 20
 * cmake
 * Erlang development headers
-* NodeJS 0.10 (or later) and npm
+* NodeJS 6.11 (or later) and npm
 * PostgreSQL
 * One free GPIO pin
 
