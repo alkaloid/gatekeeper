@@ -9,7 +9,7 @@ defmodule GatekeeperWeb.DoorGroupController do
   plug :scrub_params, "door_group" when action in [:create, :update]
 
   def blank_door_group do
-    %DoorGroup{} |> Repo.preload(:doors)
+    %DoorGroup{} |> Repo.preload([:doors, :door_group_schedules])
   end
 
   def index(conn, _params) do
