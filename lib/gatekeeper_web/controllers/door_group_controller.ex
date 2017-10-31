@@ -97,13 +97,16 @@ defmodule GatekeeperWeb.DoorGroupController do
   """
   Adds seconds to each schedule start/end time, since the browser only provides HH:MM
   """
-  def format_times(params) do
-    schedules = Enum.map(params["door_group_schedules"], fn({i, schedule}) ->
+  def format_times(params = %{"door_group_schedules" => door_group_schedules}) do
+    schedules = Enum.map(door_group_schedules, fn({i, schedule}) ->
       schedule = Map.put(schedule, "start_time", "#{schedule["start_time"]}:00")
       schedule = Map.put(schedule, "end_time", "#{schedule["end_time"]}:00")
       {i, schedule}
     end)
     |> Map.new
     Map.put(params, "door_group_schedules", schedules)
+  end
+  def format_times(params) do
+    params
   end
 end
