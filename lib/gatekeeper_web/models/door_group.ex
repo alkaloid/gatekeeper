@@ -9,6 +9,8 @@ defmodule Gatekeeper.DoorGroup do
     has_many :door_group_companies, Gatekeeper.DoorGroupCompany
     has_many :companies, through: [:door_group_companies, :company]
 
+    has_many :door_group_schedules, Gatekeeper.DoorGroupSchedule, on_replace: :delete
+
     timestamps()
   end
 
@@ -24,6 +26,7 @@ defmodule Gatekeeper.DoorGroup do
   def changeset(model, params \\ %{}) do
     model
     |> cast(params, @required_fields ++ @optional_fields)
+    |> cast_assoc(:door_group_schedules)
     |> validate_required(@required_fields)
   end
 end

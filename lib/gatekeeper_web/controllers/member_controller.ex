@@ -3,7 +3,6 @@ defmodule GatekeeperWeb.MemberController do
 
   alias Gatekeeper.Company
   alias Gatekeeper.Member
-  alias Gatekeeper.DoorGroup
   alias Gatekeeper.DoorAccessAttempt
 
   plug :scrub_params, "member" when action in [:create, :update]
@@ -27,7 +26,7 @@ defmodule GatekeeperWeb.MemberController do
     changeset = Member.changeset(%Member{company_id: String.to_integer(company_id)}, member_params)
 
     case WriteRepo.insert(changeset) do
-      {:ok, member} ->
+      {:ok, _member} ->
         conn
         |> put_flash(:info, "Member created successfully.")
         |> redirect(to: company_path(conn, :show, company))

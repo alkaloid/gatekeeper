@@ -3,7 +3,6 @@
   <table class="table">
     <tr>
       <th>Allowed</td>
-      <th>Why</th>
       <th>When</th>
       <th>Who</th>
       <th>Where</th>
@@ -15,17 +14,18 @@
             <!-- TODO: Replace with icons -->
             Yes
           <% else %>
-            No
+            No: <%= access_attempt.reason %>
           <% end %>
         </td>
-        <td><%= access_attempt.reason %></td>
         <td>
-          <%=
+          <%
             time_zone = Timex.Timezone.get("America/New_York")
             local_time = Timex.Timezone.convert(access_attempt.inserted_at, time_zone)
-            {:ok, time} = Timex.format(local_time, "%a, %b %e @ %l:%M:%S%P", :strftime)
-            time
+            {:ok, date} = Timex.format(local_time, "%a, %b %e, %Y", :strftime)
+            {:ok, time} = Timex.format(local_time, "%l:%M %P", :strftime)
           %>
+          <%= date %><br>
+          <%= time %>
         </td>
         <td>
           <%= if member = access_attempt.member do %>

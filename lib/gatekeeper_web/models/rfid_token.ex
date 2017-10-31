@@ -50,12 +50,17 @@ defmodule Gatekeeper.RfidToken do
   end
 
   def access_permitted?(rfid_token, door) do
+    at = Application.get_env(:gatekeeper, :system)[:timezone]
+         |> Timex.now
+    access_permitted?(rfid_token, door, at)
+  end
+  def access_permitted?(rfid_token, door, at) do
     rfid_token = Repo.preload(rfid_token, [:member])
 
     {allowed, reason} = active?(rfid_token)
 
     if allowed do
-      Door.member_access_allowed?(door, rfid_token.member)
+      Door.member_access_allowed?(door, rfid_token.member, at)
     else
       {allowed, reason}
     end

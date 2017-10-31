@@ -31,7 +31,6 @@ function door_lock_status_update(door_id, door_status) {
   var info = door_lock_status_info(door_status)
   color = info[0]
   icon = info[1]
-  console.log(info)
   el.addClass('btn-' + color)
   el.find('i').attr('class', 'fa fa-' + icon)
 }
