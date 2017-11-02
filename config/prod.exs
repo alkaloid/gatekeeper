@@ -58,12 +58,12 @@ config :logger, level: :info
 
 config :gatekeeper, :doorlock,
   gpio_port: String.to_integer(System.get_env("GATEKEEPER_DOOR_GPIO") || "4"),
-  type: GPIO,
+  type: ElixirALE.GPIO,
   door_id: String.to_integer(System.get_env("GATEKEEPER_DOOR_ID") || "1")
 
 config :gatekeeper, :doorbell,
   gpio_port: String.to_integer(System.get_env("GATEKEEPER_BELL_GPIO") || "17"),
-  type: GPIO
+  type: ElixirALE.GPIO
 
 config :gatekeeper, Gatekeeper.Repo,
   adapter: Ecto.Adapters.Postgres,
