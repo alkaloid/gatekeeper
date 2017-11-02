@@ -13,7 +13,8 @@ use Mix.Config
 # which you typically run after static files are built.
 config :gatekeeper, GatekeeperWeb.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [host: "example.com", port: 80],
+  url: [host: "beltline.alkaloid.net", port: 4000],
+  check_origin: ["//localhost", "//127.0.0.1", "https://beltline.alkaloid.net"],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
