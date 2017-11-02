@@ -63,7 +63,7 @@ config :gatekeeper, :doorlock,
 
 config :gatekeeper, :doorbell,
   gpio_port: String.to_integer(System.get_env("GATEKEEPER_BELL_GPIO") || "17"),
-  type: Gpio
+  type: GPIO
 
 config :gatekeeper, Gatekeeper.Repo,
   adapter: Ecto.Adapters.Postgres,
