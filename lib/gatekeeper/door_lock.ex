@@ -47,7 +47,7 @@ defmodule Gatekeeper.DoorLock do
   end
 
   def init([door_id, gpio_pin, type]) do
-    {:ok, gpio} = type.start_link(door_id, gpio_pin, :output)
+    {:ok, gpio} = type.start_link(gpio_pin, :output)
     type.write(gpio, 0)
 
     door = case Gatekeeper.Repo.get(Gatekeeper.Door, door_id) do
@@ -100,7 +100,7 @@ end
 defmodule Gatekeeper.DoorLock.Dummy do
   use GenServer
 
-  def start_link(_door_id, _gpio_pin, _type, opts \\ []) do
+  def start_link(_gpio_pin, _type, opts \\ []) do
     GenServer.start_link(__MODULE__, :ok, opts)
   end
 

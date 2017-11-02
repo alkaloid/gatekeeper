@@ -4,6 +4,8 @@ defmodule Gatekeeper.DoorBell do
   use GenServer
   use Timex
 
+  alias ElixirALE
+
   @notify_url "http://10.3.18.99:4000/api/door_bell"
 
   def start_link(gpio_number, type \\ Gatekeeper.GPIODummy, opts \\ []) do

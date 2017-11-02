@@ -13,7 +13,8 @@ use Mix.Config
 # which you typically run after static files are built.
 config :gatekeeper, GatekeeperWeb.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [host: "example.com", port: 80],
+  url: [host: "beltline.alkaloid.net", port: 4000],
+  check_origin: ["//localhost", "//127.0.0.1", "https://beltline.alkaloid.net"],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
@@ -58,12 +59,12 @@ config :logger, level: :info
 
 config :gatekeeper, :doorlock,
   gpio_port: String.to_integer(System.get_env("GATEKEEPER_DOOR_GPIO") || "4"),
-  type: GPIO,
+  type: ElixirALE.GPIO,
   door_id: String.to_integer(System.get_env("GATEKEEPER_DOOR_ID") || "1")
 
 config :gatekeeper, :doorbell,
   gpio_port: String.to_integer(System.get_env("GATEKEEPER_BELL_GPIO") || "17"),
-  type: GPIO
+  type: ElixirALE.GPIO
 
 config :gatekeeper, Gatekeeper.Repo,
   adapter: Ecto.Adapters.Postgres,
