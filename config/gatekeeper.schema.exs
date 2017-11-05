@@ -229,8 +229,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     ],
     "ueberauth.Elixir.Ueberauth.providers.slack": [
       commented: false,
-      datatype: {:atom, [list: {:atom, :atom}]},
-      default: {Ueberauth.Strategy.Slack, [team: nil]},
+      datatype: :binary,
       doc: "Team ID for Slack authentication",
       hidden: false,
       env_var: "SLACK_TEAM_ID",
@@ -274,7 +273,8 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
   ],
   transforms: [
     "ueberauth.Elixir.Ueberauth.providers.slack": fn conf ->
-      {Ueberauth.Strategy.Slack, [team: Conform.Conf.get(conf, "ueberauth.Elixir.Ueberauth.providers.slack")]}
+      [{_, team_id}] = Conform.Conf.get(conf, "ueberauth.Elixir.Ueberauth.providers.slack")
+      {Ueberauth.Strategy.Slack, [team: team_id]}
     end
   ],
   validators: []
