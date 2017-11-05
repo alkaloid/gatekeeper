@@ -37,6 +37,7 @@ environment :prod do
   set include_erts: true
   set include_src: false
   set cookie: :"GG]50JSlc?yj|CtnbBrSZ/DTUsn;%O*6i)E5bms!C*un&YxfB:;HowL)[Np(/i`9"
+  set post_start_hook: "rel/hooks/post_start"
 end
 
 # You may define one or more releases in this file.
