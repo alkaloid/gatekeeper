@@ -63,7 +63,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     "gatekeeper.doorlock.type": [
       commented: false,
       datatype: :atom,
-      default: GPIO,
+      default: ElixirALE.GPIO,
       doc: "Module name representing the driver for the Door Lock",
       hidden: true,
       to: "gatekeeper.doorlock.type"

@@ -53,7 +53,7 @@ defmodule Gatekeeper.Mixfile do
       {:conform, "~> 2.2"},
       {:cowboy, "~> 1.0"},
       {:distillery, "~> 1.5", runtime: false},
-      {:elixir_ale, "~> 1.0.0", only: :prod},
+      {:elixir_ale, "~> 1.0.0"},
       {:gettext, "~> 0.9"},
       {:guardian, "~> 0.14.2"},
       {:mix_test_watch, "~> 0.2", only: :dev},
