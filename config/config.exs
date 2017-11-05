@@ -18,6 +18,11 @@ config :gatekeeper, GatekeeperWeb.Endpoint,
   pubsub: [name: Gatekeeper.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :gatekeeper, Gatekeeper.Features,
+  automatic_auth: false,
+  split_reads: true,
+  async_writes: true
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
