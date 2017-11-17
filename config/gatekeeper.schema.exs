@@ -62,7 +62,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     ],
     "gatekeeper.doorlock.type": [
       commented: false,
-      datatype: :atom,
+      datatype: :binary,
       default: ElixirALE.GPIO,
       doc: "Module name representing the driver for the Door Lock",
       hidden: true,
@@ -92,6 +92,22 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       hidden: false,
       to: "gatekeeper.doorlock.door_id"
     ],
+    "gatekeeper.doorbell.type": [
+      commented: false,
+      datatype: :binary,
+      default: ElixirALE.GPIO,
+      doc: "Module name representing the driver for the Door Bell",
+      hidden: true,
+      to: "gatekeeper.doorbell.type"
+    ],
+    "gatekeeper.doorbell.gpio_pin": [
+      commented: false,
+      datatype: :integer,
+      default: 17,
+      doc: "GPIO pin for signaling that the door bell has been rung",
+      hidden: false,
+      to: "gatekeeper.doorbell.gpio_pin"
+    ],
     "gatekeeper.Elixir.GatekeeperWeb.Endpoint.url.host": [
       commented: false,
       datatype: :binary,
@@ -113,6 +129,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
       datatype: :binary,
       doc: "Secret key used for securing session cookies",
       hidden: false,
+      env_var: "SECRET_KEY_BASE",
       to: "gatekeeper.Elixir.GatekeeperWeb.Endpoint.secret_key_base"
     ],
     "gatekeeper.Elixir.GatekeeperWeb.Endpoint.http.port": [
@@ -275,6 +292,20 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     "ueberauth.Elixir.Ueberauth.providers.slack": fn conf ->
       [{_, team_id}] = Conform.Conf.get(conf, "ueberauth.Elixir.Ueberauth.providers.slack")
       {Ueberauth.Strategy.Slack, [team: team_id]}
+    end,
+    "gatekeeper.doorlock.type": fn conf ->
+      [{_, type}] = Conform.Conf.get(conf, "gatekeeper.doorlock.type")
+      case type do
+        "gpio" -> ElixirALE.GPIO
+        "dummy" -> Gatekeeper.GPIODummy
+      end
+    end,
+    "gatekeeper.doorbell.type": fn conf ->
+      [{_, type}] = Conform.Conf.get(conf, "gatekeeper.doorbell.type")
+      case type do
+        "gpio" -> ElixirALE.GPIO
+        "dummy" -> Gatekeeper.GPIODummy
+      end
     end
   ],
   validators: []
