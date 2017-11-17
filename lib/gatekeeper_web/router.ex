@@ -26,7 +26,7 @@ defmodule GatekeeperWeb.Router do
   scope "/auth", GatekeeperWeb do
     pipe_through :browser
 
-    if Mix.env == :dev do
+    if Application.get_env(:gatekeeper, Gatekeeper.Features)[:automatic_auth] do
       post "/automatic", AuthenticationController, :automatic
     end
     get "/:provider", AuthenticationController, :request

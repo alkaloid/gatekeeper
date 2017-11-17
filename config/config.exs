@@ -18,6 +18,11 @@ config :gatekeeper, GatekeeperWeb.Endpoint,
   pubsub: [name: Gatekeeper.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :gatekeeper, Gatekeeper.Features,
+  automatic_auth: false,
+  split_reads: true,
+  async_writes: true
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
@@ -30,10 +35,14 @@ config :gatekeeper, :rfidreader,
   device: "/dev/ttyUSB0"
 
 config :gatekeeper, :doorlock,
-  type: Gatekeeper.DoorLock.Dummy,
+  type: Gatekeeper.GPIODummy,
   gpio_pin: 4,
   duration: 3000, # ms
   door_id: 1
+
+config :gatekeeper, :doorbell,
+  gpio_pin: String.to_integer(System.get_env("GATEKEEPER_BELL_GPIO") || "17"),
+  type: Gatekeeper.GPIODummy
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

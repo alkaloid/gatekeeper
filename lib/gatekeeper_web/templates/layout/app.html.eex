@@ -36,7 +36,7 @@
                 <li><%= button "Log Out", to: "/auth", method: :delete, class: "btn btn-danger", style: "padding: 15px 5px" %></li>
               <% else %>
                 <li><%=
-                  authenticator = if Mix.env == :dev do
+                  authenticator = if Application.get_env(:gatekeeper, Gatekeeper.Features)[:automatic_auth] do
                     :automatic
                   else
                     :slack

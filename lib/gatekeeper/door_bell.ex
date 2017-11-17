@@ -23,11 +23,11 @@ defmodule Gatekeeper.DoorBell do
     pid = if type == GPIO do
       System.cmd("/usr/bin/gpio", ["-g", "mode", "#{gpio_number}", "in"])
       System.cmd("/usr/bin/gpio", ["-g", "mode", "#{gpio_number}", "up"])
-      {:ok, pid} = GPIO.start_link(gpio_number, :input)
+      {:ok, pid} = type.start_link(gpio_number, :input)
       GPIO.set_int(pid, :rising)
       pid
     else
-      nil
+      type.start_link(gpio_number, :input)
     end
 
     {:ok, %{gpio_number: gpio_number, type: type, gpio_pid: pid, last_signal: Timex.now()}}
@@ -65,4 +65,3 @@ defmodule Gatekeeper.DoorBell do
     {:ok, _response} = HTTPoison.post @notify_url, {:form, [{"door_id", "#{door_id}"}]}
   end
 end
-

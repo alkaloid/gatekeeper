@@ -15,6 +15,9 @@ config :gatekeeper, GatekeeperWeb.Endpoint,
   watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
                     cd: Path.expand("../assets", __DIR__)]]
 
+config :gatekeeper, Gatekeeper.Features,
+  automatic_auth: true
+
 # Watch static and templates for browser reloading.
 config :gatekeeper, GatekeeperWeb.Endpoint,
   live_reload: [

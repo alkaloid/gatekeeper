@@ -7,6 +7,10 @@ config :gatekeeper, GatekeeperWeb.Endpoint,
   secret_key_base: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
   server: false
 
+config :gatekeeper, Gatekeeper.Features,
+  split_reads: false,
+  async_writes: false
+
 # Print only warnings and errors during test
 config :logger, level: :debug
 

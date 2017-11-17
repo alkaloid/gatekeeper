@@ -94,7 +94,7 @@ defmodule GatekeeperWeb.DoorGroupController do
     end
   end
 
-  """
+  @doc """
   Adds seconds to each schedule start/end time, since the browser only provides HH:MM
   """
   def format_times(params = %{"door_group_schedules" => door_group_schedules}) do

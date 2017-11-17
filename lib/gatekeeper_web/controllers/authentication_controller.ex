@@ -5,7 +5,7 @@ defmodule GatekeeperWeb.AuthenticationController do
   alias Gatekeeper.Repo
   alias Gatekeeper.Member
 
-  if Mix.env == :dev do
+  if Application.get_env(:gatekeeper, Gatekeeper.Features)[:automatic_auth] do
     def automatic(conn, _params) do
       admin = Repo.all(from member in Member, where: member.role == "admin") |> hd
       conn

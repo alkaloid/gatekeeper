@@ -30,7 +30,13 @@ defmodule Gatekeeper.Mixfile do
        :scrivener_ecto,
        :tzdata,
        :ueberauth,
-       :ueberauth_slack
+       :ueberauth_slack,
+       :conform,
+       :elixir_ale,
+       :guardian,
+       :scrivener_html,
+       :serial,
+       :timex,
      ]
    ]
   end
@@ -44,8 +50,10 @@ defmodule Gatekeeper.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:conform, "~> 2.2"},
       {:cowboy, "~> 1.0"},
-      {:elixir_ale, "~> 1.0.0", only: :prod},
+      {:distillery, "~> 1.5", runtime: false},
+      {:elixir_ale, "~> 1.0.0"},
       {:gettext, "~> 0.9"},
       {:guardian, "~> 0.14.2"},
       {:mix_test_watch, "~> 0.2", only: :dev},
@@ -60,7 +68,7 @@ defmodule Gatekeeper.Mixfile do
       {:scrivener, "~> 2.0"},
       {:scrivener_ecto, "~> 1.0"},
       {:scrivener_html, "~> 1.1"},
-      {:timex, "3.1.21"}, # Workaround bug in 3.1.24: https://github.com/bitwalker/timex/issues/358
+      {:timex, git: "https://github.com/bitwalker/timex.git", branch: "master"},
       {:ueberauth, "~> 0.4"},
       {:ueberauth_slack, "~> 0.4"},
     ]
