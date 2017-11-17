@@ -18,7 +18,7 @@ defmodule Gatekeeper.Application do
       worker(Gatekeeper.WriteRepo, []), # remote, read-write
       worker(Gatekeeper.WriteRepoWrapper, []), # wrapper to allow writes to fail
       # Here you could define other workers and supervisors as children
-      worker(Gatekeeper.DoorBell, [doorbell_config[:gpio_port], doorbell_config[:type]]),
+      worker(Gatekeeper.DoorBell, [doorbell_config[:gpio_pin], doorbell_config[:type]]),
       worker(Gatekeeper.DoorInterface, [{
           doorlock_config[:type],
           doorlock_config[:gpio_pin],
