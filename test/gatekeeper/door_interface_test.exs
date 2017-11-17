@@ -12,7 +12,7 @@ defmodule Gatekeeper.DoorInterfaceTest do
     rfid_token = create_rfid_token member: member
 
     config = {
-      Gatekeeper.DoorLock.Dummy,
+      Gatekeeper.GPIODummy,
       1, # GPIO PIN
       door.id,
       5000,
