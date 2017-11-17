@@ -54,7 +54,7 @@ Make sure you set these environment variables:
 
 The parts listed here are just what I used. Feel free to replace them with equivalents that may be easier or cheaper to acquire.
 
-* [Raspberry Pi](http://www.amazon.com/gp/product/B00LPESRUK/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B00LPESRUK&linkCode=as2&tag=alkalogateke-20&linkId=RGZPVHE22TEYIRZV) ($35) - Any model should do
+* [Raspberry Pi](http://www.amazon.com/gp/product/B01CD5VC92/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B01CD5VC92&linkCode=as2&tag=alkalogateke-20&linkId=RGZPVHE22TEYIRZV) ($35) - Any model should do
 * [12V DC power supply](http://www.amazon.com/gp/product/B0023Y9EQC/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B0023Y9EQC&linkCode=as2&tag=alkalogateke-20&linkId=DBBZFY3TXJEDTJN3) ($8) - recommend at least 2A
 * [12V Electric Door Strike](http://www.amazon.com/gp/product/B005IH0HVW/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B005IH0HVW&linkCode=as2&tag=alkalogateke-20&linkId=JXEVP2436BSJNBCM) ($53)
 * [12V-5V DC power regulator](http://www.amazon.com/gp/product/B00OY0G2LI/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B00OY0G2LI&linkCode=as2&tag=alkalogateke-20&linkId=OL4GF7EVDDT5PJ6E) ($8) - These circuits are pretty easy to build, but as cheap as they are on Amazon, I opted to purchase this and hack it for my own purposes. It comes with a convenient enclosure and with a mini-USB connector prewired which is great for powering the RPi. Too easy.
