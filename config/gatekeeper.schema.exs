@@ -63,7 +63,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     "gatekeeper.doorlock.type": [
       commented: false,
       datatype: :binary,
-      default: ElixirALE.GPIO,
+      default: "gpio",
       doc: "Module name representing the driver for the Door Lock",
       hidden: true,
       to: "gatekeeper.doorlock.type"
@@ -95,7 +95,7 @@ See the moduledoc for `Conform.Schema.Validator` for more details and examples.
     "gatekeeper.doorbell.type": [
       commented: false,
       datatype: :binary,
-      default: ElixirALE.GPIO,
+      default: "gpio",
       doc: "Module name representing the driver for the Door Bell",
       hidden: true,
       to: "gatekeeper.doorbell.type"
