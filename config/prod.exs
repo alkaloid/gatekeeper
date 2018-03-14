@@ -86,3 +86,14 @@ config :gatekeeper, Gatekeeper.WriteRepo,
   hostname: System.get_env("DATABASE_WRITE_HOSTNAME") || "localhost",
   template: "template0",
   pool_size: 10
+
+config :sentry,
+  dsn: "https://public:secret@app.getsentry.com/1",
+  environment_name: :prod,
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!,
+  tags: %{
+    env: "production"
+  },
+  included_environments: [:prod]
+

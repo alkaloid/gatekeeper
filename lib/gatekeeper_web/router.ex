@@ -1,5 +1,7 @@
 defmodule GatekeeperWeb.Router do
   use GatekeeperWeb, :router
+  use Plug.ErrorHandler
+  use Sentry.Plug
 
   pipeline :browser do
     plug :accepts, ["html"]

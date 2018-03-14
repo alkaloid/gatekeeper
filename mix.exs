@@ -21,6 +21,7 @@ defmodule Gatekeeper.Mixfile do
      applications: [
        :cowboy,
        :gettext,
+       :sentry,
        :logger,
        :phoenix,
        :phoenix_pubsub,
@@ -64,6 +65,7 @@ defmodule Gatekeeper.Mixfile do
       {:phoenix_html, "~> 2.6"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:postgrex, ">= 0.0.0"},
+      {:sentry, "~> 6.1.0"},
       {:serial, "0.1.1"},
       {:scrivener, "~> 2.0"},
       {:scrivener_ecto, "~> 1.0"},
